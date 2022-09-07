@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "merge-images": "^2.0.0",
+    "mongoose": "^5.12.4",
+    "node": "^17.0.1",
+    "rest": "^2.0.0",
+    "stack": "^0.1.0"
+  },
+  "name": "r2d2",
+  "version": "1.0.0",
+  "description": "Bot Discord ",
+  "main": "main.js",
+  "scripts": {
+    "test": "main.js"
+  },
+  "keywords": [
+    "r2d2"
+  ],
+  "author": "VicYon",
+  "license": "ISC"
+}
