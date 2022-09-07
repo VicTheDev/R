@@ -15,4 +15,5 @@ Cancel changes
       ``` 
  
 Note: to find your connection string check the [MongoDb Documentation](https://www.mongodb.com/docs/atlas/driver-connection/ "Connect via Your application")
+
 4. That's it! Run the `main.js` file to start the bot!
