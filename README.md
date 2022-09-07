@@ -1,5 +1,5 @@
 # R2D2
-
+Cancel changes
 ## How to install?
 
 1. Clone or download the repository
@@ -11,7 +11,7 @@
       "TOKEN":"Put your token here",
       "PREFIX":"Put your prefix here",
       "MongoKey":"Put your connection string here"
-      }
+    }
       ``` 
  
 Note: to find your connection string check the [MongoDb Documentation](https://www.mongodb.com/docs/atlas/driver-connection/ "Connect via Your application")
