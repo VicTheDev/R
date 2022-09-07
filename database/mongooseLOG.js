@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const {MongoKey} = require('../config.json')
 
     function init() {
         const dbOptions = {
@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
             family: 4
         };
 
-        mongoose.connect(`mongodb+srv://academiebot:9L4rqSMOzDgU0Z18@bot.yvkln.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, dbOptions);
+        mongoose.connect(MongoKey, dbOptions);
         mongoose.set('useFindAndModify', false);
         mongoose.Promise = global.Promise;
 
