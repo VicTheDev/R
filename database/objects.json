@@ -1,12 +1,16 @@
 [
     {
         "name":"Pelle",
-        "descripton":"Utilisez cette pelle pendant la construction d'un bonhomme de neige afin de construire plus vite !",
-        "effect": 1
+        "description":"Utilisez cette pelle pendant la construction d'un bonhomme de neige afin de construire plus vite !",
+        "effect": 1,
+        "cost":3,
+        "id":0
     },
     {
         "name":"Canon à Neige",
-        "descripton":"Utilisez ce canon pendant la construction d'un bonhomme de neige afin de construire plus vite !",
-        "effect": 2
+        "description":"Utilisez ce canon pendant la construction d'un bonhomme de neige afin de construire plus vite !",
+        "effect": 2,
+        "cost":5,
+        "id":1
     }
 ]
