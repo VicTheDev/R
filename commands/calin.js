@@ -4,6 +4,7 @@ const Discord = require('discord.js')
 module.exports = {
 	name: 'calin',
 	description: 'To hug everyone',
+        category: "Interaction",
 	execute(message, args) {
                 if(args[0] === 'everyone' || message.mentions.last === "everyone"){
                         let member = message.member
@@ -11,8 +12,8 @@ module.exports = {
                         let GifEmbed = new Discord.MessageEmbed()
                                 .setDescription("**" + member.displayName + "** fait un calin à **tout le monde**")
                                 .setImage(calin[maths.getRandomInt(0,calin.length)])
-                                .setFooter("Requested by " + member.displayName + ` (${member.user.tag})`, avatarmember);
-                        message.channel.send(GifEmbed)
+                                .setFooter({name: "Requested by " + member.displayName + ` (${member.user.tag})`, iconURL: avatarmember});
+                        message.channel.send({embeds : [GifEmbed]})
                         message.delete()
                 }
 	}, 

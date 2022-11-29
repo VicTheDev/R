@@ -5,6 +5,7 @@ const { snow } = require('../LocalStorage')
 module.exports = {
     name: 'snowball',
     description: 'Throw a snowball to your oponent',
+    category: "Interaction",
     execute(message,args){
         const member = message.member
         const target = message.mentions.members.first()
@@ -17,8 +18,8 @@ module.exports = {
             const SnowEmbed = new Discord.MessageEmbed()
                 .setDescription('**'+member.displayName+`** lance une boule de neige sur ${ligne}**`+target.displayName+'** ')
                 .setImage(snow[maths.getRandomInt(0,snow.length)])
-                .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }));
-            message.channel.send(SnowEmbed)
+                .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.member.avatarURL()});
+            message.channel.send({embeds:[SnowEmbed]})
             message.delete()
 
         }else{
@@ -26,8 +27,8 @@ module.exports = {
                 .setColor("#ef5350")
                 .setTitle("Commande Boule de Neige")
                 .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!snowball <target>`\n`!snowball <target>`\n\n**Example Usage**\n`!snowball @R2-D2`\n`!snowball @R2D2`")
-                .setFooter("Catégorie de commande: Interaction");
-            message.channel.send(ErrorApplaudEmbed)
+                .setFooter({name: "Catégorie de commande: Interaction"});
+            message.channel.send({embeds:[ErrorApplaudEmbed]})
             message.delete()
         }
         

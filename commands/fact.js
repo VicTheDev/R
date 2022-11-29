@@ -6,6 +6,7 @@ const commandFiles = fs.readdirSync(path.resolve(__dirname, '../commands')).filt
 module.exports = {
 	name: 'fact',
 	description: 'You can find incredibles things with this command! sisi jtejure',
+    category: "Other",
 	execute(message, args) {
         const command = `${args[0]}.js`
         if(commandFiles.includes(command)){

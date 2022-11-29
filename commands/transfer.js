@@ -2,6 +2,7 @@ const mongoose = require('../database/mongoose')
 module.exports = {
 	name: 'transfer',
 	description: 'Send money to another person.',
+    category: "Inventory",
 	execute(message, args) {
         if(message.mentions.members.first()!==undefined && !message.mentions.members.first().user.bot){    //Check if receiver is valid
             args.shift()

@@ -3,6 +3,7 @@ const objects = require('../database/objects.json')
 module.exports = {
 	name: 'item',
 	description: 'Get informations about an item.',
+    category: "Inventory",
 	execute(message, args) {
         const item = objects.find(o => o.name.toLowerCase()===args.join(' ').toLowerCase())
         console.log(item)

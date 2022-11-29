@@ -4,6 +4,7 @@ const Discord = require('discord.js')
 module.exports = {
 	name: 'beton',
 	description: 'To smash the bad guys',
+    category: "Interaction",
 	execute(message, args) {
         const member = message.member.displayName
         const target = message.mentions.members.first()
@@ -27,26 +28,26 @@ module.exports = {
                             .setDescription("**"+member+"** envoie un bloc de béton sur **"+target.displayName+"**")
                             .attachFiles(attachment)
                             .setImage('attachment://beton.png')
-                            .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }));
-                        message.channel.send(embed);
+                            .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })});
+                        message.channel.send({embeds: [embed]});
                     })
                 })
             }else{
-                const attachment = new Discord.MessageAttachment('Bots/R2D2/default.png', 'default.png');
-                        const embed = new Discord.MessageEmbed()
-                            .setDescription("**"+member+"** envoie un bloc de béton sur **"+target.displayName+"**")
-                            .attachFiles(attachment)
-                            .setImage('attachment://default.png')
-                            .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }));
-                        message.channel.send(embed);
+                const attachment = new Discord.MessageAttachment('../default.png ', 'default.png');
+                const embed = new Discord.MessageEmbed()
+                    .setDescription("**"+member+"** envoie un bloc de béton sur **"+target.displayName+"**")
+                    .attachFiles(attachment)
+                    .setImage('attachment://default.png')
+                    .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }));
+                message.channel.send({embeds: [embed]});
             }
         }else{
             const ErrorBetonEmbed = new Discord.MessageEmbed()
                         .setColor("#ef5350")
                         .setTitle("Commande Beton")
                         .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!beton <target>`\n\n**Example Usage**\n`!beton @R2-D2`\n")
-                        .setFooter("Catégorie de commande: Interaction");
-            message.channel.send(ErrorBetonEmbed)
+                        .setFooter({name: "Catégorie de commande: Interaction"});
+            message.channel.send({embeds: [ErrorBetonEmbed]})
         }
         message.delete()
 	}, 

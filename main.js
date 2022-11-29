@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const {Client,Intents,Collection} = require('discord.js');
 const mongooseConnection = require('./database/mongooseLOG')
-const { PREFIX, PRIVATETOKEN, TOKEN } = require('./config.json');
+const { PREFIX, PRIVATETOKEN, TOKEN, ALTERPREFIX } = require('./config.json');
 const {Inventory} = require('./database/mongoose');
 const Help = require ('./help');
 
@@ -44,12 +44,13 @@ client.on('ready',() => {
 
 // Handling messages
 client.on('messageCreate', message => {	
-	if(message.content.startsWith("r2"+PREFIX+"help")){
+	/*if(message.content.startsWith("r2"+PREFIX+"help")){
         Help.help(message,PREFIX)
-    }
-	if (!message.content.startsWith(PREFIX) || message.author.bot) return;
-
-	const args = message.content.slice(PREFIX.length).trim().split(/ +/);
+    }*/
+	if (!(message.content.startsWith(PREFIX) || message.content.startsWith(ALTERPREFIX)) || message.author.bot) return;
+	let prefixLength = PREFIX.length
+	if(message.content.startsWith(ALTERPREFIX)){prefixLength = ALTERPREFIX.length}
+	const args = message.content.slice(prefixLength).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
 	if (!client.commands.has(command)) return;

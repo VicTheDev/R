@@ -2,6 +2,7 @@ const {initSetPage} =require('../database/shoppages.js')
 module.exports = {
     name:'shop',
     description:'Welcome in the Shop! Buy or sell some cool stuff here!',
+    category: "Inventory",
     async execute(message, args) {
         let page = "home"
         if(args[0]!== undefined){

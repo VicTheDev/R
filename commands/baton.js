@@ -3,6 +3,7 @@ const wait = require('util').promisify(setTimeout);
 module.exports = {
     name:'baton',
     description:"Don't take the last stick !",
+    category: "Fun",
     async execute(message,args){
             const target = message.mentions.members.first()
             const member = message.member
@@ -13,14 +14,14 @@ module.exports = {
             if(target!== undefined && target!==member){
                 let list = [':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:']
                 const Embed = new Discord.MessageEmbed()
-                    .setAuthor('Jeu des bâtons')
+                    .setAuthor({name: 'Jeu des bâtons'})
                     .setDescription(`**${message.member.displayName}** VS **${target.displayName}**`)
                     .addFields(
                         {name:'Ne prenez pas le dernier bâton !',value:`**${list.join(' ')}** — ${list.length} bâtons restant`},
                         {name:'Tour',value:`C'est au tour de : **${players[tour].displayName}**`}
                     )
                     .setColor('ff7f00')
-                const botmessage = await message.channel.send(Embed)
+                const botmessage = await message.channel.send({embeds: [Embed]})
                 await botmessage.react('1️⃣')
                 await botmessage.react('2️⃣')
                 await botmessage.react('3️⃣')
@@ -43,7 +44,7 @@ module.exports = {
                         tour = tour +1
                         if(tour>1)tour = 0;
                         Embed.fields[1] = {name:'Tour',value:`C'est au tour de : **${players[tour].displayName}**`}
-                        botmessage.edit(Embed)
+                        botmessage.edit({embeds: [Embed]})
                         if(list.length<2){
                             if(list.length===1){
                                 tour = tour +1
@@ -52,7 +53,7 @@ module.exports = {
                             Embed.fields = []
                             Embed.setDescription(`**${players[tour].displayName}** a gagné !`)
                             await botmessage.reactions.removeAll()
-                            botmessage.edit(Embed)
+                            botmessage.edit({embeds: [Embed]})
                             collector.stop()
                         }   
                     }
@@ -66,7 +67,7 @@ module.exports = {
                         Embed.fields = []
                         Embed.setDescription(`**${players[chronotest.indexOf(Math.min(...chronotest))].displayName}** a gagné (Temps écoulé)!`)
                         await botmessage.reactions.removeAll()
-                        botmessage.edit(Embed)
+                        botmessage.edit({embeds: [Embed]})
                     }
                 })
 

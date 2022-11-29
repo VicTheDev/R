@@ -7,4 +7,10 @@ const InventorySchema = new mongoose.Schema({
 })
 const Inventory = mongoose.model('Inventory',InventorySchema)
 
-module.exports = {Inventory}
+const PatchSchema = new mongoose.Schema({
+    date: Date,
+    content: String
+})
+const Patch = new mongoose.model('Patch', PatchSchema)
+
+module.exports = {Inventory, Patch}

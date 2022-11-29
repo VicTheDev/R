@@ -4,10 +4,11 @@ const Discord = require('discord.js')
 module.exports = {
 	name: 'tartiflette',
 	description: 'Yum!',
+	category: "Fun",
 	execute(message, args) {
         const GifEmbed = new Discord.MessageEmbed()
             .setImage(tartiflette[maths.getRandomInt(0,tartiflette.length)]);
-        message.channel.send(GifEmbed)    
+        message.channel.send({embeds : [GifEmbed]})   
 		message.delete()     
 	}, 
 };

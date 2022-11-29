@@ -3,6 +3,7 @@ const {SuperAdmin} = require('../config.json')
 module.exports = {
     name:'create',
     description:'Used to create an inventory',
+    category: "Admin",
     async execute(message, args) {
         if(message.author.id==SuperAdmin){ //Check if the user has the permission to manage inventories
             if(message.mentions.users.first()!==undefined){

@@ -3,6 +3,7 @@ const objects = require('../database/objects.json');
 module.exports = {
 	name: 'items',
 	description: 'List all the existing items.',
+    category: "Inventory",
 	execute(message, args) {
         const Embed = new MessageEmbed()
             .setTitle('Liste des objets')

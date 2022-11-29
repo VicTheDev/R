@@ -5,6 +5,7 @@ const objects = require('../database/objects.json')
 module.exports = {
 	name: 'inventory',
 	description: 'Get Items in your inventory',
+    category: "Inventory",
 	execute(message, args) {
         let member
         if(message.mentions.members.first()!==undefined){

@@ -9,6 +9,7 @@ const objects = require('../database/objects.json')
 module.exports = {
 	name: 'snowman',
 	description: 'Work in team to build the better snowman',
+    category: "Fun",
 	async execute(message, args) {
         if(!cooldown.has('snowman')){
             cooldown.add('snowman')
@@ -17,7 +18,7 @@ module.exports = {
                 .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }))
                 .setColor('fffffe');
 
-            const botmessage = await message.channel.send(Embed)
+            const botmessage = await message.channel.send({embeds: [Embed]})
             message.delete()
             await botmessage.react('⛄')
 
@@ -36,7 +37,7 @@ module.exports = {
                     if(Embed.fields.length<25){
                         Embed.addField(user.tag,'a rejoint la construction',true)
                     }
-                    botmessage.edit(Embed)
+                    botmessage.edit({embeds: [Embed]})
                     size = size + 1
                 
 
@@ -56,7 +57,7 @@ module.exports = {
                                             if(Embed.fields.length<25){
                                                 Embed.addField(user.tag,`a utilisé le PowerUp "${objects[item].name}"`,true)
                                             }
-                                            botmessage.edit(Embed)
+                                            botmessage.edit({embeds: [Embed]})
                                             size = size + objects[item].effect
                                             var index = element.inventory.indexOf(item);
                                             if (index !== -1) {
@@ -113,13 +114,13 @@ module.exports = {
                                 await mongoose.Inventory.findOneAndUpdate(
                                     { user: user.id},
                                     { $push: { inventory: gift}})
-                                botmessage.channel.send(`**${user.tag}** a obtenu un objet : **${objects[gift].name}**`)
+                                botmessage.channel.send({content:`**${user.tag}** a obtenu un objet : **${objects[gift].name}**`})
                             }
                         }
         
                     });
                 }
-                botmessage.edit(Embed)
+                botmessage.edit({embeds: [Embed]})
                 botmessage.reactions.removeAll()
                 cooldown.delete('snowman')
             });
