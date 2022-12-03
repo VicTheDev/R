@@ -32,7 +32,7 @@ module.exports = {
 
                 let time = Date.now() 
 
-                const collector = botmessage.createReactionCollector(filter,{time:120_000})
+                const collector = botmessage.createReactionCollector({filter, time:120_000})
 
                 collector.on('collect', async (reaction,user) =>{
                     reaction.users.remove(user)
@@ -84,7 +84,7 @@ module.exports = {
                                 .setColor("#ef5350")
                                 .setTitle("Commande Baton")
                                 .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette commande.\n\n**Usage**\n`!baton <target>`\n\n**Example Usage**\n`!baton @R2-D2`\n")
-                                .setFooter("Catégorie de commande: Fun");
+                                .setFooter({text: "Catégorie de commande: Fun"});
                     message.channel.send(ErrorBetonEmbed)
                 }
             }

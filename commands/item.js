@@ -5,16 +5,15 @@ module.exports = {
 	description: 'Get informations about an item.',
     category: "Inventory",
 	execute(message, args) {
-        const item = objects.find(o => o.name.toLowerCase()===args.join(' ').toLowerCase())
-        console.log(item)
+        const item = objects.find(o => o.name.toLowerCase()==args.join(' ').toLowerCase())
         if(item!==undefined){
             const Embed = new MessageEmbed()
                 .setTitle(item.name)
                 .setDescription(item.description)
                 .setColor('ffd700')
                 .addFields(
-                    { name: 'Effet', value: item.effect.toString(), inline: true},
-                    { name: 'Prix', value: item.cost.toString(), inline: true},
+                    { name: 'Available for sale?', value: item.saleable ? 'Yes' : 'No', inline: true},
+                    { name: 'Card?', value: item.card ? 'Yes' : 'No', inline:true},
                     { name: 'Id', value: item.id.toString(), inline: true}
                 );
             message.channel.send({embeds : [Embed]})

@@ -11,11 +11,11 @@ module.exports = {
 	description: 'Work in team to build the better snowman',
     category: "Fun",
 	async execute(message, args) {
-        if(!cooldown.has('snowman')){
-            cooldown.add('snowman')
+        if(!cooldown.has(message.guildId)){
+            cooldown.add(message.guildId)
             let Embed = new Discord.MessageEmbed()
                 .setDescription('**Réunis le plus de personnes dans le temps imparti afin de bâtir le meilleur bonhomme de neige !**\n*Réagis avec :snowman: pour rejoindre la construction*')
-                .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }))
+                .setFooter({text:`Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
                 .setColor('fffffe');
 
             const botmessage = await message.channel.send({embeds: [Embed]})
@@ -23,13 +23,13 @@ module.exports = {
             await botmessage.react('⛄')
 
             const filter = (reaction, user) => {
-                return ['⛄','🔧','❄️'].includes(reaction.emoji.name) && reaction.message.id === botmessage.id;
+                return ['⛄','🔧','❄️'].includes(reaction.emoji.name) && reaction.message.id === botmessage.id && !user.bot;
             };
 
             let list = [[],[]]
             let powerup = []
             let size = 0
-            const collector = botmessage.createReactionCollector( filter,{time: 24_000 });
+            const collector = botmessage.createReactionCollector({filter, time: 24000 });
             collector.on('collect', (reaction, user) => {
                 if(reaction.emoji.name === '⛄' && !list[0].includes(user)){
                     list[0].push(user)
@@ -92,7 +92,7 @@ module.exports = {
                 }
                 if(size>=snowman.length-1){
                     size = snowman.length - 1
-                    Embed.setAuthor(`Bravo pour ce travail d'équipe conséquent !`)
+                    Embed.setAuthor({name:`Bravo pour ce travail d'équipe conséquent !`})
                 }
                 Embed.setImage(snowman[size])
                 if(maths.getPercentage(15)){
@@ -104,13 +104,13 @@ module.exports = {
                             if(doc === false){
                                 const doc = mongoose.Inventory.create({
                                     user: user.id, 
-                                    inventory: [maths.getRandomInt(0,objects.length)]
+                                    inventory: [maths.getRandomInt(0,1)]
                                 });
                                 doc.save;
                                 console.log('Inventory created')
                             }
                             if(doc === true){
-                                const gift = maths.getRandomInt(0,objects.length)
+                                const gift = maths.getRandomInt(0,1)
                                 await mongoose.Inventory.findOneAndUpdate(
                                     { user: user.id},
                                     { $push: { inventory: gift}})
@@ -122,7 +122,7 @@ module.exports = {
                 }
                 botmessage.edit({embeds: [Embed]})
                 botmessage.reactions.removeAll()
-                cooldown.delete('snowman')
+                cooldown.delete(message.guildId)
             });
         }else{
             const rep = await message.reply('Un bonhomme de neige est déjà en construction !')

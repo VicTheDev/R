@@ -1,8 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
-const objects = require('./objects.json');
+const objects = require('./objects.json').filter(x => x.saleable)
 const mongoose = require('./mongoose');
 const {removeItem} = require('../maths');
-const { Embed } = require('@discordjs/builders');
 
 function initSetPage(page, message, oldmessage){
     let Embed = new MessageEmbed()

@@ -1,0 +1,62 @@
+[
+    {
+        "name":"Barde",
+        "description":"*On lui souhaite d'apprendre à chanter...*",
+        "use":"Régénère la vitalité",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611939909713/barde.png",
+        "mana":30,
+        "effect":20,
+        "id":3
+    },
+    {
+        "name":"Mage",
+        "description":"*On raconte qu'il tire ses pouvoirs d'une mystérieuse pierre magique...*",
+        "use":"Empêche l'adversaire d'attaquer pendant 3 tours",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611273007224/mage.png",
+        "mana":45,
+        "id":4
+    },
+    {
+        "name":"Démon",
+        "description":"*Note : Ne jamais passer un marché avec lui* ; Augmente les dégâts pendant 3 tours",
+        "use":"Augmente les dégâts pendant 3 tours",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972610568364133/Demon.jpg.png",
+        "effect":2,
+        "mana":40,
+        "id":5
+    },
+    {
+        "name":"Arachnide daedrique",
+        "description":"*Issue de la province de Hauteroche, elle piège ses ennemis dans des cocons pour les dévorer*",
+        "use":"L'adversaire ne peut plus utiliser de cartes pendant 3 tours",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611600166932/Arachnide_Daedrique.png",
+        "mana":35,
+        "id":6
+    },
+    {
+        "name":"Dragon",
+        "description":"*Il chérit son or plus que tout*",
+        "use":"Inflige des dégâts à l'adversaire",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972610958442596/Dragon.png",
+        "effect":40,
+        "mana":25,
+        "id":7
+    },
+    {
+        "name":"Cavalier du trépas",
+        "description":"*Mieux vaut ne jamais le croiser...*",
+        "use":"Renvoie une partie des dégâts reçus à l'adverdsaire pendant 4 tours",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972612296417320/cavalier_du_trepas.png",
+        "mana":50,
+        "id":8
+    },
+    {
+        "name":"Gardien des bois",
+        "description":"*Il aurait été changé en gardien dans des temps immémoriaux*",
+        "use":"Double la défense et réduit l'attaque",
+        "image":"https://cdn.discordapp.com/attachments/753330903203184660/1048283053535006730/Golem_des_bois.png",
+        "effect":2,
+        "mana":30,
+        "id":9
+    }
+]

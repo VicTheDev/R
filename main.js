@@ -5,7 +5,6 @@ const {Client,Intents,Collection} = require('discord.js');
 const mongooseConnection = require('./database/mongooseLOG')
 const { PREFIX, PRIVATETOKEN, TOKEN, ALTERPREFIX } = require('./config.json');
 const {Inventory} = require('./database/mongoose');
-const Help = require ('./help');
 
 
 // Set up client
@@ -13,6 +12,9 @@ const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 	intents: ['DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILDS'] });
 client.commands = new Collection();
 
+const ts = new Date()
+ts.setMilliseconds(Date.now())
+console.log(ts)
 
 // Set up commands handler
 const commandFiles = fs.readdirSync(path.resolve(__dirname, 'commands')).filter(file => file.endsWith('.js'));
@@ -44,9 +46,6 @@ client.on('ready',() => {
 
 // Handling messages
 client.on('messageCreate', message => {	
-	/*if(message.content.startsWith("r2"+PREFIX+"help")){
-        Help.help(message,PREFIX)
-    }*/
 	if (!(message.content.startsWith(PREFIX) || message.content.startsWith(ALTERPREFIX)) || message.author.bot) return;
 	let prefixLength = PREFIX.length
 	if(message.content.startsWith(ALTERPREFIX)){prefixLength = ALTERPREFIX.length}

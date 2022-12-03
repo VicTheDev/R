@@ -45,7 +45,7 @@ module.exports = {
             Embed  
                 .setTitle(":page_with_curl: Commands List")
                 .setColor("#4172bf")
-                .setFooter({name: 'Type !fact <command> to display the help for that specific command.\nExample: !fact snowball'});
+                .setFooter({text: 'Type `!fact <command>` to display the help for that specific command.\nExample: `!fact snowball`'});
         }
         Embed
             .setDescription(Description);
