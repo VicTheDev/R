@@ -11,7 +11,7 @@ module.exports = {
         let GifEmbed = new Discord.MessageEmbed()
                 .setDescription("**" + member + "** pleure")
                 .setImage(cry[maths.getRandomInt(0,cry.length)])
-                .setFooter({name: "Requested by " + member, iconURL: avatarmember});
+                .setFooter({text: "Requested by " + member, iconURL: avatarmember});
             message.channel.send({embeds : [GifEmbed]})
         message.delete()
     }

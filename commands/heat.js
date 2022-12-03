@@ -9,7 +9,7 @@ module.exports = {
         const GifEmbed = new Discord.MessageEmbed()
             .setDescription(`**${message.member.displayName}** se réchauffe près de la cheminée`)
             .setImage(heat[maths.getRandomInt(0,heat.length)])
-			.setFooter({name:`Requested by ${message.member.displayName} (${message.author.tag})`,iconURL: message.author.displayAvatarURL({ format: 'png' })});
+			.setFooter({text:`Requested by ${message.member.displayName} (${message.author.tag})`,iconURL: message.author.displayAvatarURL({ format: 'png' })});
         message.channel.send({embeds : [GifEmbed]})   
 		message.delete()     
 	}, 

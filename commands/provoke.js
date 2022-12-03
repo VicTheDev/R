@@ -15,7 +15,7 @@ module.exports = {
             const DuelEmbed = new Discord.MessageEmbed()
                 .setDescription('**'+member.displayName+'** provoque **'+target.displayName+'** en duel !\n'+args.join(' '))
                 .setImage(duel[maths.getRandomInt(0,duel.length)])
-                .setFooter({text: "Requested by " + member.displayName + ` (${member.user.tag})`,iconURL: message.member.user.avatarURL()});
+                .setFooter({text: "Requested by " + member.displayName + ` (${member.user.tag})`,iconURL: message.author.avatarURL()});
             message.channel.send({embeds: [DuelEmbed]})
 
         }else{

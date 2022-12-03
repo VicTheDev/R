@@ -26,27 +26,25 @@ module.exports = {
                         const attachment = new Discord.MessageAttachment('./beton.png', 'beton.png');
                         const embed = new Discord.MessageEmbed()
                             .setDescription("**"+member+"** envoie un bloc de béton sur **"+target.displayName+"**")
-                            .attachFiles(attachment)
                             .setImage('attachment://beton.png')
-                            .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })});
-                        message.channel.send({embeds: [embed]});
+                            .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })});
+                        message.channel.send({embeds: [embed], files: [attachment]});
                     })
                 })
             }else{
-                const attachment = new Discord.MessageAttachment('../default.png ', 'default.png');
+                const attachment = new Discord.MessageAttachment('./default.png', 'default.png');
                 const embed = new Discord.MessageEmbed()
                     .setDescription("**"+member+"** envoie un bloc de béton sur **"+target.displayName+"**")
-                    .attachFiles(attachment)
                     .setImage('attachment://default.png')
-                    .setFooter(`Requested by ${message.member.displayName} (${message.author.tag})`, message.author.displayAvatarURL({ format: 'png' }));
-                message.channel.send({embeds: [embed]});
+                    .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })});
+                message.channel.send({embeds: [embed], files: [attachment]});
             }
         }else{
             const ErrorBetonEmbed = new Discord.MessageEmbed()
                         .setColor("#ef5350")
                         .setTitle("Commande Beton")
                         .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!beton <target>`\n\n**Example Usage**\n`!beton @R2-D2`\n")
-                        .setFooter({name: "Catégorie de commande: Interaction"});
+                        .setFooter({text: "Catégorie de commande: Interaction"});
             message.channel.send({embeds: [ErrorBetonEmbed]})
         }
         message.delete()

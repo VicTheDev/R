@@ -22,7 +22,7 @@ module.exports = {
                 if(content.length > 0){
                     const GifEmbed = new Discord.MessageEmbed()
                         .setImage(motivation[maths.getRandomInt(0,motivation.length)])
-                        .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.member.avatarURL()})
+                        .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.avatarURL()})
                         .setDescription("**" + member + "** envoie de la motivation **"+content+"**");
                     message.channel.send({embeds: [GifEmbed]})
                 }else{

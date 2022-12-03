@@ -12,7 +12,7 @@ module.exports = {
                 let target = user1.displayName
                 let GifEmbed = new Discord.MessageEmbed()
                     .setImage(thx[maths.getRandomInt(0,thx.length)])
-                    .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.member.avatarURL()})
+                    .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.avatarURL()})
                     .setDescription("**" + member + "** remercie **"+target+"**");
                     message.channel.send({embeds : [GifEmbed]})
         }  else{
@@ -20,7 +20,7 @@ module.exports = {
                 .setColor("#ef5350")
                 .setTitle("Commande Merci")
                 .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!thx <target>`\n\n**Example Usage**\n`!thx @R2-D2`")
-                .setFooter({name: "Catégorie de commande: Interaction"});
+                .setFooter({text: "Catégorie de commande: Interaction"});
             message.channel.send({embeds : [ErrorApplaudEmbed]})
 
             }

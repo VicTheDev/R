@@ -17,7 +17,7 @@ module.exports = {
                 let target = user2.displayName
                 let GifEmbed = new Discord.MessageEmbed()
                     .setImage(banhammer[maths.getRandomInt(0,banhammer.length)])
-                    .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
+                    .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
                     .setDescription("**" + user + "** envoie le Ban Hammer sur **"+target+"**");
                     message.channel.send({embeds: [GifEmbed]})
 
@@ -25,7 +25,7 @@ module.exports = {
                 let target = user1.displayName
                 let GifEmbed = new Discord.MessageEmbed()
                     .setImage(banhammer[maths.getRandomInt(0,banhammer.length)])
-                    .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
+                    .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
                     .setDescription("**" + member + "** envoie le Ban Hammer sur **"+target+"**");
                     message.channel.send({embeds: [GifEmbed]})
             }
@@ -34,7 +34,7 @@ module.exports = {
                 .setColor("#ef5350")
                 .setTitle("Commande BanHammer")
                 .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!banhammer <target>`\n\n**Example Usage**\n`!banhammer @R2-D2`")
-                .setFooter({name: "Catégorie de commande: Interaction"});
+                .setFooter({text: "Catégorie de commande: Interaction"});
             message.channel.send({embeds: [ErrorApplaudEmbed]})
 
             }

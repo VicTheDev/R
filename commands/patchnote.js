@@ -10,13 +10,13 @@ module.exports = {
             const Embed = new MessageEmbed()
             .setTitle(`Patch Note : ${patch.date.toString()}`)
             .setDescription(patch.content)
-            .setFooter({name: `id: ${patch._id}`});
+            .setFooter({text: `id: ${patch._id}`});
         }else{
             let patch = mongoose.Patch.find().sort({_id:-1}).limit(1)
             const Embed = new MessageEmbed()
             .setTitle(`Patch Note : ${patch.date.toString()}`)
             .setDescription(patch.content)
-            .setFooter({name: `id: ${patch._id}`});
+            .setFooter({text: `id: ${patch._id}`});
         }*/
         const Embed = new MessageEmbed()
             .setTitle('Patchnote de Noël')

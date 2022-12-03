@@ -1,12 +1,16 @@
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, Message } = require('discord.js');
-const objects = require('./database/objects.json')
-const cards = require('./database/cards.json')
-const mongoose = require('./database/mongoose');
-const {removeItem, getRandomInt} = require('./maths');
-const {cardsEffects} = require('./database/cardsScripts')
-const wait = require('util').promisify(setTimeout);
+/// Dependencies ///
 
-function initFight(message, target, p1inventory, p2inventory){
+const { MessageEmbed, MessageActionRow, MessageButton} = require('discord.js'); //Discord components
+const objects = require('./database/objects.json'); //All existing items
+const cards = require('./database/cards.json'); //All the cards (more specifically than objects)
+const mongoose = require('./database/mongoose'); //Database for the inventories
+const {removeItem, getRandomInt} = require('./maths'); //Basic functions
+const {cardsEffects} = require('./database/cardsScripts'); //Scripts for the cards
+const wait = require('util').promisify(setTimeout); //Wait x ms
+///_____________________________________________________________///
+
+
+function initFight(message, target, p1inventory, p2inventory){ // Create players objects 
     let p1 = {
         "member":message.member,
         "vie":100,
@@ -29,11 +33,10 @@ function initFight(message, target, p1inventory, p2inventory){
     }
     let tour = p1
     let other = p2
-
     setMessage(message, p1, p2, tour, other, undefined)
 }
 
-function getInventory1(message, target){
+function getInventory1(message, target){ // get inventory of the 1rst player
     let user = message.member.user
     mongoose.Inventory.exists({user: user.id}, async function (err,doc){ 
         if(err){
@@ -59,7 +62,7 @@ function getInventory1(message, target){
     });
 }
 
-function getInventory2(message, target, i1){
+function getInventory2(message, target, i1){ // get inventory of the 2nd player
     let user = target.user
     mongoose.Inventory.exists({user: user.id}, async function (err,doc){ 
         if(err){
@@ -85,7 +88,7 @@ function getInventory2(message, target, i1){
     });
 }
 
-async function setMessage(message, p1, p2 ,tour,other, botmessage){
+async function setMessage(message, p1, p2 ,tour,other, botmessage){ // Send or update the bot's message with infos about players
     let Embed = await new MessageEmbed()
     .addFields(
         { name: p1.member.displayName ,value:`Vie : ${p1.vie}\nMana : ${p1.mana}\nDégâts : ${p1.atk}\nDéfense : ${p1.def}`,inline:true},
@@ -93,6 +96,7 @@ async function setMessage(message, p1, p2 ,tour,other, botmessage){
         { name: p2.member.displayName ,value:`Vie : ${p2.vie}\nMana : ${p2.mana}\nDégâts : ${p2.atk}\nDéfense : ${p2.def}`,inline:true},
         { name: `–––––––––––—————————————`, value: `C'est au tour de : **${tour.member.displayName}**`}
     )
+    .setColor('DARK_BLUE');
     let row = await new MessageActionRow()
             .addComponents(
                 new MessageButton()
@@ -111,20 +115,24 @@ async function setMessage(message, p1, p2 ,tour,other, botmessage){
                     .setLabel('Block')
                     .setStyle('SECONDARY')
                     .setEmoji('🛡️'),
+                new MessageButton()
+                    .setCustomId('giveup')
+                    .setLabel('Give Up')
+                    .setStyle('DANGER'),
             )
     if(botmessage == undefined){
         const botmessage = await message.channel.send({embeds:[Embed], components: [row]})
-        startCollector(message, p1, p2, tour, other, botmessage)
+        startCollector(message, p1, p2, tour, other, botmessage, 0)
     }else{
         await botmessage.edit({embeds:[Embed], components: [row]})
-        startCollector(message, p1, p2, tour, other, botmessage)
+        startCollector(message, p1, p2, tour, other, botmessage, 0)
     }
 }   
 
-function startCollector(message, p1, p2, tour, other, botmessage){
-    const filter = i => ['atk','skill','def'].includes(i.customId) && [tour.member, other.member].includes(i.member)
+function startCollector(message, p1, p2, tour, other, botmessage, initialTimer){ // Collect interactions from buttons
+    const filter = i => ['atk','skill','def', 'giveup'].includes(i.customId) && [tour.member, other.member].includes(i.member)
 
-    const collector = message.channel.createMessageComponentCollector({ filter, time: 60_000});
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 60_000 - initialTimer});
     let timer = Date.now()
     let fullfilled = false
     collector.on('collect', async i => {
@@ -160,6 +168,11 @@ function startCollector(message, p1, p2, tour, other, botmessage){
                         fullfilled = true;
                         collector.stop()
                         break;
+                    case 'giveup':
+                        fullfilled = true;
+                        win(other.member, tour.member, botmessage, true)
+                        collector.stop()
+                        break;
                 }
             }else{
                 i.reply({content: "Ce n'est pas votre tour de jouer !", ephemeral:true})
@@ -182,8 +195,12 @@ function startCollector(message, p1, p2, tour, other, botmessage){
     });
 }
 
-function setSkillsComponents(tour){
+function setSkillsComponents(tour){ // Create a button for each player's skill (card)
         let skills = []
+        const cancelButton = new MessageButton()
+            .setCustomId('back')
+            .setLabel('Cancel')
+            .setStyle('DANGER');
         for (let a = 0; a < Math.ceil(tour.skills.length/5); a++){
             skills.push(new MessageActionRow())
             const max = (tour.skills.length - 5*a) > 5 ? 5 : tour.skills.length
@@ -196,11 +213,18 @@ function setSkillsComponents(tour){
                         .setDisabled(tour.skills[i + 5*a].mana>tour.mana)
                 )
             }
+            if(a+1>=Math.ceil(tour.skills.length/5) && max < 5){
+                skills[a].addComponents(cancelButton)
+            }
+        }
+        if(!skills[skills.length-1].components.includes(cancelButton)){
+            skills.push(new MessageActionRow())
+            skills[skills.length-1].addComponents(cancelButton)
         }
         return(skills)
 }
 
-function nextTour(message, p1, p2 , tour, other, botmessage){
+function nextTour(message, p1, p2 , tour, other, botmessage){ // Pass to next round
     p1=[tour,other].find(x=>x.member == p1.member)
     p2=[tour,other].find(x=>x.member==p2.member)
     const oldtour = tour
@@ -210,29 +234,38 @@ function nextTour(message, p1, p2 , tour, other, botmessage){
     if(p1.vie>0 && p2.vie>0){
         setMessage(message,p1,p2,tour,other,botmessage)
     }else if(p1.vie<=0){
-        win(p2.member, p1.member, botmessage)
+        win(p2.member, p1.member, botmessage, false)
     }else if(p2.vie<=0){
-        win(p1.member, p2.member, botmessage)
+        win(p1.member, p2.member, botmessage, false)
     }
 }
 
-function cardCollector(message, p1, p2 ,tour, other, botmessage, replymessage, timer){
+function cardCollector(message, p1, p2 ,tour, other, botmessage, replymessage, timer){ // Collect interactions from skills buttons 
     const skillsId = []
     tour.skills.forEach(x => skillsId.push(x.id))
-    const filter = i => skillsId.includes(Number(i.customId)) && [tour.member, other.member].includes(i.member)
+    const filter = i => (skillsId.includes(Number(i.customId)) || i.customId == 'back') && [tour.member, other.member].includes(i.member)
     const collector = replymessage.channel.createMessageComponentCollector({ filter, time: 60_000-timer});
     
     let fullfilled = false
+    let startTime = Date.now()
     collector.on('collect', i => {
         if(i.message.id === replymessage.id){
             if(i.member == tour.member){
-                fullfilled = true
-                const updates = cardsEffects(tour, other, Number(i.customId))
-                tour = updates[0];
-                other = updates[1];
-                nextTour(message, p1, p2, tour, other, botmessage)
-                //i.update(i)
-                collector.stop()
+                if(i.customId != 'back'){
+                    fullfilled = true
+                    const updates = cardsEffects(tour, other, Number(i.customId))
+                    tour = updates[0];
+                    other = updates[1];
+                    tour.skills = removeItem(tour.skills, cards.find(x=> x.id ==i.customId))
+                    nextTour(message, p1, p2, tour, other, botmessage)
+                    //i.update(i)
+                    collector.stop()
+                }else{
+                    startTime = (Date.now() - startTime) + timer
+                    fullfilled = true
+                    startCollector(message, p1, p2, tour, other, botmessage, startTime)
+                    collector.stop()
+                }
             }else{
                 i.reply({content: "Ce n'est pas votre tour de jouer !", ephemeral:true})
             }
@@ -250,9 +283,10 @@ function cardCollector(message, p1, p2 ,tour, other, botmessage, replymessage, t
     });
 }
 
-function win(winner,looser, botmessage){
+function win(winner,looser, botmessage, forfait){ // Update the bot message to announce the winner (and the looser)
+    const forfaitSTR = forfait ? ' par forfait ' : ' '
     const Embed = new MessageEmbed()
-        .setDescription(`**${winner.displayName}** a battu **${looser.displayName}** !`)
+        .setDescription(`**${winner.displayName}** a battu **${looser.displayName}**${forfaitSTR}!`)
         .setThumbnail(winner.avatarURL);
     botmessage.edit({embeds:[Embed], components:[]})
 }

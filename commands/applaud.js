@@ -14,7 +14,7 @@ module.exports = {
             const target = user1.displayName
             const GifEmbed = new Discord.MessageEmbed()
                 .setImage(applaud[maths.getRandomInt(0,applaud.length)])
-                .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
+                .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
                 .setDescription("**" + member + "** applaudit **"+target+"**");
             message.channel.send({embeds: [GifEmbed]})
             
@@ -23,7 +23,7 @@ module.exports = {
                 if(content.length > 0){
                     const GifEmbed = new Discord.MessageEmbed()
                         .setImage(applaud[maths.getRandomInt(0,applaud.length)])
-                        .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
+                        .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
                         .setDescription("**" + member + "** applaudit **"+content+"**");
                     message.channel.send({embeds: [GifEmbed]})
                 }else{
@@ -31,7 +31,7 @@ module.exports = {
                         .setColor("#ef5350")
                         .setTitle("Commande Applaudir")
                         .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!applaud <target>`\n`!applaud <message>`\n\n**Example Usage**\n`!applaud @R2-D2`\n`!applaud les gens qui laissent la dernière part de pizza`")
-                        .setFooter({name: "Catégorie de commande: Interaction"});
+                        .setFooter({text: "Catégorie de commande: Interaction"});
                     message.channel.send({embeds: [GifEmbed]})
                 }
             }   

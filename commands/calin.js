@@ -12,7 +12,7 @@ module.exports = {
                         let GifEmbed = new Discord.MessageEmbed()
                                 .setDescription("**" + member.displayName + "** fait un calin à **tout le monde**")
                                 .setImage(calin[maths.getRandomInt(0,calin.length)])
-                                .setFooter({name: "Requested by " + member.displayName + ` (${member.user.tag})`, iconURL: avatarmember});
+                                .setFooter({text: "Requested by " + member.displayName + ` (${member.user.tag})`, iconURL: avatarmember});
                         message.channel.send({embeds : [GifEmbed]})
                         message.delete()
                 }

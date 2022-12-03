@@ -14,7 +14,7 @@ module.exports = {
             .setColor("#4172bf")
             .setFields([
                 {name:'Original commands:', value: `${commandFiles.length}`, inline: true},
-                {name: 'Lines of Code:', value:'2141', inline: true}
+                {name: 'Lines of Code:', value:'2525', inline: true}
             ]);
         message.channel.send({embeds: [InfoEmbed]})
         message.delete()

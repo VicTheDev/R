@@ -27,7 +27,7 @@ module.exports = {
                                 .setStyle('DANGER')
                         );
 
-                    const acceptmessage = await message.channel.send({content:`${member.user} challenged ${target.user} to a duel !`, components: [row]})
+                    const acceptmessage = await message.channel.send({content:`${member.user} challenged ${target.user} to a duel!`, components: [row]})
                     const filter = i => i.message.id == acceptmessage.id && ['ok','no'].includes(i.customId) && i.member == target;
                     const collector = acceptmessage.channel.createMessageComponentCollector({filter, time: 20_000});
                     
@@ -65,7 +65,7 @@ module.exports = {
                         }
                     })
                 }else{
-                    const reply = await message.reply(`${target.displayName} alrady has a duel going on!`)
+                    const reply = await message.reply(`${target.displayName} already has a duel going on!`)
                     message.delete()
                     setTimeout(() => {
                         reply.delete()

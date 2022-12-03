@@ -18,7 +18,7 @@ module.exports = {
             const SnowEmbed = new Discord.MessageEmbed()
                 .setDescription('**'+member.displayName+`** lance une boule de neige sur ${ligne}**`+target.displayName+'** ')
                 .setImage(snow[maths.getRandomInt(0,snow.length)])
-                .setFooter({name: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.member.avatarURL()});
+                .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.avatarURL()});
             message.channel.send({embeds:[SnowEmbed]})
             message.delete()
 
@@ -27,7 +27,7 @@ module.exports = {
                 .setColor("#ef5350")
                 .setTitle("Commande Boule de Neige")
                 .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!snowball <target>`\n`!snowball <target>`\n\n**Example Usage**\n`!snowball @R2-D2`\n`!snowball @R2D2`")
-                .setFooter({name: "Catégorie de commande: Interaction"});
+                .setFooter({text: "Catégorie de commande: Interaction"});
             message.channel.send({embeds:[ErrorApplaudEmbed]})
             message.delete()
         }
