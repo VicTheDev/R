@@ -9,27 +9,51 @@ const {cardsEffects} = require('./database/cardsScripts'); //Scripts for the car
 const wait = require('util').promisify(setTimeout); //Wait x ms
 ///_____________________________________________________________///
 
+let count = 0
 
 function initFight(message, target, p1inventory, p2inventory){ // Create players objects 
+    let p1cardsAll = cards.filter(x => p1inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id))
+    let p1cardsunit = []
+    while (p1cardsAll.length>0){
+        p1cardsunit.push(p1cardsAll[0])
+        p1cardsAll = removeItem(p1cardsAll,p1cardsAll[0])
+    }
     let p1 = {
-        "member":message.member,
-        "vie":100,
-        "viemax":100,
-        "mana":100,
-        "manamax":100,
-        "atk":10,
-        "def":0,
-        "skills": cards.filter(x => p1inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id))
+        member:message.member,
+        vie:100,
+        viemax:100,
+        mana:100,
+        manamax:100,
+        atk:10,
+        def:0,
+        skills: p1cardsunit,
+        buffs: [],
+        debuffs: [],
+        canatk:true,
+        candef:true,
+        canusecard:true
+    }
+
+    let p2cardsAll = cards.filter(x => p2inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id))
+    let p2cardsunit = []
+    while (p2cardsAll.length>0){
+        p2cardsunit.push(p2cardsAll[0])
+        p2cardsAll = removeItem(p2cardsAll,p2cardsAll[0])
     }
     let p2 = {
-        "member":target,
-        "vie":100,
-        "viemax":100,
-        "mana":100,
-        "manamax":100,
-        "atk":10,
-        "def":0,
-        "skills": cards.filter(x=> p2inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id))
+        member:target,
+        vie:100,
+        viemax:100,
+        mana:100,
+        manamax:100,
+        atk:10,
+        def:0,
+        skills: p2cardsunit,
+        buffs: [],
+        debuffs: [],
+        canatk:true,
+        candef:true,
+        canusecard:true
     }
     let tour = p1
     let other = p2
@@ -88,53 +112,68 @@ function getInventory2(message, target, i1){ // get inventory of the 2nd player
     });
 }
 
-async function setMessage(message, p1, p2 ,tour,other, botmessage){ // Send or update the bot's message with infos about players
-    let Embed = await new MessageEmbed()
-    .addFields(
+function setMessage(message, p1, p2 ,tour,other, botmessage){ // Send or update the bot's message with infos about players
+    count ++
+    console.log(tour.member.displayName)
+    let Embed = new MessageEmbed()
+        .addFields(
         { name: p1.member.displayName ,value:`Vie : ${p1.vie}\nMana : ${p1.mana}\nDégâts : ${p1.atk}\nDéfense : ${p1.def}`,inline:true},
         { name:"  Contre  ",value:"_\n_\n_\n\_",inline:true},
-        { name: p2.member.displayName ,value:`Vie : ${p2.vie}\nMana : ${p2.mana}\nDégâts : ${p2.atk}\nDéfense : ${p2.def}`,inline:true},
-        { name: `–––––––––––—————————————`, value: `C'est au tour de : **${tour.member.displayName}**`}
-    )
-    .setColor('DARK_BLUE');
-    let row = await new MessageActionRow()
+        { name: p2.member.displayName ,value:`Vie : ${p2.vie}\nMana : ${p2.mana}\nDégâts : ${p2.atk}\nDéfense : ${p2.def}`,inline:true}
+        )
+        .setColor('DARK_BLUE');
+    console.log(tour.member.displayName)
+    let row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('atk')
                     .setLabel('Attack')
                     .setStyle('SECONDARY')
-                    .setEmoji('⚔️'),
+                    .setEmoji('⚔️')
+                    .setDisabled(!tour.canatk),
                 new MessageButton()
                     .setCustomId('skill')
                     .setLabel('Use Card')
                     .setStyle('SECONDARY')
                     .setEmoji('🃏')
-                    .setDisabled(!Boolean(tour.skills.length)),
+                    .setDisabled(!(Boolean(tour.skills.length) && tour.canusecard)),
                 new MessageButton()
                     .setCustomId('def')
                     .setLabel('Block')
                     .setStyle('SECONDARY')
-                    .setEmoji('🛡️'),
+                    .setEmoji('🛡️')
+                    .setDisabled(!tour.candef),
                 new MessageButton()
                     .setCustomId('giveup')
                     .setLabel('Give Up')
                     .setStyle('DANGER'),
             )
     if(botmessage == undefined){
-        const botmessage = await message.channel.send({embeds:[Embed], components: [row]})
-        startCollector(message, p1, p2, tour, other, botmessage, 0)
+    message.channel.send({content: `C'est au tour de : **${tour.member.displayName}**`, embeds:[Embed], components: [row]})
+        .then(ms => {
+            startCollector(message, p1, p2, tour, other, ms, 0, Embed, row)
+            return;
+        })
     }else{
-        await botmessage.edit({embeds:[Embed], components: [row]})
-        startCollector(message, p1, p2, tour, other, botmessage, 0)
+        botmessage.edit({content: `C'est au tour de : **${tour.member.displayName}**`, embeds:[Embed], components: [row]})
+            .then(ms=> {
+                startCollector(message, p1, p2, tour, other, botmessage, 0, Embed, row)
+                return;
+            })
     }
 }   
 
-function startCollector(message, p1, p2, tour, other, botmessage, initialTimer){ // Collect interactions from buttons
+
+
+function startCollector(message, p1, p2, tour, other, botmessage, initialTimer, Embed, row){ // Collect interactions from buttons
     const filter = i => ['atk','skill','def', 'giveup'].includes(i.customId) && [tour.member, other.member].includes(i.member)
 
     const collector = message.channel.createMessageComponentCollector({ filter, time: 60_000 - initialTimer});
     let timer = Date.now()
     let fullfilled = false
+
+    botmessage.edit({content: `C'est au tour de : **${tour.member.displayName}**`, embeds:[Embed], components: [row]})
+    console.log('collector started')
     collector.on('collect', async i => {
         if(i.message.id === botmessage.id){
             if(i.member == tour.member){
@@ -155,7 +194,7 @@ function startCollector(message, p1, p2, tour, other, botmessage, initialTimer){
                         for(a of tour.skills){
                             skillsEmbed.addFields({name: `${a.name} (${a.mana.toString()})`, value: a.use, inline:true})
                         }
-                        const skills = await setSkillsComponents(tour);
+                        const skills = setSkillsComponents(tour);
                         const replymessage = await i.reply({embeds: [skillsEmbed],components: skills, fetchReply: true, ephemeral: false})
                         timer = Date.now() - timer
                         cardCollector(message, p1, p2, tour, other, botmessage, replymessage, timer)
@@ -203,7 +242,7 @@ function setSkillsComponents(tour){ // Create a button for each player's skill (
             .setStyle('DANGER');
         for (let a = 0; a < Math.ceil(tour.skills.length/5); a++){
             skills.push(new MessageActionRow())
-            const max = (tour.skills.length - 5*a) > 5 ? 5 : tour.skills.length
+            const max = (tour.skills.length - 5*a) > 5 ? 5 : tour.skills.length-5*a
             for(let i = 0; i < max; i++){
                 skills[a].addComponents(
                     new MessageButton()
@@ -231,6 +270,7 @@ function nextTour(message, p1, p2 , tour, other, botmessage){ // Pass to next ro
     tour = other
     other = oldtour
     tour.mana += 10
+    console.log(count+1)
     if(p1.vie>0 && p2.vie>0){
         setMessage(message,p1,p2,tour,other,botmessage)
     }else if(p1.vie<=0){
@@ -256,6 +296,7 @@ function cardCollector(message, p1, p2 ,tour, other, botmessage, replymessage, t
                     const updates = cardsEffects(tour, other, Number(i.customId))
                     tour = updates[0];
                     other = updates[1];
+                    tour.mana -= cards.find(x=>x.id==i.customId).mana
                     tour.skills = removeItem(tour.skills, cards.find(x=> x.id ==i.customId))
                     nextTour(message, p1, p2, tour, other, botmessage)
                     //i.update(i)
@@ -289,6 +330,7 @@ function win(winner,looser, botmessage, forfait){ // Update the bot message to a
         .setDescription(`**${winner.displayName}** a battu **${looser.displayName}**${forfaitSTR}!`)
         .setThumbnail(winner.avatarURL);
     botmessage.edit({embeds:[Embed], components:[]})
+    fgt.removefromCD([winner.user.id,looser.user.id])
 }
 
 

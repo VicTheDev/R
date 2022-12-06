@@ -25,26 +25,27 @@ function Barde(tour, other){
     }else{
         tour.vie = tour.viemax
     }
-    tour.mana -= cards.find(x=>x.id==3).mana
+    //tour.mana -= cards.find(x=>x.id==3).mana
     return[tour, other]
 }
 
 function Mage(tour, other){
-   /* const multiplier = cards.find(x=>x.id==4).effect;
-    tour.atk = multiplier*tour.atk;
-    return[tour, other];*/
+   other.canatk = false;
+   return [tour,other]
 }
 
 function Demon(tour, other){
     const multiplier = cards.find(x=>x.id==5).effect;
     tour.atk = multiplier*tour.atk;
-    tour.mana -= cards.find(x=>x.id==5).mana
+    //tour.mana -= cards.find(x=>x.id==5).mana
     return[tour, other];
 }
 
 function Arach(tour, other){
-    
-}
+    other.canusecard = false;
+    other.debuffs.push([3, canusecard, true])
+    return[tour, other];
+} 
 
 function Dragon(tour, other){
     const damages = cards.find(x=>x.id==7).effect;
@@ -53,19 +54,19 @@ function Dragon(tour, other){
     }else{
         other.vie -= damages
     }
-    tour.mana -= cards.find(x=>x.id==7).mana
+    //tour.mana -= cards.find(x=>x.id==7).mana
     return[tour, other];
 }
 
 function Cavalier(tour, other){
-    
+    tour
 }
 
 function Gardien(tour, other){
     const multiplier = cards.find(x=>x.id==9).effect;
     tour.atk = tour.atk/multiplier;
     tour.def = tour.def*multiplier;
-    tour.mana -= cards.find(x=>x.id==9).mana
+    //tour.mana -= cards.find(x=>x.id==9).mana
     return[tour, other]
 }
 

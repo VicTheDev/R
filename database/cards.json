@@ -15,7 +15,7 @@
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611273007224/mage.png",
         "mana":70,
         "id":4
-    },
+    }, 
     {
         "name":"Démon",
         "description":"*Note : Ne jamais passer un marché avec lui* ; Augmente les dégâts pendant 3 tours",

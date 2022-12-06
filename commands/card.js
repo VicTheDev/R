@@ -3,7 +3,7 @@ const cards = require('../database/cards.json')
 module.exports = {
     name:"card",
     description:"Display Card",
-    category:"Fun",
+    category:"Inventory",
     execute(message, args){
         let card = cards.find(x => x.name.toLowerCase()==args.join(' ').toLowerCase())
         if(card == undefined){

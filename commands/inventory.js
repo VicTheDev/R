@@ -18,7 +18,7 @@ module.exports = {
                     console.log(err)
                 }else{
                     if(doc === false){
-                        message.reply("Vous n'avez pas d'inventaire (Récupérez un objet ou rendez vous dans le magasin pour pouvoir l'afficher)")
+                        message.reply("Vous n'avez pas d'inventaire (Récupérez un objet ou rendez-vous dans le magasin pour pouvoir l'afficher)")
                     }
                     if(doc === true){
                         const element = await mongoose.Inventory.findOne({ user: member.user.id} );
@@ -42,3 +42,4 @@ module.exports = {
             });
 	}, 
 };
+ 

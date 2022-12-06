@@ -4,7 +4,6 @@ const path = require('path');
 const {Client,Intents,Collection} = require('discord.js');
 const mongooseConnection = require('./database/mongooseLOG')
 const { PREFIX, PRIVATETOKEN, TOKEN, ALTERPREFIX } = require('./config.json');
-const {Inventory} = require('./database/mongoose');
 
 
 // Set up client
@@ -16,7 +15,7 @@ const ts = new Date()
 ts.setMilliseconds(Date.now())
 console.log(ts)
 
-// Set up commands handler
+// Set up commands handler 
 const commandFiles = fs.readdirSync(path.resolve(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);

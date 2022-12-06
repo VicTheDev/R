@@ -45,7 +45,7 @@ module.exports = {
                                 collector.stop()
                                 break;
                             case 'no':
-                                await acceptmessage.edit({content: `${target.member.displayName} declined the duel.` , components: []})
+                                await acceptmessage.edit({content: `${target.displayName} declined the duel.` , components: []})
                                 cooldown.delete(member.user.id)
                                 answered = true
                                 setTimeout(() => {
@@ -57,7 +57,7 @@ module.exports = {
         
                     collector.on('end', async collected => {
                         if(!answered){
-                            await acceptmessage.edit({content: `${target.member.displayName} declined the duel.` , components: []})
+                            await acceptmessage.edit({content: `${target.displayName} declined the duel.` , components: []})
                             cooldown.delete(member.user.id)
                                 setTimeout(() => {
                                     acceptmessage.delete()

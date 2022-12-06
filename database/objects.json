@@ -73,5 +73,12 @@
         "saleable":false,
         "card":true,
         "id":9
+    },{
+        "name":"Booster de cartes",
+        "description":"Ouvrez le pour gagner une carte aléatoire.",
+        "saleable":true,
+        "card":false,
+        "id":10,
+        "cost":30
     }
 ]

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, Message } = require('discord.js');
 const objects = require('./objects.json').filter(x => x.saleable)
 const mongoose = require('./mongoose');
 const {removeItem} = require('../maths');
@@ -6,7 +6,8 @@ const {removeItem} = require('../maths');
 function initSetPage(page, message, oldmessage){
     let Embed = new MessageEmbed()
             .setColor('ffd700')
-            .setImage('https://cdn.dribbble.com/users/1454037/screenshots/5632782/store-final---animated-dribbbler-bottomt.gif')
+            //.setImage('https://cdn.dribbble.com/users/1454037/screenshots/5632782/store-final---animated-dribbbler-bottomt.gif') //normal
+            .setImage('https://i.pinimg.com/originals/e4/e9/b5/e4e9b5a67459c5a9b7690e6bd59b818e.gif') //snow
             .setFooter({text:`Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })});   
     getInventory(Embed, page, message, oldmessage, SetPage)
 }
@@ -43,19 +44,17 @@ async function SetPage(Embed, page, message, element, oldmessage){
                 title:'Magasin',
                 description:'Bienvenue dans le magasin !',
                 fields:[],
-                row: new MessageActionRow()
+                row: [new MessageActionRow()
                     .addComponents(
-                        new MessageButton()
-                            .setCustomId('sell')
-                            .setLabel('Vendre')
-                            .setStyle('DANGER')
-                            .setEmoji('🛒'),
                         new MessageButton()
                             .setCustomId('buy')
                             .setLabel('Acheter')
-                            .setStyle('SUCCESS')
-                            .setEmoji('💰'),
-                    )
+                            .setStyle('SUCCESS'),
+                        new MessageButton()
+                            .setCustomId('sell')
+                            .setLabel('Vendre')
+                            .setStyle('PRIMARY')
+                    )]
         
             };
             break;
@@ -66,13 +65,13 @@ async function SetPage(Embed, page, message, element, oldmessage){
                 title:'Achats',
                 description:`Dépensez donc quelques pièces !\nVotre argent : ${element.money} :coin:`,
                 fields: setfields('buy',element),
-                row: new MessageActionRow()
+                row: [new MessageActionRow()
                     .addComponents( 
                         new MessageSelectMenu()
                             .setCustomId('selectB')
                             .setPlaceholder('Aucun item choisi')
                             .addOptions(setOptions('buy',element))
-                    )
+                    )]
                 
             };
             break;
@@ -82,15 +81,25 @@ async function SetPage(Embed, page, message, element, oldmessage){
                 title:'Vente',
                 description:`Voyons voir ce que vous avez... \nVotre argent : ${element.money} :coin:`,
                 fields: setfields('sell',element),
-                row: new MessageActionRow()
+                row: [new MessageActionRow()
                 .addComponents( 
                     new MessageSelectMenu()
                         .setCustomId('selectS')
                         .setPlaceholder('Aucun item choisi')
                         .addOptions(setOptions('sell',element))
-                )
+                )]
             };
             break;
+    }
+
+    if(pageobj.name=='home'){
+        pageobj.row[0]
+            .addComponents(
+                new MessageButton()
+                    .setCustomId('close')
+                    .setLabel('Fermer')
+                    .setStyle('DANGER')
+            );
     }
 
     Embed
@@ -98,11 +107,11 @@ async function SetPage(Embed, page, message, element, oldmessage){
         .setTitle(pageobj.title);
     Embed.fields=pageobj.fields
     if(oldmessage === undefined){
-        var botmessage = await message.channel.send({components : [pageobj.row], embeds: [Embed]})
+        var botmessage = await message.channel.send({components : pageobj.row, embeds: [Embed]})
     }else{
-        var botmessage = await oldmessage.edit({ components : [pageobj.row], embeds: [Embed]})
+        var botmessage = await oldmessage.edit({ components : pageobj.row, embeds: [Embed]})
     }
-    responding(message,botmessage,element)
+    responding(message,botmessage,element, Embed)
 
 }
 
@@ -120,8 +129,9 @@ function setfields(page,element){
             break;
         case 'sell':
             let items = []
-            let inventaire = element.inventory.toObject()
-            inventaire.sort((a,b) => a-b)
+            let inventaire = element.inventory.toObject().filter(x => objects.find(a => a.id==x) !== undefined)  
+                                                        // this filter allows to keep only the values that are in the objects array (which contains only sellable items)     
+            inventaire.sort((a,b) => a-b) 
             while (inventaire.length>0){
                 items.push([inventaire[0],inventaire.filter(x => x==inventaire[0]).length])
                 inventaire = removeItem(inventaire,inventaire[0])
@@ -153,7 +163,7 @@ function setOptions(page,element){
             break;
         case 'sell':
             let items = []
-            let inventaire = element.inventory.toObject()
+            let inventaire = element.inventory.toObject().filter(x => objects.find(a => a.id==x) !== undefined)   
             inventaire.sort((a,b) => a-b)
             while (inventaire.length>0){
                 items.push([inventaire[0],inventaire.filter(x => x==inventaire[0]).length])
@@ -177,24 +187,28 @@ function setOptions(page,element){
     return(options)
 }
 
-function responding(message, botmessage, element){
+function responding(message, botmessage, element, Embed){
     const filter = i => i.user.id === message.author.id;
     const collector = botmessage.createMessageComponentCollector({ filter, max: 1, maxComponents: 1, time: 30_000 });
 
+    let close = false
     collector.on('collect', async i => {
         switch (i.customId) {
             case 'sell':
                 await i.update(i)
-                initSetPage('sell', message, botmessage)
+                //initSetPage('sell', message, botmessage)
+                SetPage(Embed, 'sell', message, element, botmessage)
                 break;
             case 'buy':
                 await i.update(i)
-                initSetPage('buy', message, botmessage)
+                //initSetPage('buy', message, botmessage)
+                SetPage(Embed, 'buy', message, element, botmessage)
                 break;
             case 'selectS':
                 if (i.values[0]==='backH'){
                     await i.update(i)
-                    initSetPage('home', message, botmessage)
+                    //initSetPage('home', message, botmessage)
+                    SetPage(Embed, 'home', message, element, botmessage)
                 }else{
                     const itemId = parseInt(i.values[0])
                     const index = element.inventory.indexOf(itemId);
@@ -212,7 +226,8 @@ function responding(message, botmessage, element){
             case 'selectB':
                 if(i.values[0] === 'backH'){
                     await i.update(i)
-                    initSetPage('home', message, botmessage)
+                    //initSetPage('home', message, botmessage)
+                    SetPage(Embed, 'home', message, element, botmessage)
                 }else{
                     const itemId = parseInt(i.values[0])
                     const item = objects.find(o=>o.id===itemId)
@@ -225,15 +240,21 @@ function responding(message, botmessage, element){
                         initSetPage('buy', message, botmessage)
                     }else{
                         await i.reply({content: `:warning: Vous n'avez pas l'argent nécessaire ! (Il vous manque ${item.cost-element.money} :coin: )`,ephemeral:true})
-                        initSetPage('buy', message, botmessage)
+                        //initSetPage('buy', message, botmessage)
+                        SetPage(Embed, 'buy', message, element, botmessage)
                     }
                 }
+                break;
+            case 'close':
+                close = true
+                collector.stop()
+                break;
 
         }
     });
 
     collector.on('end', async collected => {
-        if(collected.size===0){
+        if(collected.size===0 || close){
             let Embed = new MessageEmbed()
                 .setColor('ffd700')
                 .setTitle('Magasin fermé !');
