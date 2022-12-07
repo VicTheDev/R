@@ -13,7 +13,7 @@
         "description":"*On raconte qu'il tire ses pouvoirs d'une mystérieuse pierre magique...*",
         "use":"Empêche l'adversaire d'attaquer pendant 3 tours",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611273007224/mage.png",
-        "mana":70,
+        "mana":55,
         "id":4
     }, 
     {
@@ -22,7 +22,7 @@
         "use":"Augmente les dégâts pendant 3 tours",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972610568364133/Demon.jpg.png",
         "effect":2,
-        "mana":60,
+        "mana":65,
         "id":5
     },
     {
@@ -36,7 +36,7 @@
     {
         "name":"Dragon",
         "description":"*Il chérit son or plus que tout*",
-        "use":"Inflige des dégâts à l'adversaire",
+        "use":"Inflige 20 dégâts à l'adversaire",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972610958442596/Dragon.png",
         "effect":20,
         "mana":40,
@@ -47,16 +47,26 @@
         "description":"*Mieux vaut ne jamais le croiser...*",
         "use":"Renvoie une partie des dégâts reçus à l'adverdsaire pendant 4 tours",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972612296417320/cavalier_du_trepas.png",
-        "mana":60,
+        "effect":4,
+        "mana":70,
         "id":8
     },
     {
         "name":"Gardien des bois",
         "description":"*Il aurait été changé en gardien dans des temps immémoriaux*",
-        "use":"Double la défense et réduit l'attaque",
+        "use":"Double la défense et réduit l'attaque définitivement",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1048283053535006730/Golem_des_bois.png",
         "effect":2,
         "mana":50,
         "id":9
+    },
+    {
+        "name":"Chevalier",
+        "description":"*Fidèle à son royaume, il fût trahi par son monarque et s'exila...*",
+        "use":"Diminue l'armure de l'adversaire pendant 3 tours",
+        "image":"https://i.pinimg.com/564x/54/7b/35/547b358abe3530a739ecb90287646ebe.jpg",
+        "effect":2,
+        "mana":60,
+        "id":11
     }
 ]

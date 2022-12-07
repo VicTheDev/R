@@ -3,8 +3,10 @@ const { hello } = require('../LocalStorage')
 const Discord = require('discord.js')
 module.exports = {
 	name: 'bonjour',
-	description: "Hello, it's me, i was wondering if after all these years you'd like to meet.",
+	description: "*Hello, it's me, i was wondering if after all these years you'd like to meet.*",
 	category: "Interaction",
+	use:"`!hello`",
+	example:"`!hello`",
 	execute(message, args) {
         const GifEmbed = new Discord.MessageEmbed()
             .setImage(hello[maths.getRandomInt(0,hello.length)]);

@@ -5,6 +5,8 @@ module.exports = {
 	name: 'banhammer',
 	description: "The Admin's power to summon throw the banhammer on the fools",
     category: "Interaction",
+    use:"`!banhammer <user>`",
+    example:"`!banhammer @R2-D2`",
 	execute(message, args) {
         let member = message.member.displayName
         let avatarmember = message.author.displayAvatarURL({ format: 'png' })

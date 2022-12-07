@@ -5,6 +5,8 @@ module.exports = {
     name: "goodnight",
     description: "Hope you'll sleep well",
     category: "Interaction",
+    use: "`!goodnight <user>`",
+    example: "`!goodnight @R2D2`",
     execute(message,args) {
         let member = message.member.displayName
         let avatarmember = message.author.displayAvatarURL({ format: 'png' })

@@ -5,8 +5,10 @@ const path = require('path');
 const commandFiles = fs.readdirSync(path.resolve(__dirname, '../commands')).filter(file => file.endsWith('.js'));
 module.exports = {
 	name: 'fact',
-	description: 'You can find incredibles things with this command! sisi jtejure',
+	description: 'You can find incredibles things with this command! sisi jtejure \n**Deprecated! Use `!help` instead**',
     category: "Other",
+    use: "`!fact <command>` - Affiche les informations de la commande spécifiée",
+    example:"`!fact otter`\n`!fact fact`",
 	execute(message, args) {
         const command = `${args[0]}.js`
         if(commandFiles.includes(command)){

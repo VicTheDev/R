@@ -3,6 +3,8 @@ module.exports = {
 	name: 'transfer',
 	description: 'Send money to another person.',
     category: "Inventory",
+    use:"`!transfer <amount> <user>` - Transfère le montant donné à l'utilisateur mentionné",
+    example:"`!transfer 15 @Vic`",
 	execute(message, args) {
         if(message.mentions.members.first()!==undefined && !message.mentions.members.first().user.bot){    //Check if receiver is valid
             args.shift()

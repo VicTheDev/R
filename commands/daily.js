@@ -5,6 +5,8 @@ module.exports = {
     name: "daily",
     description: "Claim your daily gift",
     category: "Inventory",
+    use: "`!daily`",
+    example: "`!daily`",
     async execute(message, args){
         let user = message.author
         Inventory.exists({ user: user.id }, async function (err, doc) {
@@ -53,7 +55,7 @@ async function getDaily(message, element, user){
 }
 async function getGift(message, user){
     const win = getRandomInt(5,15)
-    await Inventory.findOneAndUpdate({user:user.id}, { $inc: {money: win}})
+    await Inventory.findOneAndUpdate({user:user.id}, { $inc: {money: win}, $set: {daily:Date.now()}})
     const Embed = new MessageEmbed()
         .setColor('DARK_GOLD')
         .setDescription(`${user.username} a réclamé sa récompense journalière de \`${win}\` pièces !`)

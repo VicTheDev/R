@@ -4,8 +4,11 @@ module.exports = {
 	name: 'item',
 	description: 'Get informations about an item.',
     category: "Inventory",
+    use: '`!item <id>`\n`!item <itemName>`',
+    example: "`!item 3`\n`!item pelle`",
 	execute(message, args) {
-        const item = objects.find(o => o.name.toLowerCase()==args.join(' ').toLowerCase())
+        let item = objects.find(o => o.name.toLowerCase()==args.join(' ').toLowerCase())
+        if(item==undefined){item = objects.find(o=>o.id==args[0])}
         if(item!==undefined){
             const Embed = new MessageEmbed()
                 .setTitle(item.name)

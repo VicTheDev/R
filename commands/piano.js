@@ -5,6 +5,8 @@ module.exports = {
     name: 'piano',
     description: 'The most majestic of instruments for the worst of people.',
     category: "Interaction",
+    use:"`!piano <user>`",
+    example:"`!piano @R2-D2`",
     execute(message,args){
             let member = message.member.displayName
             let avatarmember = message.author.displayAvatarURL({ format: 'png' })

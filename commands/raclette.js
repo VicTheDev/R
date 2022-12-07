@@ -5,6 +5,8 @@ module.exports = {
 	name: 'raclette',
 	description: 'The best meal to share with your friends.',
 	category: "Fun",
+	use:"`!raclette`",
+	example:"`!raclette`",
 	execute(message, args) {
         const GifEmbed = new Discord.MessageEmbed()
             .setImage(raclette[maths.getRandomInt(0,raclette.length)]);

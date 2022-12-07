@@ -4,8 +4,10 @@ const Discord = require('discord.js')
 const objects = require('../database/objects.json')
 module.exports = {
 	name: 'inventory',
-	description: 'Get Items in your inventory',
+	description: 'Display inventory of given user',
     category: "Inventory",
+    use: "`!inventory` - Affiche votre inventaire\n`!inventory <user>` - Affiche l'inventaire de l'utilisateur mentionné",
+    example:"`!inventory`\n`!inventory @Vic`",
 	execute(message, args) {
         let member
         if(message.mentions.members.first()!==undefined){

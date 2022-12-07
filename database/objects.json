@@ -18,8 +18,8 @@
         "id":1
     },
     {
-        "name":"Winter 2022 Badge",
-        "description": "Badge received for participating in the Christmas 2022 event",
+        "name":"Badge Hiver 2022",
+        "description": "Badge reçu pour avoir participé à l'évènement Hiver 2022",
         "saleable":false,
         "card":false,
         "id":2
@@ -73,12 +73,20 @@
         "saleable":false,
         "card":true,
         "id":9
-    },{
+    },
+    {
         "name":"Booster de cartes",
         "description":"Ouvrez le pour gagner une carte aléatoire.",
         "saleable":true,
         "card":false,
         "id":10,
         "cost":30
+    },
+    {
+        "name":"Chevalier",
+        "description":"*Fidèle à son royaume, il fût trahi par son monarque et s'exila...* ; Diminue l'armure de l'adversaire pendant 3 tours",
+        "saleable":false,
+        "card":true,
+        "id":11
     }
 ]

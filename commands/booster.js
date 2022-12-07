@@ -8,6 +8,8 @@ module.exports = {
     name:'booster',
     description:'Open boosters in your inventory',
     category:'Inventory',
+    use: "`!booster` - Affiche votre nombre de booster et vous permet d'en ouvrir",
+    example: "`!booster`",
     async execute(message, args){
         let user = message.author
         const element = await mongoose.Inventory.findOne({ user: user.id});

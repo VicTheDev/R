@@ -5,6 +5,8 @@ module.exports = {
     name: "cry",
     description: "When you're reduced to tears.",
     category: "Interaction",
+    use: "`!cry`",
+    example: "`!cry`",
     execute(message, args) {
         let member = message.member.displayName
         let avatarmember = message.author.displayAvatarURL({ format: 'png' })

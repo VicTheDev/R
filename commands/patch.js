@@ -5,6 +5,8 @@ module.exports = {
     name: 'patch',
     description: 'Upload Patch Note (Admin only).',
     category: 'Admin',
+    use:"`!patch <content>` - Upload un nouveau patchnote avec le contenu <content>",
+    example:"`!patch Nouveau : commande !patchnote ajoutée`",
     async execute(message, args) {
         const ts = new Date()
         ts.setMilliseconds(Date.now())

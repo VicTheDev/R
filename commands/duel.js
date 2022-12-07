@@ -5,10 +5,12 @@ module.exports = {
     name:"duel",
     description:"Be the quicker to shoot at your oponent",
     category:"Fun",
+    use:"`!duel <user>` - Propose un duel à l'utilisateur mentionné",
+    example: "`!duel @Vic`",
     async execute(message,args){
         const member = message.member;
         const target = message.mentions.members.first()
-        if(target != undefined){
+        if(target != undefined && target != member){
             if(!cooldown.has(member.user.id)){
                 if(!cooldown.has(target.user.id)){
                     cooldown.add(member.user.id)
@@ -93,11 +95,11 @@ async function duel(message, member, target){
     const players = [member.user.id, target.user.id]
     const lose = [target.user.id, member.user.id]
     const pos = [
-        '_ _  :grinning:  :point_right:           Wait           :point_left:  :grinning: _ _',
-        '_ _  :grinning:  :point_right:           Shoot          :point_left:  :grinning: _ _',
-        `_ _  :cowboy:           ${member.displayName} won!           :skull: _ _`,
-        `_ _  :skull:           ${target.displayName} won!           :cowboy: _ _`,
-        `_ _  :frowning2:  :point_right:           Draw           :point_left:  :frowning2: _ _`
+        '_ _  :grinning:  :point_right:           **Wait**           :point_left:  :grinning: _ _',
+        '_ _  :grinning:  :point_right:           **Shoot**          :point_left:  :grinning: _ _',
+        `_ _  :cowboy:  :point_right:           ${member.displayName} won!           :skull: _ _`,
+        `_ _  :skull:           ${target.displayName} won!           :point_left:  :cowboy: _ _`,
+        `_ _  :neutral_face:  :point_right:           Draw           :point_left:  :neutral_face: _ _`
 
     ]
     let row = new MessageActionRow()

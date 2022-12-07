@@ -5,6 +5,8 @@ module.exports = {
 	name: 'beton',
 	description: 'To smash the bad guys',
     category: "Interaction",
+    use: "`!beton <user>`",
+    example: "`!beton @R2-D2`",
 	execute(message, args) {
         const member = message.member.displayName
         const target = message.mentions.members.first()

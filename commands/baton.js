@@ -4,6 +4,8 @@ module.exports = {
     name:'baton',
     description:"Don't take the last stick !",
     category: "Fun",
+    use: "`!baton <user>` - Lance une partie contre l'utilisateur mentionné",
+    example:"`!baton @Vic`",
     async execute(message,args){
             const target = message.mentions.members.first()
             const member = message.member

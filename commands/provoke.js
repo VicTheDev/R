@@ -6,6 +6,8 @@ module.exports = {
     name: 'provoke',
     description: 'Challenge your opponent',
     category: "Interaction",
+    use:"`!provoke <user>`\n`!provoke <user> <message>`",
+    example:"`!provoke @R2-D2`\n`!provoke @R2D2 Viens te battre manant !`",
     async execute(message,args){
         const member = message.member
         const target = message.mentions.members.first()
@@ -22,7 +24,7 @@ module.exports = {
             const ErrorApplaudEmbed = new Discord.MessageEmbed()
                 .setColor("#ef5350")
                 .setTitle("Commande Duel")
-                .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!duel <target>`\n`!duel <target> <message>`\n\n**Example Usage**\n`!duel @R2-D2`\n`!duel @R2D2 Viens te battre manant !`")
+                .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!provoke <target>`\n`!provoke <target> <message>`\n\n**Example Usage**\n`!provoke @R2-D2`\n`!provoke @R2D2 Viens te battre manant !`")
                 .setFooter({text: "Catégorie de commande: Interaction"});
             message.channel.send({embeds: [ErrorApplaudEmbed]})
         }

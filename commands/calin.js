@@ -5,8 +5,10 @@ module.exports = {
 	name: 'calin',
 	description: 'To hug everyone',
         category: "Interaction",
+        use: "`!calin eveyone`\n`!calin <users>`",
+        example:"`!calin everyone`\n`!calin @everyone`\n`!calin @here`",
 	execute(message, args) {
-                if(args[0] === 'everyone' || message.mentions.last === "everyone"){
+                if(args[0] === 'everyone' || message.mentions.everyone){
                         let member = message.member
                         let avatarmember = message.author.displayAvatarURL({ format: 'png' })
                         let GifEmbed = new Discord.MessageEmbed()

@@ -10,6 +10,8 @@ module.exports = {
 	name: 'snowman',
 	description: 'Work in team to build the better snowman',
     category: "Fun",
+    use:'`!snowman`',
+    example:"`!snowman`",
 	async execute(message, args) {
         if(!cooldown.has(message.guildId)){
             cooldown.add(message.guildId)

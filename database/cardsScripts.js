@@ -15,6 +15,8 @@ function cardsEffects(tour, other, skill){
             return Cavalier(tour,other);
         case 9:
             return Gardien(tour, other);
+        case 11:
+            return Chevalier(tour,other);
     }
 }
 
@@ -25,25 +27,25 @@ function Barde(tour, other){
     }else{
         tour.vie = tour.viemax
     }
-    //tour.mana -= cards.find(x=>x.id==3).mana
     return[tour, other]
 }
 
 function Mage(tour, other){
    other.canatk = false;
+   other.debuffs.push([3, "canatk", true, 'set'])
    return [tour,other]
 }
 
 function Demon(tour, other){
     const multiplier = cards.find(x=>x.id==5).effect;
+    tour.buffs.push([4, "atk", multiplier, 'divide'])
     tour.atk = multiplier*tour.atk;
-    //tour.mana -= cards.find(x=>x.id==5).mana
     return[tour, other];
 }
 
 function Arach(tour, other){
     other.canusecard = false;
-    other.debuffs.push([3, canusecard, true])
+    other.debuffs.push([3, "canusecard", true, 'set'])
     return[tour, other];
 } 
 
@@ -52,14 +54,15 @@ function Dragon(tour, other){
     if(other.vie-damages < 0){
         other.vie = 0
     }else{
-        other.vie -= damages
+        other.vie = Number((other.vie - damages).toFixed(2))
     }
-    //tour.mana -= cards.find(x=>x.id==7).mana
     return[tour, other];
 }
 
 function Cavalier(tour, other){
-    tour
+    tour.thorns = cards.find(x=>x.id==8).effect
+    tour.buffs.push([4,"thorns",0,'set'])
+    return[tour, other]
 }
 
 function Gardien(tour, other){
@@ -70,4 +73,10 @@ function Gardien(tour, other){
     return[tour, other]
 }
 
+function Chevalier(tour, other){
+    const multiplier = cards.find(x=>x.id==11)
+    other.debuffs.push([3,"def",(other.def-(other.def/multiplier)),'inc'])
+    other.def /= 2
+    return([tour, other])
+}
 module.exports = {cardsEffects}

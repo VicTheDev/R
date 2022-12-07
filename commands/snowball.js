@@ -6,6 +6,8 @@ module.exports = {
     name: 'snowball',
     description: 'Throw a snowball to your oponent',
     category: "Interaction",
+    use: "`!snowball <user>`",
+    example: "`!snowball @R2-D2`",
     execute(message,args){
         const member = message.member
         const target = message.mentions.members.first()

@@ -5,6 +5,8 @@ module.exports = {
     name: "applaud",
     description: "When someone or something is so amazing that you want to congratulate them.",
     category: "Interaction",
+    use: "`!applaud <user>` - Applaudit l'utilisateur mentionné\n`!applaud <message>` - Applaudit le contenu du message",
+    example:"`!applaud @R2-D2`\n`!applaud les gens qui laissent la dernière part de pizza`",
     execute(message,args) {
         const member = message.member.displayName
         const avatarmember = message.author.displayAvatarURL({ format: 'png' })

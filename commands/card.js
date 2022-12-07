@@ -4,6 +4,8 @@ module.exports = {
     name:"card",
     description:"Display Card",
     category:"Inventory",
+    use:"`!card <id>`\n`!card <cardname>`",
+    example:"`!card 5`\n`!card gardien des bois`",
     execute(message, args){
         let card = cards.find(x => x.name.toLowerCase()==args.join(' ').toLowerCase())
         if(card == undefined){
@@ -25,7 +27,7 @@ function displayCard(message, card){
         .setColor('821EDA');
     const cardFooter = new MessageEmbed()
         .setTitle(card.name)
-        .setDescription(card.description)
+        .setDescription(`${card.description}\n${card.use}`)
         .addFields(
            {name: 'Mana :', value: String(card.mana), inline:true},
            {name: 'Id : ', value: String(card.id), inline:true}

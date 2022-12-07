@@ -4,6 +4,8 @@ module.exports = {
     name:'create',
     description:'Used to create an inventory',
     category: "Admin",
+    use:"`!create <user>` - Crée un inventaire pour l'utilisateur mentionné",
+    example:"`!create @Vic`",
     async execute(message, args) {
         if(message.author.id==SuperAdmin){ //Check if the user has the permission to manage inventories
             if(message.mentions.users.first()!==undefined){

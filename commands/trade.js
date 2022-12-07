@@ -5,6 +5,8 @@ module.exports = {
     name: "trade",
     description: "Trade you cards with others.",
     category: "Inventory",
+    use: "`!trade <id1> <user> <id2>` - Echange votre item `id1` contre l'item `id2` de l'utilisateur mentionné",
+    example: "`!trade 5 @R2D2 7",
     async execute(message, args){
         if(message.mentions.members.first()!=undefined){
             let user = message.author
@@ -71,8 +73,10 @@ async function initTrade(message, args, inventory1, inventory2){
         if(inventory2.inventory.find(x => x==args[2]) != undefined){
             const Embed = new MessageEmbed()
                 .setTitle("Offre d'échange")
-                .setDescription(`**${message.member.user.username}** propose à **${message.mentions.members.first().user.username}** d'échanger 
-                    \`${objects.find(x=> x.id==args[0]).name}\` contre \`${objects.find(x=> x.id == args[2]).name}\``)
+                .addFields(
+                    {name: `${message.author.username} reçoit :`, value: objects.find(x=> x.id == args[2]).name, inline: true },
+                    {name: `${message.mentions.members.first().user.username} reçoit :`, value: objects.find(x=> x.id==args[0]).name, inline: true}
+                )
                 .setColor('GREEN');
             const row = new MessageActionRow()
                 .addComponents(
@@ -86,11 +90,12 @@ async function initTrade(message, args, inventory1, inventory2){
                         .setStyle('DANGER')
                 );
             const botmessage = await message.channel.send({embeds:[Embed], components: [row]})
-            responding(message, args, botmessage)
+            responding(message, args, botmessage, inventory1, inventory2)
         }else{
             const Embed = new MessageEmbed()
                 .setColor('DARK_RED')
-                .setDescription(`${message.mentions.members.first().user.username} ne possède pas l'item que vous voulez lui échanger`);
+                .setDescription(`${message.mentions.members.first().user.username} ne possède pas l'item que vous voulez lui échanger`)
+                .setFooter({text: ''})
             message.reply({embeds: [Embed]})
         }
     }else{
@@ -101,23 +106,24 @@ async function initTrade(message, args, inventory1, inventory2){
     }
 }
 
-function responding(message, args, botmessage){
+function responding(message, args, botmessage, inventory1, inventory2){
     const target = message.mentions.members.first()
     const filter = i => ['ok', 'no'].includes(i.customId) && i.member.user.id == target.user.id && i.message.id == botmessage.id
-    const collector = message.channel.createMessageComponentCollector({filter, time:30_000})
+    const collector = message.channel.createMessageComponentCollector({filter, time:60_000})
 
     collector.on('collect', async i => {
         switch (i.customId){
             case 'ok':
+                await i.update(i)
                 const EmbedOk = new MessageEmbed()
                     .setColor('DARK_ORANGE')
-                    .setDescription("Êtes-vous sûrs de vouloir accepter cette offre ?")
+                    .setDescription("Êtes-vous certains de vouloir accepter cette offre ?")
                     .addFields(
                         {name: 'Vous recevez :', value: objects.find(x=> x.id==args[0]).name, inline: true},
                         {name: 'Vous perdez :', value: objects.find(x=> x.id == args[2]).name, inline: true}
                     );
                 await botmessage.edit({embeds: [EmbedOk]})
-                confirm(message, args, botmessage)
+                confirm(message, args, botmessage, inventory1, inventory2)
                 collector.stop()
                 break;
             case 'no':
@@ -132,15 +138,39 @@ function responding(message, args, botmessage){
     })
 }
 
-function confirm(message, args, botmessage){
+function confirm(message, args, botmessage, inventory1, inventory2){
     const target = message.mentions.members.first()
     const filter = i => ['ok', 'no'].includes(i.customId) && i.member.user.id == target.user.id && i.message.id == botmessage.id
-    const collector = message.channel.createMessageComponentCollector({filter, time:30_000})
+    const collector = message.channel.createMessageComponentCollector({filter, time:60_000})
 
     collector.on('collect', async i => {
         switch (i.customId){
             case 'ok':
-                console.log('ok') // TRADING CARD FINALLY ACCEPTED // Code the trade in inventories
+                await i.update(i)
+                await inventory1.inventory.splice(inventory1.inventory.indexOf(Number(args[0])), 1, Number(args[2]))    //replace the card offered with the card received
+                await inventory2.inventory.splice(inventory2.inventory.indexOf(Number(args[2])), 1, Number(args[0]))
+                await Inventory.findOneAndUpdate(
+                    { user: message.author.id},
+                    { $set: { inventory: inventory1.inventory}}
+                )
+                await Inventory.findOneAndUpdate(
+                    { user: target.user.id},
+                    { $set: { inventory: inventory2.inventory}}
+                )
+
+                const sendedcard = Number(args[0])
+                const receivedcard = Number(args[2])  
+                const EmbedOk = new MessageEmbed()
+                    .setDescription(`**${target.user.username}** a accepté l'offre de **${message.author.username}**`)
+                    .setColor('DARK_GREEN');
+                const Embed1 = new MessageEmbed()
+                    .setDescription(`${message.author} a reçu l'objet \`${objects.find(x=> x.id == args[2]).name}\``)
+                    .setColor('DARK_GOLD');
+                const Embed2 = new MessageEmbed()
+                    .setDescription(`${target.user} a reçu l'objet \`${objects.find(x=> x.id==args[0]).name}\``)
+                    .setColor('DARK_GOLD');
+                await botmessage.edit({embeds: [EmbedOk, Embed1, Embed2], components:[]})
+                
                 collector.stop()
                 break;
             case 'no':

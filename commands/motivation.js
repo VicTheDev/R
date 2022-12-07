@@ -5,6 +5,8 @@ module.exports = {
     name: "motivation",
     description: "JUST DO IT MABOI IF YOU DON'T TRY YOU'LL NEVER KNOW.",
     category: "Interaction",
+    use:"`!motivation <user>`\n`!motivation <message>`",
+    example:"`!motivation @R2-D2`\n`!motivation aux gens qui veulent réaliser leurs rêves`",
     execute(message,args) {
         const member = message.member.displayName
         const avatarmember = message.author.displayAvatarURL({ format: 'png' })

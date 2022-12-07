@@ -6,6 +6,9 @@ const {SuperAdmin} = require('../config.json')
 module.exports = {
 	name: 'gift',
 	description: 'Get Items in your inventory',
+    category: 'Admin',
+    use:"`!gift <id>` - Ajoute l'objet à votre inventaire",
+    example:"`!gift 7`",
 	execute(message, args) {
         if(message.author.id==SuperAdmin){
             if(parseInt(args[0], 10)<objects.length){

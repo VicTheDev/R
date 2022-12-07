@@ -5,6 +5,8 @@ module.exports = {
 	name: 'thx',
 	description: "To thank te good guys",
     category: "Interaction",
+    use:"`!thx <user`",
+    example:"!thx @R2-D2",
 	execute(message, args) {
         let member = message.member.displayName
         let user1 = message.mentions.members.first()

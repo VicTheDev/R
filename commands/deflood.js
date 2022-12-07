@@ -5,6 +5,8 @@ module.exports = {
 	name: 'deflood',
 	description: 'To stop the endless flow of messages that have no place here',
     category: "Interaction",
+    use:"`!deflood`\n`!deflood <message>`",
+    example:"`!deflood`\n`!deflood Allez dans le #général !`",
 	execute(message, args) {
         if(args[0] === undefined){
             const GifEmbed = new Discord.MessageEmbed()
