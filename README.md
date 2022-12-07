@@ -10,7 +10,8 @@
     {
       "TOKEN":"Put your token here",
       "PREFIX":"Put your prefix here",
-      "MongoKey":"Put your connection string here"
+      "MongoKey":"Put your connection string here",
+      "SuperAdmin":"Put your discord user id here"
     }
       ``` 
  
