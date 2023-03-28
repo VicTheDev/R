@@ -88,7 +88,7 @@ module.exports = {
                             }
                         }
                         Embed.description = Description
-                        await wait(3500);
+                        await wait(3000);
                         await mongoose.Inventory.findOneAndUpdate(
                             { user: user.id},
                             { $set: { inventory: inventoryUpdatedAll}}

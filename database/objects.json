@@ -20,9 +20,10 @@
     {
         "name":"Badge Hiver 2022",
         "description": "Badge reçu pour avoir participé à l'évènement Hiver 2022",
-        "saleable":false,
+        "saleable":true,
         "card":false,
-        "id":2
+        "id":2,
+        "cost":20
     },
     {
         "name":"Barde",

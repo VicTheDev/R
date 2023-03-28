@@ -17,7 +17,6 @@ console.log(ts)
 
 // Set up commands handler 
 const commandFiles = fs.readdirSync(path.resolve(__dirname, 'commands')).filter(file => file.endsWith('.js'));
-console.log(commandFiles)
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);

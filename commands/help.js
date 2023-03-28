@@ -40,7 +40,7 @@ module.exports = {
                 Embed  
                     .setTitle(":page_with_curl: Commands List")
                     .setColor("#4172bf")
-                    .setFooter({text: 'Type !help <command> to display the help for that specific command.\nExample: !fact snowball'});
+                    .setFooter({text: 'Type !help <command> to display the help for that specific command.\nExample: !help snowball'});
             }else if(commandFiles.includes(args[0].toLowerCase()+'.js')){
                 page = 'command'
                 const command = require(`./${args[0].toLowerCase()}`)

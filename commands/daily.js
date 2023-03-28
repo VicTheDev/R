@@ -54,7 +54,7 @@ async function getDaily(message, element, user){
     }
 }
 async function getGift(message, user){
-    const win = getRandomInt(5,15)
+    const win = getRandomInt(8,20)
     await Inventory.findOneAndUpdate({user:user.id}, { $inc: {money: win}, $set: {daily:Date.now()}})
     const Embed = new MessageEmbed()
         .setColor('DARK_GOLD')
