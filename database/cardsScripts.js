@@ -74,7 +74,7 @@ function Gardien(tour, other){
 }
 
 function Chevalier(tour, other){
-    const multiplier = cards.find(x=>x.id==11)
+    const multiplier = cards.find(x=>x.id==11).effect
     other.debuffs.push([3,"def",(other.def-(other.def/multiplier)),'inc'])
     other.def /= 2
     return([tour, other])
