@@ -1,11 +1,10 @@
 const mongoose = require('../database/mongoose')
+const {i18n} = require('../i18n/i18n')
 module.exports = {
-	name: 'transfer',
-	description: 'Send money to another person.',
+	name: 'send',
     category: "Inventory",
-    use:"`!transfer <user> <amount>` - Transfère le montant donné à l'utilisateur mentionné",
-    example:"`!transfer @Vic 15`",
 	execute(message, args) {
+        const guildId = message.guildId;
         if(message.mentions.members.first()!==undefined && !message.mentions.members.first().user.bot){    //Check if receiver is valid
             args.shift()
             let target = message.mentions.members.first()
@@ -17,7 +16,7 @@ module.exports = {
                         console.log(err)
                     }else{
                         if(doc === false){
-                            message.reply("Vous n'avez pas d'inventaire !")
+                            message.reply(i18n.t("commands.inventory.inventorymissing",guildId))
                         }
 
                         if(doc === true){
@@ -26,7 +25,7 @@ module.exports = {
                                     console.log(err)
                                 }else{
                                     if(doc === false){
-                                        message.reply("Le destinataire n'a pas d'inventaire !")
+                                        message.reply(i18n.t("commands.inventory.send.inventorymissing",guildId))
                                     }
 
                                     if(doc === true){   //Updating inventories
@@ -37,9 +36,9 @@ module.exports = {
                                             receiver.money = receiver.money + amount
                                             await sender.save()
                                             await receiver.save()
-                                            message.reply(`${amount} :coin: transférés à ${target.displayName}`)
+                                            message.reply(i18n.t("commands.inventory.send.transferred",guildId,{amount:amount,user:target.displayName}))
                                         }else{
-                                            message.reply("Vous n'avez pas assez d'argent !")
+                                            message.reply(i18n.t("commands.inventory.send.notenoughmoney",guildId))
                                         }
                                     }
                                 }
@@ -50,11 +49,11 @@ module.exports = {
     
                 });
             }else{
-                message.reply({content: 'Veuillez sélectionner un montant valide !'})
+                message.reply({content: i18n.t("commands.inventory.send.invalidamount",guildId)})
             }
             
         }else{
-            message.reply({content: 'Vous devez mentionner une personne !'})
+            message.reply({content: i18n.t("commands.interaction.mentionmissing",guildId)})
         }
             
 	}, 

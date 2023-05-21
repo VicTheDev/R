@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 const maths = require('../maths');
 const { thx } = require('../LocalStorage');
+const {ErrorEmbed} = require('../errorembed')
+const {i18n} = require('../i18n/i18n')
 module.exports = {
 	name: 'thx',
-	description: "To thank te good guys",
     category: "Interaction",
-    use:"`!thx <user`",
-    example:"!thx @R2-D2",
 	execute(message, args) {
+        const guildId = message.guildId
         let member = message.member.displayName
         let user1 = message.mentions.members.first()
         if(user1 !== undefined){
@@ -15,14 +15,10 @@ module.exports = {
                 let GifEmbed = new Discord.MessageEmbed()
                     .setImage(thx[maths.getRandomInt(0,thx.length)])
                     .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.avatarURL()})
-                    .setDescription("**" + member + "** remercie **"+target+"**");
+                    .setDescription(i18n.t("commands.interaction.thx.thanks",guildId,{member:member,target:target}));
                     message.channel.send({embeds : [GifEmbed]})
         }  else{
-            const ErrorApplaudEmbed = new Discord.MessageEmbed()
-                .setColor("#ef5350")
-                .setTitle("Commande Merci")
-                .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!thx <target>`\n\n**Example Usage**\n`!thx @R2-D2`")
-                .setFooter({text: "Catégorie de commande: Interaction"});
+            const ErrorApplaudEmbed = ErrorEmbed(this,guildId)
             message.channel.send({embeds : [ErrorApplaudEmbed]})
 
             }

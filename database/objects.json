@@ -1,91 +1,79 @@
 [
     {
-        "name":"Pelle",
-        "description":"Utilisez cette pelle pendant la construction d'un bonhomme de neige afin de construire plus vite !",
+        "name":"shovel",
+        "id":0,
         "effect": 1,
         "cost":3,
         "saleable": true,
-        "card":false,
-        "id":0
+        "card":false
     },
     {
-        "name":"Canon à Neige",
-        "description":"Utilisez ce canon pendant la construction d'un bonhomme de neige afin de construire plus vite !",
+        "name":"snow canon",
+        "id":1,
         "effect": 2,
         "cost":5,
         "saleable":true,
-        "card":false,
-        "id":1
+        "card":false
     },
     {
-        "name":"Badge Hiver 2022",
-        "description": "Badge reçu pour avoir participé à l'évènement Hiver 2022",
+        "name":"winter 2022 badge",
+        "cost":20,
         "saleable":true,
         "card":false,
-        "id":2,
-        "cost":20
+        "id":2
     },
     {
-        "name":"Barde",
-        "description":"*On lui souhaite d'apprendre à chanter...* ; Régénère la vitalité",
+        "name":"bard",
         "saleable":false,
         "card":true,
         "effect":20,
         "id":3
     },
     {
-        "name":"Mage",
-        "description":"*La légende raconte qu'il tire ses pouvoirs d'une mystérieuse pierre magique...* ; Empêche l'adversaire d'attaquer pendant 3 tours",
+        "name":"mage",
         "saleable":false,
         "card":true,
         "id":4
     },
     {
-        "name":"Démon",
-        "description":"*Note : Ne jamais passer un marché avec lui* ; Augmente les dégâts pendant 3 tours",
+        "name":"demon",
         "saleable":false,
         "card":true,
         "id":5
     },
     {
-        "name":"Arachnide daedrique",
-        "description":"*Issue de la province de Hauteroche, elle piège ses ennemis dans des cocons pour les dévorer* ; L'adversaire ne peut plus utiliser de cartes pendant 3 tours",
+        "name":"arachnide daedrique",
         "saleable":false,
         "card":true,
         "id":6
     },
     {
-        "name":"Dragon",
-        "description":"*Il chérit son or plus que tout* ; Inflige des dégâts à l'adversaire",
+        "name":"dragon",
         "saleable":false,
         "card":true,
         "id":7
     },
     {
-        "name":"Cavalier du trépas",
-        "description":"*Mieux vaut ne jamais le croiser...* ; Renvoie une partie des dégâts reçus à l'adverdsaire pendant 4 tours",
+        "name":"death knight",
         "saleable":false,
         "card":true,
         "id":8
     },
     {
-        "name":"Gardien des bois",
-        "description":"*Il aurait été changé en gardien dans des temps immémoriaux* ; Double la défense et réduit l'attaque",
+        "name":"forest guardian",
         "saleable":false,
         "card":true,
         "id":9
     },
     {
-        "name":"Booster de cartes",
-        "description":"Ouvrez le pour gagner une carte aléatoire.",
+        "name":"card booster",
         "saleable":true,
         "card":false,
         "id":10,
         "cost":30
     },
     {
-        "name":"Chevalier",
-        "description":"*Fidèle à son royaume, il fût trahi par son monarque et s'exila...* ; Diminue l'armure de l'adversaire pendant 3 tours",
+        "name":"knight",
         "saleable":false,
         "card":true,
         "id":11

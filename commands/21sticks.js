@@ -1,26 +1,28 @@
 const Discord = require('discord.js');
 const wait = require('util').promisify(setTimeout);
+const {i18n} = require('../i18n/i18n')
+const {PREFIX} = require('../config.json')
+const {getRandomInt,capitalizeFirstLetter} = require('../maths')
+const {ErrorEmbed} = require('../errorembed')
 module.exports = {
-    name:'baton',
-    description:"Don't take the last stick !",
+    name:'21sticks',
     category: "Fun",
-    use: "`!baton <user>` - Lance une partie contre l'utilisateur mentionné",
-    example:"`!baton @Vic`",
     async execute(message,args){
+            const guildId = message.guildId;
             const target = message.mentions.members.first()
             const member = message.member
-            let tour = 0
+            let tour = getRandomInt(0,1);
             let chrono = [[0],[0]]
             const players = [member,target]
             message.delete()
             if(target!== undefined && target!==member){
-                let list = [':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:',':wood:']
+                let list = Array(21).fill('wood');
                 const Embed = new Discord.MessageEmbed()
-                    .setAuthor({name: 'Jeu des bâtons'})
+                    .setAuthor({name: i18n.t("commands.fun.21sticks.game",guildId)})
                     .setDescription(`**${message.member.displayName}** VS **${target.displayName}**`)
                     .addFields(
-                        {name:'Ne prenez pas le dernier bâton !',value:`**${list.join(' ')}** — ${list.length} bâtons restant`},
-                        {name:'Tour',value:`C'est au tour de : **${players[tour].displayName}**`}
+                        {name:i18n.t("commands.fun.21sticks.description",guildId),value:`**${list.join(' ')}** — ${list.length} ${i18n.t("commands.fun.21sticks.remain",guildId)}`},
+                        {name:i18n.t("commands.fun.21sticks.turn",guildId),value:i18n.t("commands.fun.21sticks.turnvalue",guildId,{user:players[tour].displayName})}
                     )
                     .setColor('ff7f00')
                 const botmessage = await message.channel.send({embeds: [Embed]})
@@ -42,20 +44,28 @@ module.exports = {
                         chrono[tour].push(Date.now()-time)
                         time = Date.now()
                         list.splice(0,opt.indexOf(reaction.emoji.name)+1)
-                        Embed.fields[0] = {name:'Ne prenez pas le dernier bâton !',value:`**${list.join(' ')}** — ${list.length} bâtons restant`}
+                        Embed.fields[0] = {name:i18n.t("commands.fun.21sticks.description",guildId),value:`**${list.join(' ')}** — ${list.length} ${i18n.t("commands.fun.21sticks.remain",guildId)}`}
                         tour = tour +1
                         if(tour>1)tour = 0;
-                        Embed.fields[1] = {name:'Tour',value:`C'est au tour de : **${players[tour].displayName}**`}
-                        botmessage.edit({embeds: [Embed]})
+                        Embed.fields[1] = {name:i18n.t("commands.fun.21sticks.turn",guildId),value:i18n.t("commands.fun.21sticks.turnvalue",guildId,{user:players[tour].displayName})}
+                        try {
+                            botmessage.edit({embeds: [Embed]})
+                        } catch (error){
+                            console.error('Message was deleted')
+                        }
                         if(list.length<2){
                             if(list.length===1){
                                 tour = tour +1
                                 if(tour>1)tour = 0;
                             }
                             Embed.fields = []
-                            Embed.setDescription(`**${players[tour].displayName}** a gagné !`)
-                            await botmessage.reactions.removeAll()
-                            botmessage.edit({embeds: [Embed]})
+                            Embed.setDescription(i18n.t("commands.fun.21sticks.win",guildId,{user:players[tour].displayName}))
+                            try {
+                                await botmessage.reactions.removeAll()
+                                botmessage.edit({embeds: [Embed]})
+                            } catch (error){
+                                console.error('Message was deleted')
+                            }
                             collector.stop()
                         }   
                     }
@@ -67,9 +77,13 @@ module.exports = {
                         const reducer = (previousValue, currentValue) => previousValue + currentValue;
                         const chronotest = [chrono[0].reduce(reducer),chrono[1].reduce(reducer)]
                         Embed.fields = []
-                        Embed.setDescription(`**${players[chronotest.indexOf(Math.min(...chronotest))].displayName}** a gagné (Temps écoulé)!`)
-                        await botmessage.reactions.removeAll()
-                        botmessage.edit({embeds: [Embed]})
+                        Embed.setDescription(i18n.t("commands.fun.21sticks.timeout",guildId,{user:players[chronotest.indexOf(Math.min(...chronotest))].displayName}))
+                        try {
+                            await botmessage.reactions.removeAll()
+                            botmessage.edit({embeds: [Embed]})
+                        } catch (error){
+                            console.error('Message was deleted')
+                        }
                     }
                 })
 
@@ -78,16 +92,15 @@ module.exports = {
 
             }else{
                 if(target===member){
-                    const botreply = await message.reply('Vous ne pouvez pas jouer contre vous même')
+                    const botreply = await message.reply(i18n.t("commands.fun.21sticks.opponentmissing",guildId))
                     await wait(4000)
-                    botreply.delete()
+                    try {
+                        botreply.delete()
+                    } catch (error){
+                        console.error('Message was deleted')
+                    }
                 }else if(target===undefined){
-                    const ErrorBetonEmbed = new Discord.MessageEmbed()
-                                .setColor("#ef5350")
-                                .setTitle("Commande Baton")
-                                .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette commande.\n\n**Usage**\n`!baton <target>`\n\n**Example Usage**\n`!baton @R2-D2`\n")
-                                .setFooter({text: "Catégorie de commande: Fun"});
-                    message.channel.send(ErrorBetonEmbed)
+                    message.channel.send(ErrorEmbed({name:this.name,category:this.category},guildId))
                 }
             }
     },

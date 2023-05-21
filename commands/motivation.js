@@ -1,12 +1,11 @@
 const maths = require('../maths');
 const { motivation } = require('../LocalStorage');
 const Discord = require('discord.js')
+const {i18n} = require('../i18n/i18n')
+const {ErrorEmbed} = require('../errorembed')
 module.exports = {
     name: "motivation",
-    description: "JUST DO IT MABOI IF YOU DON'T TRY YOU'LL NEVER KNOW.",
     category: "Interaction",
-    use:"`!motivation <user>`\n`!motivation <message>`",
-    example:"`!motivation @R2-D2`\n`!motivation aux gens qui veulent réaliser leurs rêves`",
     execute(message,args) {
         const member = message.member.displayName
         const avatarmember = message.author.displayAvatarURL({ format: 'png' })
@@ -16,7 +15,7 @@ module.exports = {
             const GifEmbed = new Discord.MessageEmbed()
                 .setImage(motivation[maths.getRandomInt(0,motivation.length)])
                 .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.member.avatarURL()})
-                .setDescription("**" + member + "** envoie de la motivation à **"+target+"**");
+                .setDescription(i18n.t("commands.interaction.motivation.text",guildId,{member,target}));
             message.channel.send({embeds: [GifEmbed]})
             
         }   else{
@@ -25,14 +24,10 @@ module.exports = {
                     const GifEmbed = new Discord.MessageEmbed()
                         .setImage(motivation[maths.getRandomInt(0,motivation.length)])
                         .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.avatarURL()})
-                        .setDescription("**" + member + "** envoie de la motivation **"+content+"**");
+                        .setDescription(i18n.t("commands.interaction.motivation.text",guildId,{member,target}));
                     message.channel.send({embeds: [GifEmbed]})
                 }else{
-                    const ErrorMotivationEmbed = new Discord.MessageEmbed()
-                        .setColor("#ef5350")
-                        .setTitle("Commande Motivation")
-                        .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction ou ajouter un message.\n\n**Usage**\n`!motivation <target>`\n`!motivation <message>`\n\n**Example Usage**\n`!motivation @R2-D2`\n`!motivation aux gens qui veulent réaliser leurs rêves`")
-                        .setFooter({text: "Catégorie de commande: Interaction"});
+                    const ErrorMotivationEmbed = ErrorEmbed(this,guildId)
                     message.channel.send({embeds: [ErrorMotivationEmbed]})
                 }
             }   

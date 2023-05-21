@@ -4,19 +4,19 @@ const Discord = require('discord.js')
 const cooldown = new Set();
 const wait = require('util').promisify(setTimeout);
 const mongoose = require('../database/mongoose')
-const objects = require('../database/objects.json')
+const items = require('../database/objects.json')
+const {i18n} = require('../i18n/i18n')
 
 module.exports = {
 	name: 'snowman',
-	description: 'Work in team to build the better snowman',
     category: "Fun",
-    use:'`!snowman`',
-    example:"`!snowman`",
 	async execute(message, args) {
+        const guildId = message.guildId
+        const objects = i18n.i(items,guildId)
         if(!cooldown.has(message.guildId)){
             cooldown.add(message.guildId)
             let Embed = new Discord.MessageEmbed()
-                .setDescription('**Réunis le plus de personnes dans le temps imparti afin de bâtir le meilleur bonhomme de neige !**\n*Réagis avec :snowman: pour rejoindre la construction*')
+                .setDescription(i18n.t("commands.fun.snowman.embed.description",guildId))
                 .setFooter({text:`Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
                 .setColor('fffffe');
 
@@ -37,7 +37,7 @@ module.exports = {
                     list[0].push(user)
                     list[1].push(user.tag)
                     if(Embed.fields.length<25){
-                        Embed.addField(user.tag,'a rejoint la construction',true)
+                        Embed.addField(user.tag,i18n.t("commands.fun.snowman.embed.joined",guildId),true)
                     }
                     botmessage.edit({embeds: [Embed]})
                     size = size + 1
@@ -57,7 +57,7 @@ module.exports = {
                                         if(element.inventory.includes(item)){
                                             powerup.push(user.tag)
                                             if(Embed.fields.length<25){
-                                                Embed.addField(user.tag,`a utilisé le PowerUp "${objects[item].name}"`,true)
+                                                Embed.addField(user.tag,i18n.t("commands.fun.snowman.embed.powerup",guildId,{power:objects[item].name}),true)
                                             }
                                             botmessage.edit({embeds: [Embed]})
                                             size = size + objects[item].effect
@@ -85,16 +85,16 @@ module.exports = {
                 Embed.fields = null
                 if(list[0].length<2){
                     if(list[0].length===0){
-                    Embed.setDescription(`Personne n'a construit ce magnifique bonhomme de neige.\n*Rassemble plus de personnes pour l'améliorer*`)
+                    Embed.setDescription(i18n.t("commands.fun.snowman.embed.endings.noone",guildId)`Personne n'a construit ce magnifique bonhomme de neige.\n*Rassemble plus de personnes pour l'améliorer*`)
                     }else{
-                        Embed.setDescription(`**${list[1][0]}** a construit ce magnifique bonhomme de neige.\n*Rassemble plus de personnes pour l'améliorer*`)
+                        Embed.setDescription(i18n.t("commands.fun.snowman.embed.endings.one",guildId,{user:list[1][0]}))
                     }
                 }else{
-                    Embed.setDescription(`**${list[1].slice(0,list[1].length-1).join(', ')}** et **${list[1][list[1].length-1]}** ont construit ce magnifique bonhomme de neige.`)
+                    Embed.setDescription(i18n.t("commands.fun.snowman.embed.endings.one",guildId,{users:list[1].slice(0,list[1].length-1).join(', '),user:list[1][list[1].length-1]}))
                 }
                 if(size>=snowman.length-1){
                     size = snowman.length - 1
-                    Embed.setAuthor({name:`Bravo pour ce travail d'équipe conséquent !`})
+                    Embed.setAuthor({name: i18n.t("commands.fun.snowman.embed.endings.max",guildId)})
                 }
                 Embed.setImage(snowman[size])
                 if(maths.getPercentage(15)){
@@ -116,7 +116,7 @@ module.exports = {
                                 await mongoose.Inventory.findOneAndUpdate(
                                     { user: user.id},
                                     { $push: { inventory: gift}})
-                                botmessage.channel.send({content:`**${user.tag}** a obtenu un objet : **${objects[gift].name}**`})
+                                botmessage.channel.send({content: i18n.t("commands.fun.snowman.gift",guildId,{user:user.tag,item:objects[gift].name})})
                             }
                         }
         
@@ -127,7 +127,7 @@ module.exports = {
                 cooldown.delete(message.guildId)
             });
         }else{
-            const rep = await message.reply('Un bonhomme de neige est déjà en construction !')
+            const rep = await message.reply(i18n.t("commands.fun.snowman.cooldown",guildId))
             message.delete()
             await wait(3000)
             rep.delete();

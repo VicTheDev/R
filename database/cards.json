@@ -1,69 +1,53 @@
 [
     {
-        "name":"Barde",
-        "description":"*On lui souhaite d'apprendre à chanter...*",
-        "use":"Régénère la vitalité",
+        "namedev":"bard",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611939909713/barde.png",
         "mana":45,
         "effect":20,
         "id":3
     },
     {
-        "name":"Mage",
-        "description":"*On raconte qu'il tire ses pouvoirs d'une mystérieuse pierre magique...*",
-        "use":"Empêche l'adversaire d'attaquer pendant 3 tours",
+        "namedev":"mage",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611273007224/mage.png",
         "mana":55,
         "id":4
     }, 
     {
-        "name":"Démon",
-        "description":"*Note : Ne jamais passer un marché avec lui* ; Augmente les dégâts pendant 3 tours",
-        "use":"Augmente les dégâts pendant 3 tours",
+        "namedev":"demon",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972610568364133/Demon.jpg.png",
         "effect":2,
         "mana":65,
         "id":5
     },
     {
-        "name":"Arachnide daedrique",
-        "description":"*Issue de la province de Hauteroche, elle piège ses ennemis dans des cocons pour les dévorer*",
-        "use":"L'adversaire ne peut plus utiliser de cartes pendant 3 tours",
+        "namedev":"arachnide daedrique",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972611600166932/Arachnide_Daedrique.png",
         "mana":45,
         "id":6
     },
     {
-        "name":"Dragon",
-        "description":"*Il chérit son or plus que tout*",
-        "use":"Inflige 20 dégâts à l'adversaire",
+        "namedev":"dragon",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972610958442596/Dragon.png",
         "effect":20,
         "mana":40,
         "id":7
     },
     {
-        "name":"Cavalier du trépas",
-        "description":"*Mieux vaut ne jamais le croiser...*",
-        "use":"Renvoie une partie des dégâts reçus à l'adverdsaire pendant 4 tours",
+        "namedev":"death knight",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1047972612296417320/cavalier_du_trepas.png",
         "effect":0.5,
         "mana":70,
         "id":8
     },
     {
-        "name":"Gardien des bois",
-        "description":"*Il aurait été changé en gardien dans des temps immémoriaux*",
-        "use":"Double la défense et réduit l'attaque définitivement",
+        "namedev":"forest guardian",
         "image":"https://cdn.discordapp.com/attachments/753330903203184660/1048283053535006730/Golem_des_bois.png",
         "effect":2,
         "mana":50,
         "id":9
     },
     {
-        "name":"Chevalier",
-        "description":"*Fidèle à son royaume, il fût trahi par son monarque et s'exila...*",
-        "use":"Diminue l'armure de l'adversaire pendant 3 tours",
+        "namedev":"knight",
         "image":"https://i.pinimg.com/564x/54/7b/35/547b358abe3530a739ecb90287646ebe.jpg",
         "effect":2,
         "mana":60,

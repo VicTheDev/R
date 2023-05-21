@@ -1,0 +1,508 @@
+{
+    "iso": "en",
+    "language": "English",
+    "commands": {
+        "admin": {
+            "automod": {
+                "description": "Powerful tool for automatic moderation.",
+                "use": "`{prefix}automod`\n`{prefix}automod banwords` - Blacklist management menu\n`{prefix}automod banwords <list/add/remove> <words>` - Lists, adds or removes words from the blacklist.\n`{prefix}automod messages` - Message moderation menu\n`{prefix}automod messages <on/off>` - Enable or disable the moderation of messages.\n`{prefix}automod usernames` - Username moderation menu\n`{prefix}automod usernames <on/off>` - Enable or disable the moderation of usernames.",
+                "example": "`{prefix}automod`\n`{prefix}automod banwords list`\n`{prefix}automod banwords add R2D2 R4D4` - Adds the words `R2D2` and `R4D4` to the black list.\n`{prefix}automod messages on` - Enable the moderation of messages\n`{prefix}automod usernames off`",
+                "banwords": {
+                    "default": {
+                        "title": "Banned words",
+                        "description": "Manage forbidden words.\n\n• `list` -List all the words in the black list\n• `add` - Add words to the black list\n• `remove` - Remove words in the black list"
+                    },
+                    "list": {
+                        "title": "List of banned words"
+                    },
+                    "add": {
+                        "added": "The word `{word}` has been successfuly added to the black list.",
+                        "addedmany": "The words `{word}` have been successfuly added to the black list.",
+                        "already": "The word `{word}` is already part of the black list!"
+                    },
+                    "remove": {
+                        "removed":"The word `{word}` has been successfuly removed from the black list.",
+                        "removedmany":"The words `{word}` have been successfuly removed from the black list.",
+                        "already":"The word `{word}` is not part of the black list!!"
+                    },
+                    "noarg": "You must specify a list of words!"
+                },
+                "default": {
+                    "title": "Auto-moderation",
+                    "description": "**Choose a category**\n\n• `banwords` - Add, list or remove words from the blacklist\n• `messages` - Enable/disable the moderation of messages\n• `usernames` - Enable/disable the moderation of usernames",
+                    "footer": "Use {prefix}automod <category>"
+                },
+                "messages": {
+                    "default": {
+                        "title": "Messages moderation",
+                        "description": "If this option is enabled, messages containing blacklisted words will be automatically deleted.\n",
+                        "fields": {
+                            "status": "Status",
+                            "enabled": ":green_circle: Enabled",
+                            "disabled": ":red_circle: Disabled",
+                            "options": "Options",
+                            "text": "• `on` - Enable\n• `off` - Disable"
+                        }
+                    },
+                    "on": "**The moderation of messages has been activated.**\nUse `{prefix}automod banwords` to manage the blacklist",
+                    "off": "**The moderation of messages has been desactivated.**"
+                },
+                "usernames": {
+                    "default": {
+                        "title": "Usernames moderation",
+                        "description": "If this option is enabled, usernames containing blacklisted words will be automatically deleted.\n",
+                        "fields": {
+                            "status": "Status",
+                            "enabled": ":green_circle: Enabled",
+                            "disabled": ":red_circle: Disabled",
+                            "options": "Options",
+                            "text": "• `on` - Enable\n• `off` - Disable"
+                        }
+                    },
+                    "on": "**The moderation of usernames has been activated.**\nUse `{prefix}automod banwords` to manage the blacklist",
+                    "off": "**The moderation of usernames has been desactivated.**"
+                }
+            },
+            "language": {
+                "description": "Set language of your guild",
+                "use": "`{prefix}language` - Display all the available languages\n`{prefix}language <code>` - Defines the language of the guild as the one corresponding to the code",
+                "example": "`{prefix}language`\n`{prefix}language fr` - Defines the language of the guild as French",
+                "text": "R2D2 supports multiple languages. Translations may not be 100% accurate or complete. To select a language, use `!language <code>`\n",
+                "updated": "The language of the `{guild}` guild has been set to `{language}`"
+            }
+        },
+        "fun": {
+            "21sticks": {
+                "description": "Don't take the last stick!",
+                "use": "`{prefix}21sticks <user>` - Start a game against the mentioned user",
+                "example": "`{prefix}21sticks @Vic`",
+                "game": "21 Sticks game",
+                "remain": "sticks left",
+                "turn": "Turn",
+                "turnvalue": "It's **{user}**'s turn!",
+                "win": "**{user}** won!",
+                "timeout": "**{user}** won (Time out)!",
+                "opponentmissing": "You cannot play against yourself!"
+            },
+            "cookie": {
+                "description": "A cookie, and life gets better",
+                "use": "`{prefix}cookie`",
+                "example": "`{prefix}cookie`"
+            },
+            "duel": {
+                "description": "Be the quicker to shoot at your oponent",
+                "use": "`{prefix}duel <user>` - Challenges the mentioned user to a duel",
+                "example": "`{prefix}duel @Vic`",
+                "challenged": "{user} challenged {target} to a duel!",
+                "game": "the duel",
+                "targetunavailable": "{user} already has a duel going on!",
+                "unavailable": "You already have a duel going on!",
+                "pos": {
+                    "wait": "Wait",
+                    "shoot": "Shoot",
+                    "won": "{user} won!",
+                    "draw": "Draw"
+                },
+                "shoot": "SHOOT",
+                "tooearly": "You shot too early!"
+            },
+            "fight": {
+                "description": "Start a fight against the mentioned user",
+                "use": "`{prefix}fight <user>` - Challenges the mentioned user to a fight",
+                "example": "`{prefix}fight @Vic`",
+                "game": "the fight",
+                "targetunavailable": "{user} is already fighting!",
+                "unavailable": "You are already fighting!",
+                "challenged": "{user} challenged {target} to a fight!",
+                "turn": "It's **{user}**'s turn",
+                "body": "Health : `{hp}`\nMana : `{mana}`\nDamages : `{atk}`\nDefense : `{def}`",
+                "count": "Turn: {count}",
+                "buttons": {
+                    "atk": "Attack",
+                    "def": "Block",
+                    "skill": "Use card",
+                    "giveup": "Give up"
+                },
+                "feed": {
+                    "atk": {
+                        "main": "{user} attacked for `{damages}` damages",
+                        "sub": "\n{user} received `{damages}` damage points"
+                    },
+                    "def": "{tour} increased their defense for `{def}` points",
+                    "skill": "{user} used the card `{card}`"
+                },
+                "skill": "Choose a card to use",
+                "timeout": "{user} passed their turn (time out)",
+                "wrongturn": "It's not your turn!",
+                "win": "**{winner}** beat **{looser}**{withdraw}!",
+                "withdraw": " by forfeit"
+            },
+            "raclette": {
+                "description":"The best meal to share with your friends.",
+                "use":"`{prefix}raclette`",
+	            "example":"`{prefix}raclette`"
+            },
+            "snowman": {
+                "description": "Work in team to build the better snowman",
+                "use":"`{prefix}snowman`",
+                "example":"`{prefix}snowman`",
+                "embed": {
+                    "description":"**Gather as many people as possible in the time allowed to build the best snowman!**\n*React with :snowman: to join the construction*",
+                    "joined":"joined the construction",
+                    "powerup":"used the PowerUp \"{power}\"",
+                    "endings": {
+                        "noone":"No one has built this beautiful snowman.\n*Get more people together to make it better.*",
+                        "one":"{user} built this beautiful snowman.\n*Get more people together to make it better.*",
+                        "many":"**{users}** and **{user}** built this manificent snowman.",
+                        "max":"Congratulations for this great teamwork!"
+                    },
+                    "gift":"**{user}** got an item: {item}",
+                    "cooldown":"A snowman is already being built!"
+                }
+            },
+            "tartiflette": {
+                "description": "Yum!",
+                "use": "`!tartiflette`",
+                "example": "`!tartiflette`"
+            },
+            "accept": "Accept",
+            "decline": "Decline",
+            "cancel": "Cancel",
+            "accepted": "{user} accepted {game}! It will start in a few seconds...",
+            "declined": "{user} declined {game}."
+        },
+        "interaction": {
+            "applaud": {
+                "description": "When someone or something is so amazing that you want to congratulate them.",
+                "use": "`{prefix}applaud <user>` - Applauds mentioned user\n`{prefix}applaud <message>` - Applauds the message content",
+                "example": "`{prefix}applaud @R2-D2`\n`{prefix}applaud people who leave the last slice of pizza`",
+                "command": "applauds"
+            },
+            "banhammer": {
+                "description": "The Admin's power to summon throw the banhammer on the fools",
+                "use": "`{prefix}banhammer <user>`",
+                "example": "`{prefix}banhammer @R2-D2`",
+                "command": "**{user}** throws the banhammer on **{target}**"
+            },
+            "calin": {
+                "command": "{user} hugs **everyone**",
+                "use": "`{prefix}calin eveyone`\n`{prefix}calin <users>`",
+                "description": "To hug everyone",
+                "example": "`{prefix}calin everyone`\n`{prefix}calin @everyone`\n`{prefix}calin @here`"
+            },
+            "cry": {
+                "description": "When you're reduced to tears.",
+                "use": "`{prefix}cry`",
+                "example": "`{prefix}cry",
+                "command": "**{user}** cries"
+            },
+            "goodnight": {
+                "description": "Sweet dreams :crescent_moon:",
+                "use": "`{prefix}goodnight <user>`",
+                "example": "`{prefix}goodnight @R2D2`",
+                "text": "**{user}** wishes **{target}** good night"
+            },
+            "heat": {
+                "description": "Nothing better than heating near a fireplace.",
+                "use": "`{prefix}heat`",
+                "example": "`{prefix}heat`",
+                "text": "**{user}** is heating near the fireplace."
+            },
+            "motivation": {
+                "description": "Just do it",
+                "use":"`{prefix}motivation <user>`\n`{prefix}motivation <message>`",
+                "example":"`{prefix}motivation @R2-D2`\n`{prefix}motivation those who try to learn computer science`",
+                "text":"**{member}** sends motivation to **{target}**"
+            },
+            "piano": {
+                "description": "The most majestic of instruments for the worst of people.",
+                "use": "`{prefix}piano <user>`",
+                "example": "`{prefix}piano @R2D2`",
+                "text": "**{user}** throws a piano at **{target}**"
+            },
+            "provoke": {
+                "description": "Challenge your opponent.",
+                "use": "`{prefix}provoke <user>`\n`{prefix}provoke <user> <message>`",
+                "example": "`{prefix}provoke @R2-D2`\n`{prefix}provoke @R2-D2 Come and fight`",
+                "text": "**{user}** challenges **{target}** to a duel!\n{message}"
+            },
+            "snowball": {
+                "description": "Throw a snowball to your oponent",
+                "use": "`{prefix}snowball <user>`",
+                "example": "`{prefix}snowball @R2-D2`",
+                "text": "**{user}** throws a snowball at {break}**{target}**"
+            },
+            "thx": {
+                "description": "To thank the good guys",
+                "use":"`{prefix}thx <user>`",
+                "example":"{prefix}thx @R2-D2",
+                "thanks" : "**{member}** thanks **{target}**"
+            },
+            "mentionmissing": "You must mention someone to use this command"
+        },
+        "inventory": {
+            "booster": {
+                "description": "Open boosters and unpack cards!",
+                "use": "`{prefix}booster` - Display all your boosters and allow you to open one or many.",
+                "example": "`{prefix}booster`",
+                "display": "You have **{nboosters}** boosters",
+                "buttons": {
+                    "one": "Open one",
+                    "all": "Open all",
+                    "cancel": "Cancel"
+                },
+                "opening": "Opening **{n}** booster{plural}...",
+                "unpacked": "You found 1x **{card}!**",
+                "unpackedmany": {
+                    "found": "You found",
+                    "and": "and"
+                }
+            },
+            "card": {
+                "description": "Display specified card",
+                "use": "`{prefix}card <id>`\n`{prefix}card <cardname>`",
+                "example": "`{prefix}card 5`\n`{prefix}card gardien des bois`",
+                "notfound": "Specified card was not found"
+            },
+            "daily": {
+                "description": "Claim your daily gift",
+                "use": "`{prefix}daily`",
+                "example": "`{prefix}daily`",
+                "claimed": "{user} claimed their daily gift of `{win}` coins!",
+                "unavailable": {
+                    "descritpion": "**You already claimed your daily gift!**\n",
+                    "footer": "Come back in {hours} hours {minutes} minutes and {seconds} seconds"
+                }
+            },
+            "inventory": {
+                "description": "Display the inventory of the mentionned user",
+                "use": "`{prefix}inventory` - Display your inventory\n`{prefix}inventory <user>` - Display the mentionned user's inventory",
+                "example": "{prefix}inventory`\n`{prefix}inventory @Vic`",
+                "embed": {
+                    "title": "{user}'s inventory",
+                    "coin": "Coins: `{money}` :coin:"
+                }
+            },
+            "item": {
+                "description": "Get informations about an item",
+                "use": "`{prefix}item <id>`\n`{prefix}item <itemName>`",
+                "example": "`{prefix}item 3`\n`{prefix}item shovel`",
+                "sale": "Available for sale",
+                "notfound": "Specified item was not found."
+            },
+            "items": {
+                "use": "`{prefix}items`",
+                "example": "`{prefix}items`",
+                "description": "List all the existing items.",
+                "title": "Items' List"
+            },
+            "send": {
+                "description": "Send money to another person.",
+                "use": "`{prefix}send <user> <amount>` - Send given amount to mentionned user",
+                "example": "`{prefix}send @Vic 15`",
+                "inventorymissing": "Targeted user does not have an inventory",
+                "notenoughmoney": "You do not have enough coins!",
+                "transferred": "`{amount}` :coin: transferred to {user}",
+                "invalidamount": "You must enter a valid amount!"
+            },
+            "shop": {
+                "description": "Welcome in the Shop! Buy or sell some cool stuff here!",
+                "use": "`{prefix}shop`\n`{prefix}shop <page>`",
+                "example": "`{prefix}shop`\n`{prefix}shop buy`\n`{prefix}shop sell`",
+                "pages": {
+                    "home": {
+                        "title": "Shop",
+                        "description": "Welcome in the shop!",
+                        "row": {
+                            "sell": "Sell",
+                            "buy": "Buy",
+                            "close": "Close"
+                        }
+                    },
+                    "buy": {
+                        "title": "Purchases",
+                        "description": "So spend a few coins...\nYour money: `{money}` :coin:"
+                    },
+                    "sell": {
+                        "title": "Sales",
+                        "description": "Let's see what you have...\nYour money: `{money}` :coin:"
+                    },
+                    "back": "Return to the previous menu",
+                    "placeholder": "No items selected"
+                },
+                "sold": "The item `{item}` has been successfuly sold!",
+                "bought": "The item `{item}` has been successfuly bought!",
+                "warning": ":warning: You don't have the money! (You are `{money}` :coin: short)",
+                "closed": "Shop closed!"
+            },
+            "trade": {
+                "description": "Trade you items with others.",
+                "use": "`{prefix}trade <id1> <user> <id2>` - Trade your item `id1` for the item `id2` of mentionned user",
+                "example": "`{prefix}trade 5 @R2D2 7`",
+                "title": "Exchange offer",
+                "offer": "{user} receives:",
+                "targethasnotitem": "{user} does not have the item you want to trade him.",
+                "youhavenotitem": "You don't have the item you want to exchange.",
+                "confirm": {
+                    "text": "Are you sure you want to accept this offer?",
+                    "receive": "You receive:",
+                    "send": "You lose:"
+                },
+                "accepted": "**{target}** accepted **{sender}**'s offer.",
+                "refused": "**{target}** refused **{sender}**'s offer.",
+                "received": "{user} received the item `{item}`"
+            },
+            "inventorymissing": "You do not have an inventory (Get an item or go to the shop to be able to display it)."
+        },
+        "system": {
+            "create": {
+                "description":"Used to create an inventory",
+                "use":"`{prefix}create <user>` - Crée un inventaire pour l'utilisateur mentionné",
+                "example":"`{prefix}create @Vic`"
+            }
+        },
+        "utility": {
+            "avatar": {
+                "description":"Get member's avatar.",
+                "use":"`{prefix}avatar <member>` - Displays the avatar of the specified member (can be specified by tag, id or mention).\n`{prefix}avatar <member> size:<size>` - Sets the size of avatar to specified size (default: 2048).",
+                "example":"`{prefix}avatar vic#5483`\n`{prefix}avatar @vic`\n`{prefix}avatar 380047694628126720`\n`{prefix}avatar @vic size:4096`\n`{prefix}avatar vic#5483 size:1024`"
+            },
+            "help": {
+                "categories": "Categories",
+                "commandslist": "Commands List",
+                "footer": "Type {prefix}help <command> to display the help for that specific command.\nExample: {prefix}help fight",
+                "command": "Command",
+                "uses": "Usage",
+                "examples": "Examples",
+                "commandcategory": "Command category",
+                "footercategories": "\n:information_source: Type `{prefix}help <category>` to get a list of commands in that category.\nExample: `{prefix}help fun` or `{prefix}help interaction`",
+                "description": "Help you find out wtf is this command for",
+                "use": "`{prefix}help` - Display all the categories\n`{prefix}help <category>` - Display all the commands from the specified category\n`{prefix}help <command>` - Display detailed informations about the specified command",
+                "example": "`{prefix}help`\n`{prefix}help Fun`\n`{prefix}help fight`",
+                "permissions":"Required permissions: {permissions}"
+            },
+            "info": {
+                "description": "Displays informations about this bot",
+                "use": "`{prefix}info`",
+                "example": "`{prefix}info`",
+                "title": ":information_source: About R2-D2",
+                "text": "'<@830801834251386881> is an open-source bot that complements [*AvaIre*](https://avairebot.com/) by using the same command structure and user interface. \nSince the closure of [*AvaIre*](https://avairebot.com/) (mid-2022), <@830801834251386881> is also a self-hosted version. \nIt is being regularly updated with new features, commands and games!\n[**Profile picture**](https://iconarchive.com/show/starwars-longshadow-flat-icons-by-creativeflip/R2D2-icon.html)",
+                "commands": "Original commands:",
+                "lines": "Lines of code:",
+                "version": "Version: {version}"
+            },
+            "patchnote": {
+                "description": "Learn about the last updates of the bot.",
+                "use":"`{prefix}patchnote` - Displays last update's patchnote.",
+                "example":"`{prefix}patchnote`"
+            },
+            "ping": {
+                "description": "Pong!",
+                "use": "`{prefix}ping`",
+                "example": "`{prefix}ping`",
+                "text": "`{ping} ms` of latency"
+            },
+            "poll": {
+                "description":"Create your own custom surveys using this survey creator.",
+                "default" : {
+                    "title": ":bar_chart: Poll designer",
+                    "fields": {
+                        "howto": {
+                            "name": "How to create a poll?",
+                            "value": "- Use `{prefix}poll create` to create a survey.\n- Next, choose the **title** and **description** of your survey.\n- Finally, define the **possible choices** and the **maximum duration** of the survey.",
+                            "inline":true
+                        },
+                        "current": {
+                            "name": "Current surveys:",
+                            "value": "There are no active surveys on this guild at this time!",
+                            "inline":true
+                        }
+                    }
+                }
+            },
+            "source": {
+                "description": "Get source code of R2-D2",
+                "use":"`{prefix}source` - Returns complete source code of R2-D2\n`{prefix}source <command>` - Returns source code of the specified command",
+                "example":"`{prefix}source`\n`{prefix}source fight`",
+                "source":"source code {command} \n\nhttps://github.com/VicTheDev/R2D2{endURL}",
+                "command":"R2-D2 for command **{command}**:"
+            },
+            "missingpermission": "You do not have the required permission to use this command:\n`{permission}`"
+        }
+    },
+    "items": [
+        {
+            "name": "Shovel",
+            "description": "A nice shovel",
+            "use": "Use this shovel in the building of a snowman to build it faster!",
+            "id": 0
+        },
+        {
+            "name": "Snow canon",
+            "description": "Boom boom boom",
+            "use": "Use this canon in the building of a snowman to build it faster!",
+            "id": 1
+        },
+        {
+            "name": "Winter 2022 Badge",
+            "description": "Badge received for being part of the Winter 2022 event",
+            "id": 2
+        },
+        {
+            "name": "Bard",
+            "description": "*We wish him to learn to sing...*\n",
+            "use": "Regenerates vitality",
+            "id": 3
+        },
+        {
+            "name": "Mage",
+            "description": "*The legend says that he gets his powers from a mysterious magic stone...*\n",
+            "use": "Prevents the opponent from attacking for 3 turns",
+            "id": 4
+        },
+        {
+            "name": "Demon",
+            "description": "*Note: Never make a deal with him*\n",
+            "use": "Increases damage for 3 turns",
+            "id": 5
+        },
+        {
+            "name": "Arachnide daedrique",
+            "description": "*Coming from the province of High Rock, it traps its enemies in cocoons to devour them*\n",
+            "use": "The opponent cannot use any more cards for 3 turns",
+            "id": 6
+        },
+        {
+            "name": "Dragon",
+            "description": "*He cherishes his gold more than anything else*\n",
+            "use": "Inflicts damage to the opponent",
+            "id": 7
+        },
+        {
+            "name": "Death knight",
+            "description": "*It is better to never cross his path...*\n",
+            "use": "Returns a part of the damage received to the opponent during 4 turns",
+            "id": 8
+        },
+        {
+            "name": "Forest guardian",
+            "description": "*It would have been turned into a guard in immemorial time...*\n",
+            "use": "Double the defense and reduce the attack",
+            "id": 9
+        },
+        {
+            "name": "Card Booster",
+            "description": "Open it to unlock a random card.",
+            "id": 10
+        },
+        {
+            "name": "Knight",
+            "description": "*Faithful to his kingdom, he was betrayed by his monarch and exiled...*\n",
+            "use": "Decreases the armor of the opponent during 3 turns",
+            "id": 11
+        }
+    ],
+    "highpunctuation": "",
+    "yes": "yes",
+    "no": "no"
+}

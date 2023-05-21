@@ -1,13 +1,14 @@
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu, Message } = require('discord.js');
-const objects = require('./objects.json').filter(x => x.saleable)
+const objectsraw = require('./objects.json').filter(x => x.saleable)
 const mongoose = require('./mongoose');
 const {removeItem} = require('../maths');
+const {i18n} = require('../i18n/i18n')
 
 function initSetPage(page, message, oldmessage){
     let Embed = new MessageEmbed()
             .setColor('ffd700')
-            //.setImage('https://cdn.dribbble.com/users/1454037/screenshots/5632782/store-final---animated-dribbbler-bottomt.gif') //normal
-            .setImage('https://i.pinimg.com/originals/e4/e9/b5/e4e9b5a67459c5a9b7690e6bd59b818e.gif') //snow
+            //.setImage('https://cdn.dribbble.com/users/1454037/screenshots/5632782/store-final---animated-dribbbler-bottomt.gif')
+            .setImage([0,11,1].includes(new Date().getMonth()) ? 'https://i.pinimg.com/originals/e4/e9/b5/e4e9b5a67459c5a9b7690e6bd59b818e.gif' : 'https://cdn.dribbble.com/users/1454037/screenshots/5632782/store-final---animated-dribbbler-bottomt.gif')
             .setFooter({text:`Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })});   
     getInventory(Embed, page, message, oldmessage, SetPage)
 }
@@ -37,22 +38,23 @@ function getInventory(Embed, page, message, oldmessage, callback){
 }
 
 async function SetPage(Embed, page, message, element, oldmessage){
+    const guildId = message.guildId
     switch (page) {
         case 'home':
             var pageobj = {
                 name:'home',
-                title:'Magasin',
-                description:'Bienvenue dans le magasin !',
+                title: i18n.t("commands.inventory.shop.pages.home.title",guildId),
+                description: i18n.t("commands.inventory.shop.pages.home.description",guildId),
                 fields:[],
                 row: [new MessageActionRow()
                     .addComponents(
                         new MessageButton()
                             .setCustomId('buy')
-                            .setLabel('Acheter')
+                            .setLabel(i18n.t("commands.inventory.shop.pages.home.row.buy",guildId))
                             .setStyle('SUCCESS'),
                         new MessageButton()
                             .setCustomId('sell')
-                            .setLabel('Vendre')
+                            .setLabel(i18n.t("commands.inventory.shop.pages.home.row.sell",guildId))
                             .setStyle('PRIMARY')
                     )]
         
@@ -62,15 +64,15 @@ async function SetPage(Embed, page, message, element, oldmessage){
         case 'buy' :
             pageobj = {
                 name:'buy',
-                title:'Achats',
-                description:`Dépensez donc quelques pièces !\nVotre argent : ${element.money} :coin:`,
-                fields: setfields('buy',element),
+                title: i18n.t("commands.inventory.shop.pages.buy.title",guildId),
+                description: i18n.t("commands.inventory.shop.pages.buy.description",guildId,{money:element.money}),
+                fields: setfields('buy',element,guildId),
                 row: [new MessageActionRow()
                     .addComponents( 
                         new MessageSelectMenu()
                             .setCustomId('selectB')
-                            .setPlaceholder('Aucun item choisi')
-                            .addOptions(setOptions('buy',element))
+                            .setPlaceholder(i18n.t("commands.inventory.shop.pages.placeholder",guildId))
+                            .addOptions(setOptions('buy',element,guildId))
                     )]
                 
             };
@@ -78,15 +80,15 @@ async function SetPage(Embed, page, message, element, oldmessage){
         case 'sell':
             pageobj = {
                 name:'sell',
-                title:'Vente',
-                description:`Voyons voir ce que vous avez... \nVotre argent : ${element.money} :coin:`,
-                fields: setfields('sell',element),
+                title: i18n.t("commands.inventory.shop.pages.sell.title",guildId),
+                description:i18n.t("commands.inventory.shop.pages.home.description",guildId,{money:element.money}),
+                fields: setfields('sell',element,guildId),
                 row: [new MessageActionRow()
                 .addComponents( 
                     new MessageSelectMenu()
                         .setCustomId('selectS')
-                        .setPlaceholder('Aucun item choisi')
-                        .addOptions(setOptions('sell',element))
+                        .setPlaceholder(i18n.t("commands.inventory.shop.pages.placeholder",guildId))
+                        .addOptions(setOptions('sell',element,guildId))
                 )]
             };
             break;
@@ -97,7 +99,7 @@ async function SetPage(Embed, page, message, element, oldmessage){
             .addComponents(
                 new MessageButton()
                     .setCustomId('close')
-                    .setLabel('Fermer')
+                    .setLabel(i18n.t("commands.inventory.shop.pages.home.row.close",guildId))
                     .setStyle('DANGER')
             );
     }
@@ -115,14 +117,15 @@ async function SetPage(Embed, page, message, element, oldmessage){
 
 }
 
-function setfields(page,element){
+function setfields(page,element,guildId){
+    let objects = i18n.i(objectsraw,guildId)
     let FieldsArray = []
     switch (page) {
         case 'buy':
-            for (item in objects) {
+            for (let item in objects) {
                 FieldsArray.push({
                     name: objects[item].name,
-                    value: `${objects[item].cost} :coin:`,
+                    value: `\`${objects[item].cost}\` :coin:`,
                     inline: true,
                 });
             }
@@ -139,7 +142,7 @@ function setfields(page,element){
             items.forEach(function(item){
                 FieldsArray.push({
                     name: `${objects.find(o=>o.id===item[0]).name} x${item[1]}`,
-                    value: `${Math.round((objects.find(o=>o.id===item[0]).cost)*0.75)}:coin:`,
+                    value: `\`${Math.round((objects.find(o=>o.id===item[0]).cost)*0.75)}\` :coin:`,
                     inline: true
                 })
             })
@@ -149,16 +152,18 @@ function setfields(page,element){
     return(FieldsArray)
 }
 
-function setOptions(page,element){
+function setOptions(page,element,guildId){
+    let objects = i18n.i(objectsraw,guildId)
     let options=[]
     switch (page) {
         case 'buy':
-            for (item in objects) {
+            for (let item in objects) {
                 options.push({
                     label: objects[item].name,
                     description: objects[item].description,
                     value: (objects[item].id).toString(),
                 });
+                console.log(options)
             }
             break;
         case 'sell':
@@ -181,13 +186,15 @@ function setOptions(page,element){
     }
     options.push({
         label: '↩️',
-        description: 'Revenir au menu précédent',
+        description: i18n.t("commands.inventory.shop.pages.back",guildId),
         value: 'backH',
     });
     return(options)
 }
 
 function responding(message, botmessage, element, Embed){
+    const guildId = message.guildId
+    let objects = i18n.i(objectsraw,message.guildId)
     const filter = i => i.user.id === message.author.id;
     const collector = botmessage.createMessageComponentCollector({ filter, max: 1, maxComponents: 1, time: 30_000 });
 
@@ -205,6 +212,7 @@ function responding(message, botmessage, element, Embed){
                 SetPage(Embed, 'buy', message, element, botmessage)
                 break;
             case 'selectS':
+                console.log(i.values)
                 if (i.values[0]==='backH'){
                     await i.update(i)
                     //initSetPage('home', message, botmessage)
@@ -219,7 +227,7 @@ function responding(message, botmessage, element, Embed){
                     let moneyUpdate = element.money + Math.round((item.cost)*0.75);
                     await mongoose.Inventory.findOneAndUpdate({user: message.author.id}, { $set: {inventory: inventoryUpdate , money: moneyUpdate}});
 
-                    await i.reply({content: `L'objet ${item.name} a bien été vendu !`, ephemeral: true})
+                    await i.reply({content: i18n.t("commands.inventory.shop.sold",guildId,{item:item.name}), ephemeral: true})
                     initSetPage('sell', message, botmessage)
                 }
                 break;
@@ -236,10 +244,10 @@ function responding(message, botmessage, element, Embed){
                         let moneyUpdate = element.money - item.cost;
                         await mongoose.Inventory.findOneAndUpdate({user: message.author.id}, { $push: {inventory:item.id}, $set: {money: moneyUpdate}});
 
-                        await i.reply({content: `L'objet ${item.name} a bien été acheté !`, ephemeral: true})
+                        await i.reply({content: i18n.t("commands.inventory.shop.bought",guildId,{item:item.name}), ephemeral: true})
                         initSetPage('buy', message, botmessage)
                     }else{
-                        await i.reply({content: `:warning: Vous n'avez pas l'argent nécessaire ! (Il vous manque ${item.cost-element.money} :coin: )`,ephemeral:true})
+                        await i.reply({content: i18n.t("commands.inventory.shop.warning",guildId,{money:item.cost-element.money}),ephemeral:true})
                         //initSetPage('buy', message, botmessage)
                         SetPage(Embed, 'buy', message, element, botmessage)
                     }
@@ -257,7 +265,7 @@ function responding(message, botmessage, element, Embed){
         if(collected.size===0 || close){
             let Embed = new MessageEmbed()
                 .setColor('ffd700')
-                .setTitle('Magasin fermé !');
+                .setTitle(i18n.t("commands.inventory.shop.closed",message.guildId));
             botmessage.edit({embeds:[Embed], components: []}); 
         }
     })

@@ -18,4 +18,18 @@ function removeItem(array, item) {
     }
     return array;
 }
-module.exports = {getRandomInt,removeItem,getPercentage};
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function closestinRange(value, range){
+    const closest = range.reduce( 
+        (accumulator, currentValue) => 
+        Math.abs(accumulator-value)<Math.abs(currentValue-value)?accumulator:currentValue,
+        0
+    );
+    return closest;
+}
+
+module.exports = {getRandomInt,removeItem,getPercentage,capitalizeFirstLetter,closestinRange};

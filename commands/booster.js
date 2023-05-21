@@ -4,36 +4,35 @@ const { getRandomInt, removeItem } = require('../maths');
 const mongoose = require('../database/mongoose');
 const show = require('./card.js')
 const wait = require('util').promisify(setTimeout)
+const {i18n} = require('../i18n/i18n')
 module.exports = {
     name:'booster',
-    description:'Open boosters in your inventory',
     category:'Inventory',
-    use: "`!booster` - Affiche votre nombre de booster et vous permet d'en ouvrir",
-    example: "`!booster`",
     async execute(message, args){
+        const guildId = message.guildId
         let user = message.author
         const element = await mongoose.Inventory.findOne({ user: user.id});
         let inventory = element.inventory.toObject()
         if(element != undefined){
             const nBoosters = inventory.filter(x => x==10).length
             let Embed = new MessageEmbed()
-                .setDescription(`You have **${nBoosters}** boosters`)
+                .setDescription(i18n.t("commands.inventory.booster.display",guildId,{nboosters:nBoosters}))
                 .setColor('DARK_GOLD');
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
                         .setCustomId('1')
-                        .setLabel('Open one')
+                        .setLabel(i18n.t("commands.inventory.booster.buttons.one",guildId))
                         .setStyle('SUCCESS')
                         .setDisabled(!Boolean(nBoosters)),
                     new MessageButton()
                         .setCustomId('all')
-                        .setLabel('Open all')
+                        .setLabel(i18n.t("commands.inventory.booster.buttons.all",guildId))
                         .setStyle('PRIMARY')
                         .setDisabled(!Boolean(nBoosters)),
                     new MessageButton()
                         .setCustomId('cancel')
-                        .setLabel('Cancel')
+                        .setLabel(i18n.t("commands.inventory.booster.buttons.cancel",guildId))
                         .setStyle('DANGER')
                 )
             message.delete()
@@ -48,7 +47,7 @@ module.exports = {
                     case '1':
                         fullfilled = true;
                         collector.stop()
-                        Embed.description = 'Opening **1** booster...'
+                        Embed.description = i18n.t("commands.inventory.booster.opening",guildId,{n:'1',plural:''})
                         await botmessage.edit({embeds:[Embed], components:[]})
                         const cardwon = cards[getRandomInt(0,cards.length)]
                         await inventory.splice(inventory.indexOf(10), 1, cardwon.id)
@@ -57,14 +56,14 @@ module.exports = {
                             { user: user.id},
                             { $set: { inventory: inventory}}
                         )
-                        Embed.description = `You found 1x **${cardwon.name}!**`
+                        Embed.description = i18n.t("commands.inventory.booster.unpacked",guildId,{card:cardwon.name})
                         await botmessage.edit({embeds:[Embed]})
                         show.execute(botmessage,[cardwon.id])
                         break;
                     case 'all':
                         fullfilled = true;
                         collector.stop()
-                        Embed.description = `Opening **${nBoosters}** boosters...`
+                        Embed.description = i18n.t("commands.inventory.booster.opening",guildId,{n:nBoosters,plural:'s'})
                         await botmessage.edit({embeds:[Embed], components:[]})
                         let cardswon = []
                         let cardswonid = []
@@ -76,15 +75,15 @@ module.exports = {
                         const inventoryUpdatedAll = inventory.concat(cardswonid)
                         let cardswoniterable = []
                         while (cardswon.length>0){
-                            cardswoniterable.push([cardswon[0],cardswon.filter(x => x==cardswon[0]).length]) // push in cardswoniterable an array with arr[0]=cardX and arr[1]=number of occurences of cardX in cardswon"ééé
+                            cardswoniterable.push([cardswon[0],cardswon.filter(x => x==cardswon[0]).length]) // push in cardswoniterable an array with arr[0]=cardX and arr[1]=number of occurences of cardX in cardswon
                             cardswon = removeItem(cardswon,cardswon[0])
                         }
-                        let Description = 'You found'
+                        let Description = i18n.t("commands.inventory.booster.unpackedmany.found",guildId)
                         for(i in cardswoniterable){
                             if(i<cardswoniterable.length-1){
                                 Description += ` ${cardswoniterable[i][1]}x **${cardswoniterable[i][0].name}**,`
                             }else{
-                                Description += ` and ${cardswoniterable[i][1]}x **${cardswoniterable[i][0].name}**!`
+                                Description += ` ${i18n.t("commands.inventory.booster.unpackedmany.and",guildId)} ${cardswoniterable[i][1]}x **${cardswoniterable[i][0].name}**${i18n.t("highpunctuation",guildId)}!`
                             }
                         }
                         Embed.description = Description
@@ -107,7 +106,7 @@ module.exports = {
                 }
             })
         }else{
-            message.reply("Vous n'avez pas d'inventaire (Récupérez un objet ou rendez-vous dans le magasin pour pouvoir l'afficher)")
+            message.reply(i18n.t("commands.inventory.inventorymissing",guildId))
         }
     }
 }

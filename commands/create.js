@@ -1,11 +1,9 @@
 const mongoose = require('../database/mongoose')
 const {SuperAdmin} = require('../config.json')
+const {i18n} = require('../i18n/i18n')
 module.exports = {
     name:'create',
-    description:'Used to create an inventory',
     category: "Admin",
-    use:"`!create <user>` - Crée un inventaire pour l'utilisateur mentionné",
-    example:"`!create @Vic`",
     async execute(message, args) {
         if(message.author.id==SuperAdmin){ //Check if the user has the permission to manage inventories
             if(message.mentions.users.first()!==undefined){
@@ -23,16 +21,16 @@ module.exports = {
                             });
                             await element.save();
                             console.log('Inventory created')
-                            message.reply(`Inventaire créé pour ${user.tag}`)
+                            message.reply(`Inventory created for ${user.tag}`)
                         }
                         if(doc === true){ //case yes
                             console.log(`${user.tag} already has inventory!`)
-                            message.reply(`${user.tag} a déjà un inventaire !`)
+                            message.reply(`${user.tag} already has inventory!`)
                         }
                     }
                 });
             }else{
-                message.reply("Vous devez mentionner quelqu'un !")
+                message.reply(i18n.t("commands.interaction.missingmention",message.guildId))
             }
         }
     }

@@ -1,0 +1,542 @@
+{
+    "iso": "fr",
+    "language": "Français",
+    "commands": {
+        "admin": {
+            "automod": {
+                "description": "Puissant outil de modération automatique.",
+                "use": "`{prefix}automod`\n`{prefix}automod banwords` - Menu de gestion de la liste noire\n`{prefix}automod banwords <list/add/remove> <words>` - Liste, ajoute ou retire des mots de la liste noire.\n`{prefix}automod messages` - Menu de modération des messages\n`{prefix}automod messages <on/off>` - Active ou désactive la modération des messages.\n`{prefix}automod usernames` - Menu de modération des pseudos\n`{prefix}automod usernames <on/off>` - Active ou désactive la modération des pseudos.",
+                "example": "`{prefix}automod`\n`{prefix}automod banwords list`\n`{prefix}automod banwords add R2D2 R4D4` - Ajoute les mots `R2D2` et `R4D4` à la liste noire.\n`{prefix}automod messages on` - Active la modération des messages\n`{prefix}automod usernames off`",
+                "banwords": {
+                    "default": {
+                        "title":"Mots bannis",
+                        "description":"Gérez les mots interdits.\n\n• `list` - Lister tous les mots dans la liste noire\n• `add` - Ajouter des mots à la liste noire\n• `remove` - Retirer des mots de la liste noire"
+                    },
+                    "list": {
+                        "title":"Liste des mots bannis"
+                    },
+                    "add": {
+                        "added": "Le mot `{word}` a bien été ajouté à la liste noire.",
+                        "addedmany":"Les mots `{word}` ont bien été ajouté à la liste noire.",
+                        "already": "Le mot `{word}` fait déjà partie de la liste noire !"
+                    },
+                    "remove": {
+                        "removed":"Le mot `{word}` a bien été retiré de la liste noire.",
+                        "removedmany":"Les mots `{word}` ont bien été retiré de la liste noire.",
+                        "already":"Le mot `{word}` n'est pas dans la liste noire !"
+                    },
+                    "noarg": "Vous devez spécifier une liste de mots à ajouter !"
+                },
+                "default": {
+                    "title": "Modération automatique",
+                    "description": "**Choisissez une catégorie**\n\n• `banwords` - Ajouter, lister ou supprimer des mots de la liste noire\n• `messages` - Activer/désactiver la modération des messages\n• `usernames` - Activer/désactiver la modération des pseudos",
+                    "footer": "Utilisez {prefix}automod <catégorie>"
+                },
+                "messages": {
+                    "default": {
+                        "title": "Modération des messages",
+                        "description": "Si activée, les messages contenant les mots de la liste noire seront automatiquement supprimés.\n",
+                        "fields": {
+                            "status": "Statut",
+                            "enabled": ":green_circle: Activé",
+                            "disabled": ":red_circle: Désactivé",
+                            "options": "Options",
+                            "text": "• `on` - Activer\n• `off` - Désactiver"
+                        }
+                    },
+                    "on": "**La modération des messages a été activée.**\nUtilisez `{prefix}automod banwords` pour gérer la liste noire",
+                    "off": "**La modération des messages a été désactivée.**"
+                },
+                "usernames": {
+                    "default": {
+                        "title": "Modération des pseudos",
+                        "description": "Si activée, les pseudos contenant les mots de la liste noire seront automatiquement modifiés.\n",
+                        "fields": {
+                            "status": "Statut",
+                            "enabled": ":green_circle: Activé",
+                            "disabled": ":red_circle: Désactivé",
+                            "options": "Options",
+                            "text": "• `on` - Activer\n• `off` - Désactiver"
+                        }
+                    },
+                    "on": "**La modération des pseudos a été activée.**\nUtilisez `{prefix}automod banwords` pour gérer la liste noire",
+                    "off": "**La modération des pseudos a été désactivée.**"
+                }
+            },
+            "language": {
+                "description": "Définissez la langue de votre serveur",
+                "use": "`{prefix}language` - Affiche toutes les langues disponibles\n`{prefix}language <code>` - Définit la langue du serveur comme celle correspondant au code",
+                "example": "`{prefix}language`\n`{prefix}language en` - Définit la langue du serveur sur Anglais",
+                "text": "R2D2 supporte plusieurs langues. Les traductions peuvent ne pas être exactes ou complètes à 100%. Pour sélectionner une langue, utilisez `!language <code>`\n",
+                "updated": "La langue du serveur `{guild}` a été définie sur `{language}`"
+            }
+        },
+        "fun": {
+            "21sticks": {
+                "description": "Ne prenez pas le dernier bâton !",
+                "use": "`{prefix}21sticks <user>` - Lance une partie contre l'utilisateur mentionné",
+                "example": "`!21sticks @Vic`",
+                "game": "Jeu des 21 bâtons",
+                "remain": "bâtons restant",
+                "turn": "Tour",
+                "turnvalue": "C'est au tour de **{user}**",
+                "win": "**{user}** a gagné !",
+                "timeout": "**{user}** a gagné (Temps écoulé) !",
+                "opponentmissing": "Vous ne pouvez pas jouer contre vous même !"
+            },
+            "cookie": {
+                "description": "Un cookie et la vie s'améliore",
+                "use": "`{prefix}cookie`",
+                "example": "`{prefix}cookie`"
+            },
+            "duel": {
+                "description": "Dégainez plus vite que votre adversaire",
+                "use": "`{prefix}duel <user>` - Provoque l'utilisateur mentionné en duel",
+                "example": "`{prefix}duel @Vic`",
+                "challenged": "{user} a provoqué {target} en duel !",
+                "game": "le duel",
+                "targetunavailable": "{user} a déjà un duel en cours !",
+                "unavailable": "Vous avez déjà un duel en cours !",
+                "pos": {
+                    "wait": "Attendez",
+                    "shoot": "Tirez",
+                    "won": "{user} a gagné !",
+                    "draw": "Match nul"
+                },
+                "shoot": "TIRER",
+                "tooearly": "Vous avez tiré trop tôt !"
+            },
+            "fight": {
+                "description": "Commencer un combat avec l'utilisateur mentionné",
+                "use": "`!fight <user>` - Propose un combat à l'utilisateur mentionné",
+                "example": "`!fight @Vic`",
+                "game": "le combat",
+                "targetunavailable": "{user} est déjà dans un combat !",
+                "unavailable": "Vous êtes déjà dans un combat !",
+                "challenged": "{user} a défié {target} à un combat !",
+                "turn": "C'est au tour de : **{user}**",
+                "body": "Vie : `{hp}`\nMana : `{mana}`\nDégâts : `{atk}`\nDéfense : `{def}`",
+                "count": "Tour : {count}",
+                "buttons": {
+                    "atk": "Attaquer",
+                    "def": "Bloquer",
+                    "skill": "Utiliser une carte",
+                    "giveup": "Abandonner"
+                },
+                "feed": {
+                    "atk": {
+                        "main": "{user} a attaqué pour `{damages}` dégâts",
+                        "sub": "\n{user} a reçu `{damages}` points de dégâts"
+                    },
+                    "def": "{tour} a augmenté sa défense pour `{def}` points",
+                    "skill": "{user} a utilisé la carte `{card}`"
+                },
+                "skill": "Choisissez une carte à utiliser",
+                "timeout": "{user} a passé son tour (temps écoulé)",
+                "wrongturn": "Ce n'est pas votre tour de jouer !",
+                "win": "**{winner}** a battu **{looser}**{withdraw}!",
+                "withdraw": " par forfait "
+            },
+            "raclette": {
+                "description":"Le meilleur repas à partager entre amis.",
+                "use":"`{prefix}raclette`",
+	            "example":"`{prefix}raclette`"
+            },
+            "snowman": {
+                "description": "Travaillez en équipe pour bâtir le plus beau bonhomme de neige !",
+                "use":"`{prefix}snowman`",
+                "example":"`{prefix}snowman`",
+                "embed": {
+                    "description":"**Réunissez autant de personnes que possible dans le temps imparti pour construire le meilleur bonhomme de neige !**\n*Réagis avec :snowman: pour rejoindre la construction*",
+                    "joined":"a rejoint la construction",
+                    "powerup":"a utilisé le PowerUp \"{power}\"",
+                    "endings": {
+                        "noone":"Personne n'a construit ce magnifique bonhomme de neige.\n*Rassemble plus de personnes pour l'améliorer*",
+                        "one":"{user} a construit ce magnifique bonhomme de neige.\n*Rassemble plus de personnes pour l'améliorer*",
+                        "many":"**{users}** et **{user}** ont construit ce magnifique bonhomme de neige.",
+                        "max":"Bravo pour ce travail d'équipe conséquent !"
+                    },
+                    "gift":"**{user}** a obtenu un objet : {item}",
+                    "cooldown":"Un bonhomme de neige est déjà en construction !"
+                }
+            },
+            "tardigrade": {
+                "use": "`!tardigrade`",
+                "example": "`!tardigrade`",
+                "description": "The strongest animal."
+            },
+            "tartiflette": {
+                "description": "Miam !",
+                "use": "`!tartiflette`",
+                "example": "`!tartiflette`"
+            },
+            "accept": "Accepter",
+            "decline": "Décliner",
+            "cancel": "Annuler",
+            "accepted": "{user} a accepté {game} ! Cela va commencer dans quelques secondes...",
+            "declined": "{user} a décliné {game}."
+        },
+        "interaction": {
+            "applaud": {
+                "description": "Quand quelqu'un est si incroyable que vous voulez les féliciter.",
+                "use": "`{prefix}applaud <user>` - Applaudit l'utilisateur mentionné\n`{prefix}applaud <message>` - Applaudit le contenu du message",
+                "example": "`{prefix}applaud @R2-D2`\n`{prefix}applaud les gens qui laissent la dernière part de pizza`",
+                "command": "applaudit"
+            },
+            "banhammer": {
+                "description": "Le pouvoir de l'admin pour envoyer le banhammer sur les idiots",
+                "use": "`{prefix}banhammer <user>`",
+                "example": "`{prefix}banhammer @R2-D2`",
+                "command": "**{user}** envoie le banhammer sur **{target}**"
+            },
+            "calin": {
+                "command": "{user} fait un calin à **tout le monde**",
+                "use": "`{prefix}calin eveyone`\n`{prefix}calin <users>`",
+                "description": "Pour faire un calin à tout le monde",
+                "example": "`{prefix}calin everyone`\n`{prefix}calin @everyone`\n`{prefix}calin @here`"
+            },
+            "cry": {
+                "description": "Quand les larmes vous viennent",
+                "use": "`{prefix}cry`",
+                "example": "`{prefix}cry`",
+                "command": "**{user}** pleure"
+            },
+            "goodnight": {
+                "description": "Faites de beaux rêves :crescent_moon:",
+                "use": "`{prefix}goodnight <user>`",
+                "example": "`{prefix}goodnight @R2D2`",
+                "text": "**{user}** souhaite bonne nuit à **{target}**"
+            },
+            "heat": {
+                "description": "Rien de mieux que de se réchauffer près de la cheminée.",
+                "use": "`{prefix}heat`",
+                "example": "`{prefix}heat`",
+                "text": "**{user}** se réchauffe près de la cheminée."
+            },
+            "piano": {
+                "description": "Un instrument majestique pour les pires personnes.",
+                "use": "`{prefix}piano <user>`",
+                "example": "`{prefix}piano @R2D2`",
+                "text": "**{user}** lance un piano sur **{target}**"
+            },
+            "provoke": {
+                "description": "Défiez votre adversaire.",
+                "use": "`{prefix}provoke <user>`\n`{prefix}provoke <user> <message>`",
+                "example": "`{prefix}provoke @R2-D2`\n`{prefix}provoke @R2-D2 Viens te battre`",
+                "text": "**{user}** provoque **{target}** en duel !\n{message}"
+            },
+            "motivation": {
+                "description": "Just do it",
+                "use":"`{prefix}motivation <user>`\n`{prefix}motivation <message>`",
+                "example":"`{prefix}motivation @R2-D2`\n`{prefix}motivation ceux qui veulent réaliser leurs rêves`",
+                "text":"**{member}** envoie de la motivations à **{target}**"
+            },
+            "snowball": {
+                "description": "Lancez une boule de neige à votre adversaire",
+                "use": "`{prefix}snowball <user>`",
+                "example": "`{prefix}snowball @R2-D2`",
+                "text": "**{user}** lance une boule de neige sur {break}**{target}**"
+            },
+            "thx": {
+                "description": "Pour remercier les gens sympas.",
+                "use":"`{prefix}thx <user>`",
+                "example":"{prefix}thx @R2-D2",
+                "thanks" : "**{member}** remercie **{target}**"
+            },
+            "mentionmissing": "Vous devez mentionnez quelqu'un pour utiliser cette commande"
+        },
+        "inventory": {
+            "booster": {
+                "description": "Ouvrez des boosters et obtenez des cartes!",
+                "use": "`{prefix}booster` - Affiche votre nombre de booster et vous permet d'en ouvrir",
+                "example": "`{prefix}booster`",
+                "display": "Vous avez **{nboosters}** boosters",
+                "buttons": {
+                    "one": "Ouvrir un",
+                    "all": "Ouvrir tous",
+                    "cancel": "Annuler"
+                },
+                "opening": "Ouverture de **{n}** booster{plural}...",
+                "unpacked": "Vous avez obtenu 1x **{card}!**",
+                "unpackedmany": {
+                    "found": "Vous avez obtenu",
+                    "and": "et"
+                }
+            },
+            "card": {
+                "description": "Affiche la carte spécifiée",
+                "use": "`{prefix}card <id>`\n`{prefix}card <cardname>`",
+                "example": "`{prefix}card 5`\n`{prefix}card gardien des bois`",
+                "notfound": "La carte spécifiée n'a pas été trouvée"
+            },
+            "daily": {
+                "description": "Réclamez votre récompense journalière",
+                "use": "`{prefix}daily`",
+                "example": "`{prefix}daily`",
+                "claimed": "{user} a réclamé sa récompense journalière de `{win}` pièces !",
+                "unavailable": {
+                    "descritpion": "**Vous avez déjà réclamé votre récompense journalière !**\n",
+                    "footer": "Revenez dans {hours} heures {minutes} minutes et {seconds} secondes"
+                }
+            },
+            "inventory": {
+                "description": "Affiche l'inventaire de l'utilisateur mentionné",
+                "use": "`{prefix}inventory` - Affiche votre inventaire\n`{prefix}inventory <user>` - Affiche l'inventaire de l'utilisateur mentionné",
+                "example": "`{prefix}inventory`\n`{prefix}inventory @Vic`",
+                "embed": {
+                    "title": "Inventaire de {user}",
+                    "coin": "Pièces : `{money}` :coin:"
+                }
+            },
+            "item": {
+                "description": "Obtenez les informations à propos de l'objet spécifié",
+                "use": "`{prefix}item <id>`\n`{prefix}item <itemName>`",
+                "example": "`{prefix}item 3`\n`{prefix}item pelle`",
+                "sale": "Disponible à la vente",
+                "notfound": "L'objet spécifié n'a pas été trouvé."
+            },
+            "items": {
+                "use": "`{prefix}items`",
+                "example": "`{prefix}items`",
+                "description": "Liste tous les objets existants.",
+                "title": "Liste des items"
+            },
+            "send": {
+                "description": "Envoyez de l'argent à quelqu'un",
+                "use": "`{prefix}send <user> <amount>` - Envoie le montant sélectionné à l'utilisateur mentionné",
+                "example": "`{prefix}send @Vic 15`",
+                "inventorymissing": "L'utilisateur visé n'a pas d'inventaire",
+                "notenoughmoney": "Vous n'avez pas assez de pièces !",
+                "transferred": "`{amount}` :coin: transférés à {user}",
+                "invalidamount": "Vous devez entrez un montant valide!"
+            },
+            "shop": {
+                "description": "Bienvenue dans le magasin ! Achetez ou vendez d'intéressants objets ici !",
+                "use": "`{prefix}shop`\n`{prefix}shop <page>`",
+                "example": "`{prefix}shop`\n`{prefix}shop buy`\n`{prefix}shop sell`",
+                "pages": {
+                    "home": {
+                        "title": "Magasin",
+                        "description": "Bienvenue dans le magasin !",
+                        "row": {
+                            "sell": "Vendre",
+                            "buy": "Acheter",
+                            "close": "Fermer"
+                        }
+                    },
+                    "buy": {
+                        "title": "Achats",
+                        "description": "Dépensez donc quelques pièces...\nVotre argent : `{money}` :coin:"
+                    },
+                    "sell": {
+                        "title": "Ventes",
+                        "description": "Voyons voir ce que vous avez...\nVotre argent : `{money}` :coin:"
+                    },
+                    "back": "Revenir au menu précédent",
+                    "placeholder": "Aucun item choisi"
+                },
+                "sold": "L'item `{item}` a bien été vendu !",
+                "bought": "L'item `{item}` a bien été acheté !",
+                "warning": ":warning: Vous n'avez pas l'argent nécessaire ! (Il vous manque `{money}` :coin: )",
+                "closed": "Magasin fermé !"
+            },
+            "trade": {
+                "description": "Echangez vos objets avec d'autres utilisateurs.",
+                "use": "`{prefix}trade <id1> <user> <id2>` - Echange votre item `id1` contre l'item `id2` de l'utilisateur mentionné",
+                "example": "`{prefix}trade 5 @R2D2 7`",
+                "title": "Offre d'échange",
+                "offer": "{user} reçoit :",
+                "targethasnotitem": "{user} n'a pas l'item que vous voulez lui échanger.",
+                "youhavenotitem": "Vous n'avez pas l'item que vous voulez échanger.",
+                "confirm": {
+                    "text": "Êtes-vous certains de vouloir accepter cette offre ?",
+                    "receive": "Vous recevez :",
+                    "send": "Vous perdez :"
+                },
+                "accepted": "**{target}** a accepté l'offre de **{sender}**",
+                "refused": "**{target}** a refusé l'offre de **{sender}**.",
+                "received": "{user} a reçu l'objet `{item}`"
+            },
+            "inventorymissing": "Vous n'avez pas d'inventaire (Récupérez un objet ou rendez-vous dans le magasin pour pouvoir l'afficher)"
+        },
+        "utility": {
+            "avatar": {
+                "description":"Affiche l'image de profil d'un membre.",
+                "use":"`{prefix}avatar <member>` - Affiche l'image de profil du membre spécifié (peut-être spécifié par son tag, son id ou en le mentionnant).\n`{prefix}avatar <member> size:<size>` - Définit la taille de l'image à la taille spécifiée (défaut : 2048).",
+                "example":"`{prefix}avatar vic#5483`\n`{prefix}avatar @vic`\n`{prefix}avatar 380047694628126720`\n`{prefix}avatar @vic size:4096`\n`{prefix}avatar vic#5483 size:1024`"
+            },
+            "help": {
+                "categories": "Catégories",
+                "commandslist": "Liste de commandes",
+                "footer": "Utilisez {prefix}help <command> pour afficher l'aide de la commande spécifiée.\nExemple: {prefix}help fight",
+                "command": "Commande ",
+                "uses": "Utilisation",
+                "examples": "Exemples",
+                "commandcategory": "Catégorie de la commande ",
+                "footercategories": "\n:information_source: Utilisez `{prefix}help <category>` pour afficher les commandes de la catégorie spécifiée.\nExemple: `{prefix}help fun` or `{prefix}help interaction`",
+                "description": "Aide à comprendre à quoi sert cette foutue commande.",
+                "use": "`{prefix}help` - Affiche toutes les catégories\n`{prefix}help <category>` - Affiche toutes les commandes de la catégorie spécifiée\n`{prefix}help <command>` - Affiche les informations détaillées de la commande spécifiée",
+                "example": "`{prefix}help`\n`{prefix}help Fun`\n`{prefix}help fight`",
+                "permissions":"Permissions requises : {permissions}"
+            },
+            "info": {
+                "description": "Affiche les informations à propos de ce bot",
+                "use": "`{prefix}info`",
+                "example": "`{prefix}info`",
+                "title": ":information_source: À propos de R2-D2",
+                "text": "<@830801834251386881> est un bot open-source qui complémente [*AvaIre*](https://avairebot.com/) en utilisant les mêmes structures de commandes ainsi que la même interface utilisateur.\nDepuis l'arrêt de [*AvaIre*](https://avairebot.com/) (mi-2022), <@830801834251386881> en est également une version self-host.\nIl est régulièrement mis à jour avec de nouvelles fonctionnalités, de nouvelles commandes et de nouveaux jeux !\n[**Image de profil**](https://iconarchive.com/show/starwars-longshadow-flat-icons-by-creativeflip/R2D2-icon.html)",
+                "commands": "Commandes originales :",
+                "lines": "Lignes de code :",
+                "version": "Version : {version}"
+            },
+            "ping": {
+                "description": "Pong !",
+                "use": "`{prefix}ping`",
+                "example": "`{prefix}ping`",
+                "text": "`{ping} ms` de latence"
+            },
+            "poll": {
+                "description":"Créez vos propres sondages personnalisés à l'aide de ce créateur de sondages.",
+                "default" : {
+                    "title": ":bar_chart: Créateur de Sondages",
+                    "fields": {
+                        "howto": {
+                            "name": "Comment créer un sondage ?",
+                            "value": "- Utilisez `{prefix}poll create` pour créer un sondage.\n- Choisissez ensuite le **titre** et la **description** de votre sondage.\n- Finalement, définissez les **choix possibles** ainsi que la **durée maximale** du sondage.",
+                            "inline":true
+                        },
+                        "current": {
+                            "name": "Sondages en cours :",
+                            "value": "Il n'y a aucun sondage en cours sur ce serveur en ce moment !",
+                            "inline":true
+                        }
+                    }
+                },
+                "create": {
+                    "title":":bar_chart: Création d'un sondage",
+                    "description":"Utilisez le menu de sélection pour éditer le sondage, et visualiser un aperçu en direct.\nNote : les choix du sondages seront visibles une fois le sondage lancé sous forme de bouttons.",
+                    "preview": "Prévisualisation",
+                    "row": {
+                        "selectmenu": {
+                            "placeholder": "Éditez votre sondage",
+                            "title": {
+                                "label": "Titre",
+                                "description": "Modifier le titre du sondage"
+                            },
+                            "description": {
+                                "label": "Description",
+                                "description": "Modifier la description du sondage"
+                            },
+                            "options": {
+                                "label": "Choix",
+                                "description":"Définir les réponses possibles du sondage."
+                            },
+                            "duration": {
+                                "label": "Durée",
+                                "description": "Modifier la durée du sondage."
+                            }
+                        },
+                        "buttons": {
+                            "start": "Lancer",
+                            "abort": "Annuler"
+                        }
+                    }
+                },
+                "edit": {
+                    "title":"Entrez le titre du sondage :",
+                    "description":"Entrez la description du sondage :",
+                    "options":{
+                        "number":"Entrez le nombre de choix possibles :",
+                        "choice":"Entrez le choix numéro : {n}",
+                        "choices":"Choix possibles du sondage :"
+                    },
+                    "duration":"Entrez la durée du sondage (en secondes) :"
+                }
+            },
+            "source": {
+                "description": "Obtenez le code source de R2-D2",
+                "use":"`{prefix}source` - Retourne le code source complet de R2-D2\n`{prefix}source <command>` - Retourne le code source complet de la commande spécifiée",
+                "example":"`{prefix}source`\n`{prefix}source fight`",
+                "source":"code source {command} \n\nhttps://github.com/VicTheDev/R2D2{endURL}",
+                "command":"R2-D2 pour la commande **{command}** :"
+            },
+            "missingpermission": "Vous n'avez pas la permission requise pour utiliser cette commande :\n`{permission}`"
+        }
+    },
+    "items": [
+        {
+            "name": "Pelle",
+            "description": "C'est une pelle",
+            "use": "Utilisez cette pelle pendant la construction d'un bonhomme de neige afin de construire plus vite !",
+            "id": 0
+        },
+        {
+            "name": "Canon à Neige",
+            "description": "Boum boum",
+            "use": "Utilisez ce canon pendant la construction d'un bonhomme de neige afin de construire plus vite !",
+            "id": 1
+        },
+        {
+            "name": "Badge Hiver 2022",
+            "description": "Badge reçu pour avoir participé à l'évènement Hiver 2022",
+            "id": 2
+        },
+        {
+            "name": "Barde",
+            "description": "*On lui souhaite d'apprendre à chanter...*\n",
+            "use": "Régénère la vitalité",
+            "id": 3
+        },
+        {
+            "name": "Mage",
+            "description": "*La légende raconte qu'il tire ses pouvoirs d'une mystérieuse pierre magique...*\n",
+            "use": "Empêche l'adversaire d'attaquer pendant 3 tours",
+            "id": 4
+        },
+        {
+            "name": "Démon",
+            "description": "*Note : Ne jamais passer un marché avec lui*\n",
+            "use": "Augmente les dégâts pendant 3 tours",
+            "id": 5
+        },
+        {
+            "name": "Arachnide daedrique",
+            "description": "*Issue de la province de Hauteroche, elle piège ses ennemis dans des cocons pour les dévorer*\nL'adversaire ne peut plus utiliser de cartes pendant 3 tours",
+            "use": "L'adversaire ne peut plus utiliser de cartes pendant 3 tours",
+            "id": 6
+        },
+        {
+            "name": "Dragon",
+            "description": "*Il chérit son or plus que tout*\n",
+            "use": "Inflige des dégâts à l'adversaire",
+            "id": 7
+        },
+        {
+            "name": "Cavalier du trépas",
+            "description": "*Mieux vaut ne jamais croiser son chemin...*\n",
+            "use": "Renvoie une partie des dégâts reçus à l'adverdsaire pendant 4 tours",
+            "id": 8
+        },
+        {
+            "name": "Gardien des bois",
+            "description": "*Il aurait été changé en gardien dans des temps immémoriaux*\n",
+            "use": "Double la défense et réduit l'attaque",
+            "id": 9
+        },
+        {
+            "name": "Booster de cartes",
+            "description": "Ouvrez le pour gagner une carte aléatoire.",
+            "id": 10,
+            "cost": 30
+        },
+        {
+            "name": "Chevalier",
+            "description": "*Fidèle à son royaume, il fût trahi par son monarque et s'exila...*\n",
+            "use": "Diminue l'armure de l'adversaire pendant 3 tours",
+            "id": 11
+        }
+    ],
+    "highpunctuation": " ",
+    "yes": "oui",
+    "no": "non"
+}

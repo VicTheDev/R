@@ -1,12 +1,10 @@
 const { MessageEmbed } = require('discord.js');
 const {Inventory, Profile} = require('../database/mongoose')
 const {getRandomInt} = require('../maths')
+const {i18n} = require('../i18n/i18n')
 module.exports = {
     name: "daily",
-    description: "Claim your daily gift",
     category: "Inventory",
-    use: "`!daily`",
-    example: "`!daily`",
     async execute(message, args){
         let user = message.author
         Inventory.exists({ user: user.id }, async function (err, doc) {
@@ -35,6 +33,7 @@ module.exports = {
     }
 }
 async function getDaily(message, element, user){
+    const guildId = message.guildId
     if(element.daily == undefined){
         await Inventory.findOneAndUpdate({user:user.id}, { $set: {daily:Date.now()}})
         element.daily=Date.now()
@@ -48,8 +47,8 @@ async function getDaily(message, element, user){
         const seconds = Math.round(timeremain/1000 - minutes*60 - hours*3600)
         const Embed = new MessageEmbed()
             .setColor('DARK_RED')
-            .setDescription(`**Vous avez déjà réclamé votre récompense journalière !**\n`)
-            .setFooter({text: `Revenez dans ${hours} heures ${minutes} minutes et ${seconds} secondes`})
+            .setDescription(i18n.t("commands.inventory.daily.unavailable.description",guildId))
+            .setFooter({text: i18n.t("commands.inventory.daily.unavailable.footer",guildId,{hours:hours,minutes:minutes,seconds:seconds})})
         message.reply({embeds: [Embed]})
     }
 }
@@ -58,6 +57,6 @@ async function getGift(message, user){
     await Inventory.findOneAndUpdate({user:user.id}, { $inc: {money: win}, $set: {daily:Date.now()}})
     const Embed = new MessageEmbed()
         .setColor('DARK_GOLD')
-        .setDescription(`${user.username} a réclamé sa récompense journalière de \`${win}\` pièces !`)
+        .setDescription(i18n.t("commands.inventory.daily.claimed",guildId,{user:user.username,win:win}))
     message.channel.send({embeds: [Embed]})
 }

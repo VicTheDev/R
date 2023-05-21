@@ -9,14 +9,13 @@ const {cardsEffects} = require('../database/cardsScripts'); //Scripts for the ca
 const wait = require('util').promisify(setTimeout); //Wait x ms
 ///_____________________________________________________________///
 const cooldown = new Set();
+const {i18n} = require('../i18n/i18n');
 
 module.exports = {
     name: "fight",
-    description: "Start a fight",
     category: "Fun",
-    use: "`!fight <user>` - Propose un combat à l'utilisateur mentionné",
-    example: "`!fight @Vic`",
 	async execute(message, args) {
+        const guildId = message.guildId
         let count = 0
         const member = message.member;
         const target = message.mentions.members.first()
@@ -31,15 +30,15 @@ module.exports = {
                         .addComponents(
                             new MessageButton()
                                 .setCustomId('ok')
-                                .setLabel('Accept')
+                                .setLabel(i18n.t("commands.fun.accept",guildId))
                                 .setStyle('SUCCESS'),
                             new MessageButton()
                                 .setCustomId('no')
-                                .setLabel('Decline')
+                                .setLabel(i18n.t("commands.fun.decline",guildId))
                                 .setStyle('DANGER')
                         );
 
-                    const acceptmessage = await message.channel.send({content:`${member.user} challenged ${target.user} to a fight!`, components: [row]})
+                    const acceptmessage = await message.channel.send({content:i18n.t("commands.fun.fight.challenged",guildId,{user:member.user,target:target.user}), components: [row]})
                     const filter = i => i.message.id == acceptmessage.id && ['ok','no'].includes(i.customId) && i.member == target;
                     const collector = acceptmessage.channel.createMessageComponentCollector({filter, time: 20_000});
                     
@@ -47,7 +46,7 @@ module.exports = {
                     collector.on('collect', async i => {
                         switch (i.customId){
                             case 'ok':
-                                await acceptmessage.edit({content:`${target.user} accepted the fight! It will start in a few seconds...`, components: []})
+                                await acceptmessage.edit({content:i18n.t("commands.fun.accepted",guildId,{user:target.user,game:i18n.t("commands.fun.fight.game",guildId)}), components: []})
                                 cooldown.add(target.user.id)
                                 setTimeout(() => {
                                     acceptmessage.delete()
@@ -57,7 +56,7 @@ module.exports = {
                                 collector.stop()
                                 break;
                             case 'no':
-                                await acceptmessage.edit({content: `${target.displayName} declined the fight.` , components: []})
+                                await acceptmessage.edit({content: i18n.t("commands.fun.declined",guildId,{user:target.displayName,game:i18n.t("commands.fun.fight.game",guildId)}) , components: []})
                                 cooldown.delete(member.user.id)
                                 answered = true
                                 setTimeout(() => {
@@ -69,7 +68,7 @@ module.exports = {
         
                     collector.on('end', async collected => {
                         if(!answered){
-                            await acceptmessage.edit({content: `${target.displayName} declined the fight.` , components: []})
+                            await acceptmessage.edit({content: i18n.t("commands.fun.declined",guildId,{user:target.displayName,game:i18n.t("commands.fun.fight.game",guildId)}) , components: []})
                             cooldown.delete(member.user.id)
                                 setTimeout(() => {
                                     acceptmessage.delete()
@@ -77,28 +76,28 @@ module.exports = {
                         }
                     })
                 }else{
-                    const reply = await message.reply(`${target.displayName} is already fighting!`)
+                    const reply = await message.reply(i18n.t("commands.fun.fight.targetunavailable",guildId,{user:target.displayName}))
                     message.delete()
                     setTimeout(() => {
                         reply.delete()
                     }, 3000)
                 }
             }else{
-                const reply = await message.reply('You are already in a fight!')
+                const reply = await message.reply(i18n.t("commands.fun.fight.unavailable",guildId))
                 message.delete()
                 setTimeout(() => {
                     reply.delete()
                 }, 3000)
             }
         }else{
-            const reply = await message.reply("You must mention someone!")
+            const reply = await message.reply(i18n.t("commands.interaction.mentionmissing",guildId))
             message.delete()
             setTimeout(() => {
                 reply.delete()
             }, 3000)
         }
         function initFight(message, target, p1inventory, p2inventory){ // Create players objects 
-            let p1cardsAll = cards.filter(x => p1inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id))
+            let p1cardsAll = i18n.i(cards.filter(x => p1inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id)),guildId)
             let p1cardsunit = []
             while (p1cardsAll.length>0){
                 p1cardsunit.push(p1cardsAll[0])
@@ -121,7 +120,7 @@ module.exports = {
                 canusecard:true
             }
             let count = 0
-            let p2cardsAll = cards.filter(x => p2inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id))
+            let p2cardsAll = i18n.i(cards.filter(x => p2inventory.filter(x=> objects.find(i => i.id==x).card).includes(x.id)),guildId)
             let p2cardsunit = []
             while (p2cardsAll.length>0){
                 p2cardsunit.push(p2cardsAll[0])
@@ -147,7 +146,7 @@ module.exports = {
             let other = p2
             const EmbedFeed = new MessageEmbed()
                 .setColor('DARK_BUT_NOT_BLACK')
-                .setDescription(`C'est au tour de ${tour.member.displayName} de jouer`)
+                .setDescription(i18n.t("commands.fun.fight.turn",guildId,{user:tour.member.displayName}))
             setMessage(message, p1, p2, tour, other, undefined, EmbedFeed)
         }
         
@@ -208,41 +207,41 @@ module.exports = {
                 count ++
             }
             let EmbedTour = new MessageEmbed()
-                    .setDescription(`C'est au tour de : **${tour.member.displayName}**`)
+                    .setDescription(i18n.t("commands.fun.fight.turn",guildId,{user:tour.member.displayName}))
                     .setColor(tour == p1 ? 'BLUE' : 'GOLD');
             let EmbedBody = new MessageEmbed()
                 .addFields(
-                { name: p1.member.displayName ,value:`Vie : \`${p1.vie}\`\nMana : \`${p1.mana}\`\nDégâts : \`${p1.atk}\`\nDéfense : \`${p1.def}\``,inline:true},
+                { name: p1.member.displayName ,value:i18n.t("commands.fun.fight.body",guildId,{hp:p1.vie,mana:p1.mana,atk:p1.atk,def:p1.def}),inline:true},
                 //{ name:"  Contre  ",value:"_ _ _ _\n-------\n-------",inline:true},
                 {name : '\u200b', value:'\u200b',inline:true},
-                { name: p2.member.displayName ,value:`Vie : \`${p2.vie}\`\nMana : \`${p2.mana}\`\nDégâts : \`${p2.atk}\`\nDéfense : \`${p2.def}\``,inline:true}
+                { name: p2.member.displayName ,value:i18n.t("commands.fun.fight.body",guildId,{hp:p2.vie,mana:p2.mana,atk:p2.atk,def:p2.def}),inline:true}
                 )
                 .setColor('DARK_BLUE')
-                .setFooter({text:`Tour : ${count}`});
+                .setFooter({text:i18n.t("commands.fun.fight.count",guildId,{count:count})});
         
             let row = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
                             .setCustomId('atk')
-                            .setLabel('Attack')
+                            .setLabel(i18n.t("commands.fun.fight.buttons.atk",guildId))
                             .setStyle('SECONDARY')
                             .setEmoji('⚔️')
                             .setDisabled(!tour.canatk),
                         new MessageButton()
                             .setCustomId('skill')
-                            .setLabel('Use Card')
+                            .setLabel(i18n.t("commands.fun.fight.buttons.skill",guildId))
                             .setStyle('SECONDARY')
                             .setEmoji('🃏')
                             .setDisabled(!(Boolean(tour.skills.length) && tour.canusecard)),
                         new MessageButton()
                             .setCustomId('def')
-                            .setLabel('Block')
+                            .setLabel(i18n.t("commands.fun.fight.buttons.def",guildId))
                             .setStyle('SECONDARY')
                             .setEmoji('🛡️')
                             .setDisabled(!tour.candef),
                         new MessageButton()
                             .setCustomId('giveup')
-                            .setLabel('Give Up')
+                            .setLabel(i18n.t("commands.fun.fight.buttons.giveup",guildId))
                             .setStyle('DANGER'),
                     )
             await wait(300)
@@ -271,7 +270,7 @@ module.exports = {
             botmessage.edit({embeds:[EmbedTour,EmbedBody,Embed], components: [row]})
             let EmbedFeed = new MessageEmbed()
                 .setColor('DARK_BUT_NOT_BLACK')
-                .setDescription(`${tour.member.displayName} a passé son tour (temps écoulé)`);
+                .setDescription(i18n.t("commands.fun.fight.timeout",guildId,{user:tour.member.displayName}));
         
             collector.on('collect', async i => {
                 if(i.message.id === botmessage.id){
@@ -287,16 +286,17 @@ module.exports = {
                                 if(damages*other.thorns>=blockedself*other.thorns){
                                     tour.vie = Number((tour.vie - (damages*other.thorns-blockedself*other.thorns)).toFixed(2))
                                 }
-                                i.update(i)
+                                i.deferUpdate()
+                                console.log(i18n.t("commands.fun.fight.feed.atk.main",guildId,{user:tour.member.displayName, damages:((damages-blocked)>=0 ? (damages-blocked).toFixed(2) : '0')}) + (damages*other.thorns>blockedself ? i18n.t("commands.fun.fight.feed.atk.sub",guildId,{user:tour.member.displayName,damages:(damages*other.thorns-blockedself).toFixed(2)}) : ''))
                                 EmbedFeed
                                     .setColor('ORANGE')
-                                    .setDescription(`${tour.member.displayName} a attaqué pour \`${(damages-blocked)>=0 ? (damages-blocked).toFixed(2) : '0'}\` dégâts${damages*other.thorns>blockedself ? `\n${tour.member.displayName} a reçu \`${(damages*other.thorns-blockedself).toFixed(2)}\` points de dégâts` : ''}`);
+                                    .setDescription(i18n.t("commands.fun.fight.feed.atk.main",guildId,{user:tour.member.displayName, damages:((damages-blocked)>=0 ? (damages-blocked).toFixed(2) : '0')}) + (damages*other.thorns>blockedself ? i18n.t("commands.fun.fight.feed.atk.sub",guildId,{user:tour.member.displayName,damages:(damages*other.thorns-blockedself).toFixed(2)}) : ''));
                                 fullfilled = true;
                                 collector.stop()
                                 break;
                             case 'skill':
                                 const skillsEmbed = new MessageEmbed()
-                                    .setTitle('Choisissez une carte à utiliser');
+                                    .setTitle(i18n.t("commands.fun.fight.skill",guildId));
                                 for(a of tour.skills){
                                     skillsEmbed.addFields({name: `${a.name} (${a.mana.toString()})`, value: a.use, inline:true})
                                 }
@@ -310,10 +310,10 @@ module.exports = {
                             case 'def':
                                 const defpoints = getRandomInt(1,3)
                                 tour.def += defpoints
-                                i.update(i)
+                                i.deferUpdate()
                                 EmbedFeed
                                     .setColor('DARK_AQUA')
-                                    .setDescription(`${tour.member.displayName} a augmenté sa défense pour ${defpoints} points`);
+                                    .setDescription(i18n.t("commands.fun.fight.feed.def",guildId,{user:tour.member.displayName,def:defpoints}));
                                 fullfilled = true;
                                 collector.stop()
                                 break;
@@ -324,7 +324,7 @@ module.exports = {
                                 break;
                         }
                     }else{
-                        i.reply({content: "Ce n'est pas votre tour de jouer !", ephemeral:true})
+                        i.reply({content: i18n.t("commands.fun.fight.wrongturn",guildId), ephemeral:true})
                     }
                 }
             });
@@ -345,7 +345,7 @@ module.exports = {
                 let skills = []
                 const cancelButton = new MessageButton()
                     .setCustomId('back')
-                    .setLabel('Cancel')
+                    .setLabel(i18n.t("commands.fun.cancel",guildId))
                     .setStyle('DANGER');
                 for (let a = 0; a < Math.ceil(tour.skills.length/5); a++){
                     skills.push(new MessageActionRow())
@@ -449,9 +449,9 @@ module.exports = {
                             tour.skills = removeItem(tour.skills, cards.find(x=> x.id ==i.customId))
                             EmbedFeed
                                 .setColor('DARK_PURPLE')
-                                .setDescription(`${tour.member.displayName} a utilisé la carte \`${cards.find(x=>x.id==i.customId).name}\``);
+                                .setDescription(i18n.t("commands.fun.fight.feed.skill",guildId,{user:tour.member.displayName,card:i18n.i(i.customId,guildId).name}));
                             nextTour(message, p1, p2, tour, other, botmessage,EmbedFeed)
-                            //i.update(i)
+                            //i.deferUpdate()
                             collector.stop()
                         }else{
                             startTime = (Date.now() - startTime) + timer
@@ -460,7 +460,7 @@ module.exports = {
                             collector.stop()
                         }
                     }else{
-                        i.reply({content: "Ce n'est pas votre tour de jouer !", ephemeral:true})
+                        i.reply({content: i18n.t("commands.fun.fight.wrongturn",guildId), ephemeral:true})
                     }
                 }
             });
@@ -469,7 +469,7 @@ module.exports = {
                 if(!fullfilled){
                     EmbedFeed = new MessageEmbed()
                         .setColor('DARK_BUT_NOT_BLACK')
-                        .setDescription(`${tour.member.displayName} a passé son tour (temps écoulé)`);
+                        .setDescription(i18n.t("commands.fun.fight.timeout",guildId,{user:tour.member.displayName}));
                     replymessage.delete()
                     nextTour(message, p1, p2, tour, other, botmessage, EmbedFeed)
                 }
@@ -478,9 +478,9 @@ module.exports = {
         }
         
         function win(winner,looser, botmessage, forfait){ // Update the bot message to announce the winner (and the looser)
-            const forfaitSTR = forfait ? ' par forfait ' : ' '
+            const forfaitSTR = forfait ? i18n.t("commands.fun.fight.withdraw",guildId) : i18n.t("highpunctuation",guildId)
             const Embed = new MessageEmbed()
-                .setDescription(`**${winner.displayName}** a battu **${looser.displayName}**${forfaitSTR}!`)
+                .setDescription(i18n.t("commands.fun.fight.win",guildId,{winner:winner.displayName,looser:looser.displayName,withdraw:forfaitSTR}))
                 .setThumbnail(winner.user.displayAvatarURL());
             botmessage.edit({embeds:[Embed], components:[]})
             cooldown.delete(winner.user.id)

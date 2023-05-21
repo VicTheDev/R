@@ -3,14 +3,15 @@ const maths = require('../maths');
 const fs = require('fs');
 const path = require('path');
 const commandFiles = fs.readdirSync(path.resolve(__dirname, '../commands')).filter(file => file.endsWith('.js'));
-const {PREFIX} = require('../config.json')
+const {PREFIX} = require('../config.json');
+const {i18n} = require('../i18n/i18n')
 module.exports = {
 	name: 'help',
-	description: 'Help you find out wtf is this command for',
-    category: 'Other',
-    use: '`r2!help` - Affiche une liste de catégories de commandes\n`r2!help <category>` - Affiche la liste des commandes de la catégorie spécifiée\n`!help <command>` - Affiche les informations détaillées de la commande spécifiée',
-    example:"`r2!help`\n`r2!help Fun`\n`r2!help fight`",
+    category: 'Utility',
+    use: `\`${PREFIX}help\` - Affiche une liste de catégories de commandes\n\`${PREFIX}help <category>\` - Affiche la liste des commandes de la catégorie spécifiée\n\`${PREFIX}help <command>\` - Affiche les informations détaillées de la commande spécifiée`,
+    example:`\`${PREFIX}help\`\n\`${PREFIX}help Fun\`\n\`${PREFIX}help fight\``,
 	execute(message, args) {
+        const guildId = message.guildId
         let categories = []
         for(const file of commandFiles){
             const command = require(`./${file}`)
@@ -24,7 +25,7 @@ module.exports = {
 
         const Embed = new Discord.MessageEmbed()
             .setColor('#4172bf')
-            .setTitle(`:scroll: Categories`);
+            .setTitle(`:scroll: ${i18n.t("commands.utility.help.categories",guildId)}`);
         let Description = new String
         if(args[0] != undefined){
             if(categories.includes(args[0].charAt(0).toUpperCase() + args[0].slice(1))){
@@ -38,28 +39,29 @@ module.exports = {
                 }
                 Description += '```'
                 Embed  
-                    .setTitle(":page_with_curl: Commands List")
+                    .setTitle(`:page_with_curl: ${i18n.t("commands.utility.help.commandslist",guildId)}`)
                     .setColor("#4172bf")
-                    .setFooter({text: 'Type !help <command> to display the help for that specific command.\nExample: !help snowball'});
+                    .setFooter({text: i18n.t("commands.utility.help.footer",guildId,{prefix:PREFIX})});
             }else if(commandFiles.includes(args[0].toLowerCase()+'.js')){
                 page = 'command'
                 const command = require(`./${args[0].toLowerCase()}`)
                 Embed
-                    .setTitle(`Commande ${command.name.charAt(0).toUpperCase() + args[0].slice(1)}`)
+                    .setTitle(`${i18n.t("commands.utility.help.command",guildId)}: ${command.name.charAt(0).toUpperCase() + args[0].slice(1)}`)
                     .setColor('GREEN')
                     .addFields(
-                        {name: 'Utilisation', value:command.use},
-                        {name: 'Exemples', value: command.example}
+                        {name: i18n.t("commands.utility.help.uses",guildId), value: i18n.t(`commands.${command.category.toLowerCase()}.${command.name}.use`,guildId,{prefix: PREFIX})},
+                        {name: i18n.t("commands.utility.help.examples",guildId), value: i18n.t(`commands.${command.category.toLowerCase()}.${command.name}.example`,guildId,{prefix: PREFIX})}
                     )
-                    .setFooter({text: `Catégorie de commande : ${command.category}`});
-                Description = command.description
+                    .setFooter({text: `${i18n.t("commands.utility.help.commandcategory",guildId)}: ${command.category}`});
+                Embed.author = command.permissions ? {name:i18n.t("commands.utility.help.permissions",guildId,{permissions:command.permissions})} : {}
+                Description = i18n.t(`commands.${command.category.toLowerCase()}.${command.name}.description`,guildId)
             }
         }
         if(page === 'Categories'){
             for(const a of categories){
                 Description += `• ${a}\n`
             }
-            Description +='\n:information_source: Type `r2!help <category>` to get a list of commands in that category.\nExample: `r2!help fun` or `r2!help interaction`'
+            Description += i18n.t("commands.utility.help.footercategories",guildId,{prefix: PREFIX})
         }
         Embed
             .setDescription(Description);

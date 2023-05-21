@@ -1,17 +1,17 @@
 const Discord = require('discord.js');
 const maths = require('../maths');
 const { banhammer } = require('../LocalStorage');
+const {i18n} = require('../i18n/i18n')
+const {PREFIX} = require('../config.json')
+
 module.exports = {
 	name: 'banhammer',
-	description: "The Admin's power to summon throw the banhammer on the fools",
     category: "Interaction",
-    use:"`!banhammer <user>`",
-    example:"`!banhammer @R2-D2`",
 	execute(message, args) {
         let member = message.member.displayName
-        let avatarmember = message.author.displayAvatarURL({ format: 'png' })
         let user1 = message.mentions.members.first()
         let user2 = message.mentions.members.last()
+        const guildId = message.guildId
         if(user1 !== undefined){
 
             if(user2 !== user1 && user2 !==member){
@@ -20,23 +20,23 @@ module.exports = {
                 let GifEmbed = new Discord.MessageEmbed()
                     .setImage(banhammer[maths.getRandomInt(0,banhammer.length)])
                     .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
-                    .setDescription("**" + user + "** envoie le Ban Hammer sur **"+target+"**");
+                    .setDescription(i18n.t("commands.interaction.banhammer.command",guildId,{user:user,target,target}));
                     message.channel.send({embeds: [GifEmbed]})
 
-            }   else{
+            }else{
                 let target = user1.displayName
                 let GifEmbed = new Discord.MessageEmbed()
                     .setImage(banhammer[maths.getRandomInt(0,banhammer.length)])
                     .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.displayAvatarURL({ format: 'png' })})
-                    .setDescription("**" + member + "** envoie le Ban Hammer sur **"+target+"**");
+                    .setDescription(i18n.t("commands.interaction.banhammer.command", guildId, {user:member,target:target}));
                     message.channel.send({embeds: [GifEmbed]})
             }
-        }   else{
+        }else{
             const ErrorApplaudEmbed = new Discord.MessageEmbed()
                 .setColor("#ef5350")
-                .setTitle("Commande BanHammer")
-                .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!banhammer <target>`\n\n**Example Usage**\n`!banhammer @R2-D2`")
-                .setFooter({text: "Catégorie de commande: Interaction"});
+                .setTitle(`${i18n.t("commands.utility.help.command",guildId)}: ${this.name.charAt(0).toUpperCase() + this.name.slice(1)}`)
+                .setDescription(`${i18n.t("commands.interaction.mentionmissing",guildId)}\n\nUsage\n${i18n.t("commands.interaction.banhammer.use",guildId,{prefix:PREFIX})}\n\nExamples\n${i18n.t("commands.interaction.banhammer.example",guildId,{prefix:PREFIX})}`)
+                .setFooter({text: `${i18n.t("commands.utility.help.commandcategory",guildId)}: ${this.category}`});
             message.channel.send({embeds: [ErrorApplaudEmbed]})
 
             }

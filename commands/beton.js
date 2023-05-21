@@ -1,5 +1,6 @@
 const fs = require('fs')
 const { createCanvas, loadImage } = require('canvas')
+
 const Discord = require('discord.js')
 module.exports = {
 	name: 'beton',
@@ -21,7 +22,7 @@ module.exports = {
 
                 loadImage(avatar).then(image2 => {
                     context.drawImage(image2,45,180,250,250)
-                    loadImage('https://media.discordapp.net/attachments/753330903203184660/903414040288702474/betonparticles.png').then(image => {
+                    loadImage('https://cdn.discordapp.com/attachments/753330903203184660/1102168644697469039/parpaing.png').then(image => {
                         context.drawImage(image, 0, 0, 339, 480)
                         const buffer = canvas.toBuffer('image/png')
                         fs.writeFileSync('./beton.png', buffer)

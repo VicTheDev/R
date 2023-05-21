@@ -1,14 +1,14 @@
 const Discord = require('discord.js')
 const maths = require('../maths')
 const { snow } = require('../LocalStorage')
+const {i18n} = require('../i18n/i18n')
+const {ErrorEmbed} = require('../errorembed')
 
 module.exports = {
     name: 'snowball',
-    description: 'Throw a snowball to your oponent',
     category: "Interaction",
-    use: "`!snowball <user>`",
-    example: "`!snowball @R2-D2`",
     execute(message,args){
+        const guildId = message.guildId
         const member = message.member
         const target = message.mentions.members.first()
         if(target !== undefined ){
@@ -18,19 +18,15 @@ module.exports = {
             }
             args.shift()
             const SnowEmbed = new Discord.MessageEmbed()
-                .setDescription('**'+member.displayName+`** lance une boule de neige sur ${ligne}**`+target.displayName+'** ')
+                .setDescription(i18n.t("commands.interaction.snowball.text",guildId,{user:member.displayName,break:ligne,target:target.displayName}))
                 .setImage(snow[maths.getRandomInt(0,snow.length)])
                 .setFooter({text: `Requested by ${message.member.displayName} (${message.author.tag})`, iconURL: message.author.avatarURL()});
             message.channel.send({embeds:[SnowEmbed]})
             message.delete()
 
         }else{
-            const ErrorApplaudEmbed = new Discord.MessageEmbed()
-                .setColor("#ef5350")
-                .setTitle("Commande Boule de Neige")
-                .setDescription("Vous devez mentionnez un utilisateur pour utiliser cette interaction.\n\n**Usage**\n`!snowball <target>`\n`!snowball <target>`\n\n**Example Usage**\n`!snowball @R2-D2`\n`!snowball @R2D2`")
-                .setFooter({text: "Catégorie de commande: Interaction"});
-            message.channel.send({embeds:[ErrorApplaudEmbed]})
+            const Embed = ErrorEmbed(this,guildId)
+            message.channel.send({embeds:[Embed]})
             message.delete()
         }
         

@@ -1,20 +1,20 @@
 const {MessageEmbed} = require('discord.js')
-const objects = require('../database/objects.json');
+const items = require('../database/objects.json');
+const {i18n} = require('../i18n/i18n')
 module.exports = {
 	name: 'items',
-	description: 'List all the existing items.',
     category: "Inventory",
-    use:'`!items`',
-    example:'`!items`',
 	execute(message, args) {
+        const guildId = message.guildId
+        const objects = i18n.i(items,guildId)
         const Embed = new MessageEmbed()
-            .setTitle('Liste des objets')
+            .setTitle(i18n.t("commands.inventory.items.title",guildId))
             .setColor('ffd700')
         let FieldsArray = []
-        for (item in objects) {
+        for (let item in objects) {
             FieldsArray.push({
                 name: objects[item].name,
-                value: `**Id** : ${objects[item].id.toString()}`,
+                value: `ID${i18n.t("highpunctuation",guildId)}: ${objects[item].id.toString()}`,
                 inline: true,
             });
         }

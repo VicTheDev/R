@@ -3,3 +3,9 @@
 *.log
 /beton.png
 /.vscode
+/guilds.json
+/database/objects copy.json
+/.VSCodeCounter
+/.DS_STORE
+/.gitignore
+/fightsys.js

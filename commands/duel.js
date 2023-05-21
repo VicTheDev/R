@@ -1,13 +1,12 @@
 const {MessageActionRow ,MessageButton} = require('discord.js')
 const { getRandomInt } = require('../maths')
 const cooldown = new Set();
+const {i18n} = require('../i18n/i18n')
 module.exports = {
     name:"duel",
-    description:"Be the quicker to shoot at your oponent",
     category:"Fun",
-    use:"`!duel <user>` - Propose un duel à l'utilisateur mentionné",
-    example: "`!duel @Vic`",
     async execute(message,args){
+        const guildId = message.guildId
         const member = message.member;
         const target = message.mentions.members.first()
         if(target != undefined && target != member){
@@ -21,15 +20,15 @@ module.exports = {
                         .addComponents(
                             new MessageButton()
                                 .setCustomId('ok')
-                                .setLabel('Accept')
+                                .setLabel(i18n.t("commands.fun.accept",guildId))
                                 .setStyle('SUCCESS'),
                             new MessageButton()
                                 .setCustomId('no')
-                                .setLabel('Decline')
+                                .setLabel(i18n.t("commands.fun.decline",guildId))
                                 .setStyle('DANGER')
                         );
 
-                    const acceptmessage = await message.channel.send({content:`${member.user} challenged ${target.user} to a duel!`, components: [row]})
+                    const acceptmessage = await message.channel.send({content:i18n.t("commands.fun.duel.challenged",guildId,{user:member.user,target:target.user}), components: [row]})
                     const filter = i => i.message.id == acceptmessage.id && ['ok','no'].includes(i.customId) && i.member == target;
                     const collector = acceptmessage.channel.createMessageComponentCollector({filter, time: 20_000});
                     
@@ -37,7 +36,7 @@ module.exports = {
                     collector.on('collect', async i => {
                         switch (i.customId){
                             case 'ok':
-                                await acceptmessage.edit({content:`${target.user} accepted the duel! It will start in a few seconds...`, components: []})
+                                await acceptmessage.edit({content:i18n.t("commands.fun.accepted",guildId,{user:target.user,game:i18n.t("commands.fun.duel.game",guildId)}), components: []})
                                 cooldown.add(target.user.id)
                                 setTimeout(() => {
                                     acceptmessage.delete()
@@ -47,7 +46,7 @@ module.exports = {
                                 collector.stop()
                                 break;
                             case 'no':
-                                await acceptmessage.edit({content: `${target.displayName} declined the duel.` , components: []})
+                                await acceptmessage.edit({content: i18n.t("commands.fun.declined",guildId,{user:target.displayName,game:i18n.t("commands.fun.duel.game",guildId)}) , components: []})
                                 cooldown.delete(member.user.id)
                                 answered = true
                                 setTimeout(() => {
@@ -59,7 +58,7 @@ module.exports = {
         
                     collector.on('end', async collected => {
                         if(!answered){
-                            await acceptmessage.edit({content: `${target.displayName} declined the duel.` , components: []})
+                            await acceptmessage.edit({content: i18n.t("commands.fun.declined",guildId,{user:target.displayName,game:i18n.t("commands.fun.duel.game",guildId)}) , components: []})
                             cooldown.delete(member.user.id)
                                 setTimeout(() => {
                                     acceptmessage.delete()
@@ -67,21 +66,21 @@ module.exports = {
                         }
                     })
                 }else{
-                    const reply = await message.reply(`${target.displayName} already has a duel going on!`)
+                    const reply = await message.reply(i18n.t("commands.fun.duel.targetunavailable",guildId,{user:target.displayName}))
                     message.delete()
                     setTimeout(() => {
                         reply.delete()
                     }, 3000)
                 }
             }else{
-                const reply = await message.reply('You already have a duel going on!')
+                const reply = await message.reply(i18n.t("commands.fun.duel.unavailable",guildId))
                 message.delete()
                 setTimeout(() => {
                     reply.delete()
                 }, 3000)
             }
         }else{
-            const reply = await message.reply("You must mention someone!")
+            const reply = await message.reply(i18n.t("commands.interaction.mentionmissing",guildId))
             message.delete()
             setTimeout(() => {
                 reply.delete()
@@ -95,18 +94,18 @@ async function duel(message, member, target){
     const players = [member.user.id, target.user.id]
     const lose = [target.user.id, member.user.id]
     const pos = [
-        '_ _  :grinning:  :point_right:           **Wait**           :point_left:  :grinning: _ _',
-        '_ _  :grinning:  :point_right:           **Shoot**          :point_left:  :grinning: _ _',
-        `_ _  :cowboy:  :point_right:           ${member.displayName} won!           :skull: _ _`,
-        `_ _  :skull:           ${target.displayName} won!           :point_left:  :cowboy: _ _`,
-        `_ _  :neutral_face:  :point_right:           Draw           :point_left:  :neutral_face: _ _`
+        `_ _  :grinning:  :point_right:           **${i18n.t("commands.fun.duel.pos.wait",guildId)}**           :point_left:  :grinning: _ _`,
+        `_ _  :grinning:  :point_right:           **${i18n.t("commands.fun.duel.pos.shoot",guildId)}**          :point_left:  :grinning: _ _`,
+        `_ _  :cowboy:  :point_right:           ${i18n.t("commands.fun.duel.pos.won",guildId,{user:member.displayName})}           :skull: _ _`,
+        `_ _  :skull:           ${i18n.t("commands.fun.duel.pos.won",guildId,{user:target.displayName})}           :point_left:  :cowboy: _ _`,
+        `_ _  :neutral_face:  :point_right:           ${i18n.t("commands.fun.duel.pos.draw",guildId)}           :point_left:  :neutral_face: _ _`
 
     ]
     let row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setCustomId('0')
-                    .setLabel('SHOOT')
+                    .setLabel(i18n.t("commands.fun.duel.shoot",guildId))
                     .setStyle('SUCCESS'),
                 new MessageButton()
                     .setCustomId('mid')
@@ -115,7 +114,7 @@ async function duel(message, member, target){
                     .setDisabled(true),
                 new MessageButton()
                     .setCustomId('1')
-                    .setLabel('SHOOT')
+                    .setLabel(i18n.t("commands.fun.duel.shoot",guildId))
                     .setStyle('DANGER')
             );
     const botmessage = await message.channel.send({content: pos[0], components: [row]});
@@ -141,7 +140,7 @@ async function duel(message, member, target){
             collector.stop()
         }else{
             end = true
-            i.reply({content: 'Vous avez tiré trop tôt !', ephemeral: true})
+            i.reply({content: i18n.t("commands.fun.duel.tooearly",guildId), ephemeral: true})
             await botmessage.edit({content: pos[2 + lose.indexOf(i.member.user.id)] , components:[]})
             collector.stop()
         }
